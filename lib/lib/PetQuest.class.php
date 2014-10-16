@@ -5,13 +5,13 @@ abstract class PetQuest
 
     protected $questProgressData;
     protected $participantIds;
-    protected $petArrays;
+    protected $pets;
 
-    protected function __construct(&$progress, &$userpets)
+    protected function __construct(&$progress, $pets)
     {
         $this->questProgress = $progress;
         $this->questProgressData = json_decode($progress['data']);
-        $this->petArrays = &$userpets;
+        $this->pets = $pets;
 
         $this->participantIds = fetch_multiple_by('SELECT petid FROM psypets_pet_quest_pets WHERE questid=' . $progress['idnum'], 'petid');
     }
@@ -22,7 +22,7 @@ abstract class PetQuest
     /** @return array */
     abstract protected function Init($args);
 
-    public static function Insert($questClass, &$userpets, $args)
+    public static function Insert($questClass, $pets, $args)
     {
         $progress = $questClass::Init($args);
 
@@ -34,7 +34,7 @@ abstract class PetQuest
         */
         // @TODO: create records for participating pets
 
-        return new $questClass($progress, $userpets);
+        return new $questClass($progress, $pets);
     }
 
     protected function Update()
@@ -83,12 +83,33 @@ abstract class PetQuest
 
     /**
      * @param int $progressId
-     * @param array $userpets
+     * @param array $pets
      * @return mixed
      */
-    public static function Load(&$progress, &$userpets)
+    public static function Load(&$progress, $pets)
     {
         $questClass = $progress['quest'];
-        return new $questClass($progress, $userpets);
+        return new $questClass($progress, $pets);
+    }
+
+    /**
+     * @param User $user
+     * @return array
+     */
+    public static function SelectForUser($user, $pets)
+    {
+        $quests = array();
+
+        $progresses = fetch_multiple('
+            SELECT * FROM psypets_pet_quest_progress
+            LEFT JOIN psypets_pet_quest_pets ON psypets_pet_quest_progress.idnum=psypets_pet_quest_pets.questid
+            LEFT JOIN monster_pets ON psypets_pet_quest_pets.petid=monster_pets.idnum
+            WHERE monster_pets.user=' . quote_smart($user->UserName()) . '
+        ');
+
+        foreach($progresses as $progress)
+            $quests[] = self::Load($progress, $pets);
+
+        return $quests;
     }
 }

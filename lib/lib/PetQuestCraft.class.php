@@ -14,9 +14,9 @@ class PetQuestCraft extends PetQuest
         }
     */
 
-    public function __construct($progress, &$userpets)
+    public function __construct($progress, $pets)
     {
-        parent::__construct($progress, $userpets);
+        parent::__construct($progress, $pets);
 
         $this->craftTable = $this->questProgressData['table'];
         $this->craftIdnum = $this->questProgressData['idnum'];

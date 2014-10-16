@@ -13,14 +13,9 @@ class HouseChecker
     {
         $this->user = $user;
         $this->pets = $pets;
+        $this->quests = PetQuest::SelectForUser($this->user, $this->pets);
 
-        // load up all the projects/quests
-        $this->quests = array();
-        $questProgresses = fetch_multiple('SELECT * FROM psypets_pet_quest_progress');
-        foreach($questProgresses as $progress)
-            $this->quests[] = PetQuest::Load($progress, $this->pets);
-
-        // load up the house inventory
+        // @TODO: load up the house inventory
     }
 
     // performs one hour of activities
