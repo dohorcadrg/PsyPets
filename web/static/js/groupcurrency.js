@@ -45,23 +45,9 @@ function update_currency(fieldid)
   give_or_take = $('input:radio[name=currency_action]:checked').val();
   amount = parseInt($('#currency_amount').val());
   
-  all_is_well = true
-  
-  if(isNaN(currency_id))
-  {
-    all_is_well = false;
-  }
+  all_is_well = true;
 
-  if(isNaN(amount))
-  {
-    all_is_well = false;
-  }
-  else if(amount < 0)
-  {
-    all_is_well = false;
-  }
-
-  if(give_or_take != 'give' && give_or_take != 'take')
+  if(isNaN(currency_id) || isNaN(amount) || amount < 0 || (give_or_take != 'give' && give_or_take != 'take'))
   {
     all_is_well = false;
   }

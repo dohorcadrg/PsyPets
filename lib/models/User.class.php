@@ -3,6 +3,7 @@ class User extends psyDBObject
 {
     // read
     public function ID() { return $this->_data['idnum']; }
+    public function Username() { return $this->_data['user']; }
     public function Name() { return $this->_data['display']; }
 
     public function SiteLayout() { return $this->_data['style_layout']; }

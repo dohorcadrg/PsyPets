@@ -15,7 +15,7 @@ require_once 'commons/tradelib.php';
 if($user['license'] != 'yes')
 {
   header('Location: /trading.php');
-  break;
+  exit();
 }
 
 $tradeid = (int)$_GET['tradeid'];
@@ -23,7 +23,7 @@ $tradeid = (int)$_GET['tradeid'];
 if($tradeid < 1)
 {
   header('Location: /trading.php');
-  break;
+  exit();
 }
 
 $command = 'SELECT * FROM monster_trades WHERE tradeid=' . $tradeid . ' LIMIT 1';

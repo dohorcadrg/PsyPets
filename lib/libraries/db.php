@@ -30,6 +30,11 @@ function handle_error($where, $details)
   die('<p>A particularly-nasty error has occurred.  ' . $SETTINGS['author_resident_name'] . ' has been e-mailed with the details of this error.</p><p>Use your browser\'s back button, and retry doing whatever it was you were trying to do.  If the problem persists, please contact That Guy Ben with details about what you were trying to do.  It\'ll help him fix whatever bug may be at work here.</p><p>Sorry about the inconvenience!</p>');
 }
 
+function affected_rows()
+{
+    $GLOBALS['database']->AffectedRows();
+}
+
 function fetch_none($command)
 {
 	$GLOBALS['database']->FetchNone($command);

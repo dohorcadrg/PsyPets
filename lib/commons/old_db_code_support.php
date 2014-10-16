@@ -4,3 +4,4 @@ function fetch_single($query) { return $GLOBALS['database']->FetchSingle($query)
 function fetch_multiple($query) { return $GLOBALS['database']->FetchMultiple($query); }
 function fetch_multiple_by($query, $by) { return $GLOBALS['database']->FetchMultipleBy($query, $by); }
 function quote_smart($thing) { return $GLOBALS['database']->Quote($thing); }
+function affected_rows() { $GLOBALS['database']->AffectedRows(); }

@@ -9,19 +9,20 @@ graphics[2] = 'gfx/bats/bat3.gif';
 bat_count = 8;
 
 // initialize
+var x, i;
 
 // preload
-for(int x = 0; x < graphics.length; x++)
+for(x = 0; x < graphics.length; x++)
 {
   Image = new Image();
   Image.src = graphics[x];
 }
 
 // bat positioning
-yPos = new Array();
-xPos = new Array();
-yVel = new Array();
-xVel = new Array();
+yPos = [];
+xPos = [];
+yVel = [];
+xVel = [];
 
 // stupid browser-specific code
 ns = document.layers ? 1 : 0;
@@ -31,7 +32,7 @@ if(ns)
 {
   for(x = 0; x < bat_count; x++)
   {
-    var i = Math.floor(Math.random() * graphics.length);
+    i = Math.floor(Math.random() * graphics.length);
     document.write('<layer name="sn' + i + '" left="0" top="0"><img src=' + graphics[i] + ' /></layer>');
   }
 }

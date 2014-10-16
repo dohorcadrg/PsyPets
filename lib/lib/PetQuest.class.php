@@ -7,7 +7,7 @@ abstract class PetQuest
     protected $participantIds;
     protected $petArrays;
 
-    public function __construct($progress, &$userpets)
+    protected function __construct(&$progress, &$userpets)
     {
         $this->questProgress = $progress;
         $this->questProgressData = json_decode($progress['data']);
@@ -86,9 +86,8 @@ abstract class PetQuest
      * @param array $userpets
      * @return mixed
      */
-    public static function Select($progressId, &$userpets)
+    public static function Load(&$progress, &$userpets)
     {
-        $progress = fetch_single('SELECT * FROM psypets_pet_quest_progress WHERE idnum=' . (int)$progressId . ' LIMIT 1');
         $questClass = $progress['quest'];
         return new $questClass($progress, $userpets);
     }

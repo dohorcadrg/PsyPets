@@ -740,7 +740,7 @@ function gain_love_level(&$mypet, $desc, $hour = 0, $immediate = false)
 function gain_love_exp(&$mypet, $amount, $hour = 0, $immediate = false)
 {
   if($amount <= 0 || $mypet['zombie'] == 'yes' || $mypet['changed'] == 'yes')
-    return;
+    return 0;
 
   if($mypet['food'] > 0 && ($mypet['energy'] > 0 || $mypet['caffeinated'] > 0) && $mypet['safety'] > 0 && $mypet['love'] > 0 && $mypet['esteem'] > 0)
   {
