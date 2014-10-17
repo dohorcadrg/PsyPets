@@ -9,56 +9,37 @@ require_once 'commons/grammar.php';
 require_once 'commons/formatting.php';
 require_once 'commons/inventory.php';
 
-if($user['idnum'] == 1)
-  $checkpet = 'checkpet';
-else
-  $checkpet = 'checkpet';
-
-require_once 'commons/' . $checkpet . '.php';
-
 require_once 'commons/houselib.php';
 require_once 'commons/questlib.php';
 
+$hoursToRun = (int)$_POST['hours'];
 $max_pets = max_active_pets($user, $house);
-
 $house_hours = floor(($now - $house['lasthour']) / (60 * 60));
-
 $can_spend_hours = (count($userpets) <= $max_pets && $house['curbulk'] <= min(max_house_size(), $house['maxbulk']) && $user['no_hours_fool'] == 'no');
 
-if($house_hours > 0)
+if($_POST['action'] == 'Go!' && $hoursToRun > 0 && $house_hours > 0 && $can_spend_hours)
 {
-  if($can_spend_hours && (substr($_POST['action'], -3) == 'go!' || $house_hours <= $user['auto_spend_hours']))
-  {
-    // UPDATE THE PETS
-		if($_POST['action'] == '8 hours, go!')
-			check_pets($user['idnum'], 8);
-		else
-			check_pets($user['idnum']);
+    $pets = array();
+    foreach ($userpets as &$pet)
+        $pets[] = Pet::Load($pet, $user_object);
 
-		load_user_pets($user, $userpets);
+    $houseChecker = new HouseChecker($user_object, $pets);
 
-    $house = get_house_byuser($user['idnum']);
-    $house_hours = floor(($now - $house['lasthour']) / (60 * 60));
-  }
-  else if($_POST['action'] == 'Skip them!')
-  {
-    fetch_none('
-			UPDATE monster_houses
-			SET lasthour=lasthour+' . ($house_hours * 60 * 60) . '
-			WHERE idnum=' . $house['idnum'] . '
-			LIMIT 1
-		');
+    while($house_hours > 0 && $can_spend_hours && $hoursToRun > 0)
+    {
+        $houseChecker->Step();
 
-    require_once 'commons/statlib.php';
+        $hoursToRun--;
 
-    if(record_stat_with_badge($user['idnum'], 'House Hours Skipped', $house_hours, 168, 'ihavealife'))
-      $CONTENT['messages'][] = '<span class="success">(You received the I Have a Life, Too Badge!)</span>';
-
-    $house = get_house_byuser($user['idnum']);
-    $house_hours = floor(($now - $house['lasthour']) / (60 * 60));
-  }
+        if($hoursToRun > 0)
+        {
+            $house = get_house_byuser($user['idnum']);
+            $max_pets = max_active_pets($user, $house);
+            $house_hours = floor(($now - $house['lasthour']) / (60 * 60));
+            $can_spend_hours = (count($userpets) <= $max_pets && $house['curbulk'] <= min(max_house_size(), $house['maxbulk']) && $user['no_hours_fool'] == 'no');
+        }
+    }
 }
 
 header('Location: /myhouse.php');
 exit();
-?>
