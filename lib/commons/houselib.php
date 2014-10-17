@@ -381,7 +381,7 @@ function toolbar(&$rooms, &$curroom, &$userpets, $num)
     $context_menu .= '<li>Feed to<ul>';
 ?>
     <td>
-     <input type="submit" name="submit" value="Feed to" class="button_feedto" id="feedto<?= $num ?>" />&nbsp;<select id="pet<?= $num ?>" name="pet<?= $num ?>" style="<?= $style ?>" onchange="document.getElementById('pet<?= $o_num ?>').selectedIndex = this.selectedIndex">
+     <input type="submit" name="submit" value="Feed to" class="button_feedto" id="feedto<?= $num ?>" />&nbsp;<select id="pet<?= $num ?>" name="pet<?= $num ?>" style="<?= $style ?>" onchange="document.getElementById('pet<?= $o_num ?>').selectedIndex = this.selectedIndex" class="select">
 <?php
     if(count($userpets) > 1)
     {
@@ -408,7 +408,7 @@ function toolbar(&$rooms, &$curroom, &$userpets, $num)
   $context_menu .= '<li>Move to<ul>';
 ?>
     <td>
-     <input type="button" value="Move to" onclick="move_items('move')" id="moveto<?= $num ?>" />&nbsp;<select id="move<?= $num ?>" name="move<?= $num ?>" style="width:100px;" onchange="document.getElementById('move<?= $o_num ?>').selectedIndex = this.selectedIndex">
+     <input type="button" value="Move to" onclick="move_items('move')" id="moveto<?= $num ?>" />&nbsp;<select id="move<?= $num ?>" name="move<?= $num ?>" style="width:100px;" onchange="document.getElementById('move<?= $o_num ?>').selectedIndex = this.selectedIndex" class="select">
 <?php
   foreach($rooms as $room)
   {

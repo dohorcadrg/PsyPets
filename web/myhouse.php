@@ -345,14 +345,19 @@ include 'commons/html.php';
 
             <div style="padding: 0 0 1em 1em;"><form action="/myhouse/run_hours.php" method="post" onsubmit="return disable_hours_form();" id="run_hours_form"><p>
                 <?php if($can_spend_hours): ?>
-                    <?php $confirm_skip = ($user['confirm_skip'] == 'yes' ? ' onclick="return confirm(\'Really-really?\');"' : ''); ?>
-                    <input type="submit" name="action" value="<?= $house_hours ?> hour<?= $house_hours != 1 ? 's' : '' ?>, go!" style="width:90px;" />
-                    <input type="submit" name="action" value="8 hours, go!" style="width:90px;"<?= $house_hours < 8 ? ' disabled="disabled"' : '' ?> />
-                    <input type="submit" name="action" value="Skip them!"<?= $confirm_skip ?> style="width:90px;" />
+                    <select name="hours" class="select">
+                        <?php for($x = $house_hours; $x > 0; $x--): ?>
+                            <option value="<?= $x ?>"><?= $x ?> hours</option>
+                        <?php endfor; ?>
+                    </select>
+                    <input type="submit" name="action" value="Go!" style="width:90px;" />
                 <?php else: ?>
-                    <input type="submit" name="action" value="<?= $house_hours ?> hour<?= $house_hours != 1 ? 's' : '' ?>, go!" disabled="disabled" style="width:90px;" />
-                    <input type="submit" name="action" value="8 hours, go!" style="width:90px;" disabled="disabled" />
-                    <input type="submit" name="action" value="Skip them!"<?= $confirm_skip ?> style="width:90px;" />
+                    <select name="hours" class="select" disabled="disabled">
+                        <?php for($x = $house_hours; $x > 0; $x--): ?>
+                            <option value="<?= $x ?>"><?= $x ?> hours</option>
+                        <?php endfor; ?>
+                    </select>
+                    <input type="submit" name="action" value="Go!" style="width:90px;" disabled="disabled" />
                 <?php endif; ?>
             </p></form></div>
         <?php else: ?>
