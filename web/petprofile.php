@@ -294,7 +294,6 @@ if($this_pet['revealed_preferences'] == 'yes' || $this_pet['revealed_relationshi
        <td>
         <?= $this_pet['petname'] ?> is a <?= $pet_years ?> year-old <?= $this_pet['gender'] . (in_array($this_pet['graphic'], $phoenix_graphics) ? ' <b style="color:#930;">phoenix</b>' : '') ?> in <?= $where ?>.<br />
         Level: <?= $pet_level ?><br />
-        Size: <?= (pet_size($this_pet) / 10) ?><br />
         Blood type: <?php
 echo say_blood_type($this_pet['bloodtype']);
 

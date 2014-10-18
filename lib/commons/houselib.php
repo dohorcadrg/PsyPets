@@ -171,7 +171,7 @@ function upgrade_house($idnum, $bulk)
 
 function render_house_bulk(&$house)
 {
-  $effective_max_bulk = min(max_house_size(), $house['maxbulk']);
+  $effective_max_bulk = min(House::$MAX_SIZE, $house['maxbulk']);
 
   if($effective_max_bulk < $house['maxbulk'])
     $house_note = '<a href="realestate.php">*</a>';
@@ -184,13 +184,9 @@ function render_house_bulk(&$house)
 function recount_house_bulk(&$user, &$house)
 {
   $stats = get_housestats_byloc($user);
-  $pets = get_pets_byuser($user['user'], 'home');
-
-  foreach($pets as $pet)
-    $stats['bulk'] += pet_size($pet);
 
   update_house_bulk($house['idnum'], $stats['bulk']);
-  
+
   return $stats['bulk'];
 }
 

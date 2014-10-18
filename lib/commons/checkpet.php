@@ -81,9 +81,7 @@ function check_pets($userid, $hour_limit = false)
     $max_pets = $user_object->MaxActivePets();
 
     // load pets and projects
-    $mypets = get_user_pets_for_simulation($myuser['user'], $max_pets);
     $myprojects = get_projects_byloc($userid);
-    $petbulk = 0;
 
     $num_pets = count($mypets);
     $live_pets = $num_pets;
@@ -159,8 +157,6 @@ function check_pets($userid, $hour_limit = false)
         // loop through each pet!
         foreach($mypets as $idnum=>$pet)
         {
-            $petbulk += pet_size($pet);
-
             if($mypets[$idnum]['toolid'] > 0 && $pet['eggplant'] == 'no')
             {
                 $tool = get_inventory_byid($mypets[$idnum]['toolid']);
@@ -243,7 +239,7 @@ function check_pets($userid, $hour_limit = false)
 
         $MATERIALS_LIST = &$house_stats['materials'];
 
-        $house['curbulk'] = $house_stats['bulk'] + $petbulk;
+        $house['curbulk'] = $house_stats['bulk'];
 
         update_house_bulk($house['idnum'], $house['curbulk']);
 
@@ -1264,8 +1260,6 @@ function hourly_pet(&$mypet, &$myprojects, &$myuser, $hour, $num_pets, &$house_s
 
     $HALLOWEEN = (date('M d', $simulated_time) == 'Oct 31' || date('M d', $simulated_time) == 'Oct 30');
 
-    $effective_max_size = min(max_house_size(), $max_size);
-
     $newpet = $mypet;
 
     $preg_days = $mypet['pregnant_asof'];
@@ -1430,7 +1424,7 @@ function hourly_pet(&$mypet, &$myprojects, &$myuser, $hour, $num_pets, &$house_s
 
     $break_tool = 0;
 
-    $house_is_full = ($house_size >= $effective_max_size);
+    $house_is_full = $house->IsFull();
 
     if($house_is_full)
     {

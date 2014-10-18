@@ -10,7 +10,6 @@ function sellback_rate()      { return  0.50; }
 function alchemy_efficiency() { return  0.600; }
 function sellers_fee()        { return  0.02;  }
 function pet_sellers_fee()    { return  0.10;  }
-function max_house_size()     { return 200000;  }
 
 $FREE_STORAGE_DAYS = array(/*
   'April 9', 'April 10',

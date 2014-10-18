@@ -367,20 +367,6 @@ function pet_graphic($mypet, $link = true, $extra = '')
   return $xhtml;
 }
 
-function get_user_pets_for_simulation($username, $max_pets)
-{
-	return $GLOBALS['database']->FetchMultipleBy('
-	  SELECT *
-		FROM monster_pets
-		WHERE
-			user=' . quote_smart($username) . '
-			AND location=\'home\'
-			AND dead=\'no\'
-			ORDER BY orderid ASC
-			LIMIT ' . $max_pets . '
-	', 'idnum');
-}
-
 function get_pets_byuser($user, $location, $orderby = false)
 {
   if($orderby === false)
@@ -403,11 +389,6 @@ function get_pet_byid($idnum, $select = '*')
   }
      
   return $PET_ID_CACHE[$select][$idnum];
-}
-
-function pet_size($mypet)
-{
-  return ceil(1 + $mypet['str'] * 7.5 + $mypet['sta'] * 10 + $mypet['athletics'] * 5);
 }
 
 function create_random_pet($owner)

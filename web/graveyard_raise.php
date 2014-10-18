@@ -34,15 +34,13 @@ if($raise_one)
   $athletics = mt_rand(1, 3);
   $sur = mt_rand(0, 2);
   $bra = mt_rand(3, 5);
-  
-  $size = pet_size(array('str' => $str, 'sta' => $sta, 'athletics' => $athletics, 'sur' => $sur, 'bra' => $bra));
-  
+
   $database->FetchNone('
     UPDATE monster_pets
     SET
       petname=' . quote_smart($tombstone['petname']) . ',
       gender=\'male\',prolific=\'no\',zombie=\'yes\',
-      energy=12,food=-1,safety=10,love=10,esteem=10,size=' .  $size . ',
+      energy=12,food=-1,safety=10,love=10,esteem=10,
       `str`=' . $str . ',`dex`=0,`sta`=' . $sta . ',`per`=0,`int`=0,`wit`=0,
       `bra`=' . $bra . ',`athletics`=' . $athletics . ',`stealth`=0,`sur`=' . $sur . ',`cra`=0,`eng`=0,`smi`=0
     WHERE idnum=' . $petid . '

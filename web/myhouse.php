@@ -3,6 +3,8 @@ $whereat = 'home';
 $wiki = 'My_House';
 $require_petload = 'no';
 
+require_once 'commons/init.php';
+
 // confirm the session...
 require_once 'commons/dbconnect.php';
 require_once 'commons/sessions.php';
@@ -18,7 +20,9 @@ require_once 'commons/backgrounds.php';
 
 require_once 'commons/leonids.php';
 
-if($house['maxbulk'] >= 2000 && !addon_exists($house, 'Kitchen'))
+$house_object = House::Load($house, $user_object);
+
+if($house_object->Size() >= 2000 && !$house_object->HasAddOn('Kitchen'))
 {
     $kitchen_project = $database->FetchSingle('
     SELECT a.idnum
@@ -93,21 +97,15 @@ if(strlen($_GET['room']) > 0)
     }
 }
 
-$house_hours = floor(($now - $house['lasthour']) / (60 * 60));
+$house_hours = $house_object->Hours();
 
-if($house_hours >= 72)
+if($house_hours >= House::$MAX_HOURS)
 {
-    $house_hours = 72;
+    $house_hours = House::$MAX_HOURS;
     $too_many_hours = true;
 }
 
-$can_spend_hours = (count($userpets) <= $max_pets && $house['curbulk'] <= min(max_house_size(), $house['maxbulk']) && $user['no_hours_fool'] == 'no');
-
-if($can_spend_hours && $house_hours > 0 && $house_hours <= $user['auto_spend_hours'])
-{
-    header('Location: /myhouse/run_hours.php');
-    exit();
-}
+$can_spend_hours = (count($userpets) <= $max_pets && $house['curbulk'] <= min(House::$MAX_SIZE, $house['maxbulk']));
 
 // FETCH ROOM INVENTORY
 if($house['curroom'] == '')
@@ -336,7 +334,7 @@ include 'commons/html.php';
             <?php elseif(!$can_spend_hours): ?>
                 <p class="failure">
                     <?php if(count($userpets) > $max_pets): ?><strong>You have too many pets in your house.</strong><?php endif; ?>
-                    <?php if($house['curbulk'] > min(max_house_size(), $house['maxbulk'])): ?><strong>You have too many items in your house.</strong><?php endif; ?>
+                    <?php if($house['curbulk'] > min(House::$MAX_SIZE, $house['maxbulk'])): ?><strong>You have too many items in your house.</strong><?php endif; ?>
                     <a href="/help/house_space.php" class="help">?</a> You must free up space before you can run hours.
                 </p>
             <?php else: ?>
@@ -429,10 +427,10 @@ include 'commons/html.php';
 
                 $loveoptions = love_options($inventory);
 
-                if(addon_exists($house, 'Refreshing Spring'))
+                if($house_object->HasAddOn('Refreshing Spring'))
                     $loveoptions[-4] = 'Drink from Refreshing Spring';
 
-                if(addon_exists($house, 'Lake'))
+                if($house_object->HasAddOn('Lake'))
                 {
                     if($now_month == 12 || $now_month == 1)
                         $loveoptions[-5] = 'Ice Skate on Lake';
@@ -490,7 +488,7 @@ include 'commons/html.php';
     </div>
 
     <div class="js-tab<?php if ($initial_room == 'Common'): ?> hidden<?php endif; ?>" id="js-tab-inventory">
-        <?php room_display($house); ?>
+        <?= $house_object->RoomTabsHTML($THIS_ROOM) ?>
         <div id="js-house-inventory">
 
         </div>

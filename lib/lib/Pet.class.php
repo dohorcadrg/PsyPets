@@ -35,11 +35,13 @@ class Pet
             return null;
     }
 
-    public static function SelectForUser($owner)
+    public static function SelectForUser($owner, $wheres = array())
     {
         $pets = array();
 
-        $petData = fetch_multiple('SELECT * FROM monster_pets WHERE user=' . quote_smart($owner->Username()));
+        $wheres[] = 'user=' . quote_smart($owner->Username());
+
+        $petData = fetch_multiple('SELECT * FROM monster_pets WHERE ' . implode(' AND ', $wheres));
 
         foreach($petData as $data)
             $pets[] = new Pet($data, $owner);
@@ -56,6 +58,13 @@ class Pet
     public function IsZombie() { return($this->_data['zombie'] == 'yes'); }
     public function IsSleeping() { return($this->_data['sleeping'] == 'yes'); }
     public function WakeUp() { $this->_data['sleeping'] = 'no'; }
+
+    /*
+    public function Size()
+    {
+        return ceil(1 + $this->_data['str'] * 7.5 + $this->_data['sta'] * 10 + $this->_data['athletics'] * 5);
+    }
+    */
 
     public function FallAsleep()
     {

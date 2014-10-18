@@ -1,25 +1,91 @@
 <?php
 class House
 {
+    public static $MAX_SIZE = 50000;
+    public static $MAX_HOURS = 72;
+
     private $_data;
-    private $user;
+    /** @var User */ private $user;
     private $addons, $rooms;
     private $inventory = false;
 
-    private function __construct($data, $owner)
+    private function __construct(&$data, $owner)
     {
-        $this->_data = $data;
+        $this->_data =& $data;
         $this->user = $owner;
         $this->addons = explode(',', $data['addons']);
         $this->rooms = explode(',', $data['rooms']);
     }
 
-    public function Hours()
+    /** @return int */ public function Hours() { return floor((time() - $this->_data['lasthour']) / (60 * 60)); }
+    /** @return int */ public function Size() { return $this->_data['maxbulk']; }
+    /** @return bool */ public function HasAddOn($addon) { return in_array($addon, $this->addons); }
+
+    public function InventorySize() { return $this->_data['curbulk']; }
+
+    public function RecalculateInventorySize()
     {
-        return floor((time() - $this->_data['lasthour']) / (60 * 60));
+        $bulk = 0;
+        $data = fetch_multiple('SELECT monster_items.bulk*COUNT(monster_inventory.idnum) AS totalBulk FROM monster_inventory LEFT JOIN monster_items ON monster_items.itemname=monster_inventory.itemname WHERE monster_inventory.user=' . quote_smart($this->user->Username()) . ' AND monster_inventory.location LIKE \'home%\' GROUP BY monster_inventory.itemname');
+        foreach($data as $subTotal)
+            $bulk += $subTotal['totalBulk'];
+
+        if($bulk != $this->_data['curbulk'])
+        {
+            $this->_data['curbulk'] = $bulk;
+            $this->Update(array('curbulk'));
+        }
     }
 
-    public function HasAddOn($addon) { return in_array($addon, $this->addons); }
+    public function AddInventory($itemName, $location, $maker, $message, $quantity = 1)
+    {
+        global $now;
+
+        if($quantity == 0)
+            return;
+
+        $item = get_item_byname($itemName);
+
+        if($item === false)
+        {
+            echo "adding bulk inventory (1)<br />\n" .
+                "There is no item named '$itemName'<br />\n";
+            die();
+        }
+
+        $q_user = quote_smart($this->user->Username());
+        $q_maker = quote_smart($maker);
+        $q_itemName = quote_smart($itemName);
+        $q_message = quote_smart($message);
+        $q_location = quote_smart($location);
+
+        if(substr($location, 0, 4) == 'home')
+            $this->_data['bulk'] += $item['bulk'] * $quantity;
+
+        $item_data = "($q_user, $q_maker, $q_itemName, " . $item['durability'] . ", $q_message, $q_location, $now)";
+
+        $command = "INSERT INTO `monster_inventory` (`user`, `creator`, `itemname`, `health`, `message`, `location`, `changed`) VALUES $item_data";
+        if($quantity > 1)
+            $command .= str_repeat(', ' . $item_data, $quantity - 1);
+
+        fetch_none($command);
+    }
+
+    public function IsFull()
+    {
+        return $this->_data['curbulk'] >= min($this->_data['maxbulk'], House::$MAX_SIZE);
+    }
+
+    public function CapHours()
+    {
+        global $now;
+
+        if($this->Hours() > self::$MAX_HOURS)
+        {
+            $this->_data['lasthour'] = $now - (self::$MAX_HOURS * 60 * 60);
+            $this->Update(array('lasthour'));
+        }
+    }
 
     public function FirstLogIn()
     {
@@ -45,6 +111,7 @@ class House
 
     /**
      * @param User $owner
+     * @return House|null
      */
     public static function SelectForUser($owner)
     {
@@ -53,6 +120,16 @@ class House
             return new House($data, $owner);
         else
             return null;
+    }
+
+    /**
+     * @param array $data
+     * @param User $owner
+     * @return House
+     */
+    public static function Load(&$data, $owner)
+    {
+        return new House($data, $owner);
     }
 
     /**

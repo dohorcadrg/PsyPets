@@ -85,7 +85,7 @@ $wallpaper = $walls[$offset];
 if($wallpaper != 'none')
   $CONTENT_STYLE = "background: #fff url(//" . $SETTINGS['site_domain'] . "/gfx/walls/$wallpaper.png) repeat;";
 
-$effective_max_bulk = min(max_house_size(), $house['maxbulk']);
+$effective_max_bulk = min(House::$MAX_SIZE, $house['maxbulk']);
 if($effective_max_bulk < $house['maxbulk'])
   $house_note = '<a href="/realestate.php">*</a>';
 else

@@ -5,6 +5,8 @@ $whereat = 'home';
 $wiki = 'Airship Mooring';
 $THIS_ROOM = 'Airship Mooring';
 
+require_once 'commons/init.php';
+
 // confirm the session...
 require_once 'commons/dbconnect.php';
 require_once 'commons/sessions.php';
@@ -30,7 +32,9 @@ if($user['pvp_message'] == 'yes')
     fetch_none($command, 'clearing PvP notification icon');
 }
 
-if(!addon_exists($house, 'Airship Mooring'))
+$house_object = House::Load($house, $user_object);
+
+if(!$house_object->HasAddOn('Airship Mooring'))
 {
     header('Location: /myhouse.php');
     exit();
@@ -57,11 +61,11 @@ require 'commons/html.php';
     <?php include 'commons/header_2.php'; ?>
     <h4><a href="/myhouse.php"><?= $user['display'] ?>'s House</a> &gt; Airship Mooring</h4>
     <?= $message ?>
-    <?php room_display($house); ?>
+    <?= $house_object->RoomTabsHTML($THIS_ROOM) ?>
     <?php if(count($airships) > 0): ?>
         <table>
             <thead>
-            <tr><th></th><th></th><th>Chassis</th><th>Name</th><th>Details</th><th>Status</th></tr>
+            <tr><th></th><th>Action</th></tr>
             </thead>
             <tbody>
             <?php $rowclass = begin_row_class(); ?>
@@ -71,15 +75,8 @@ require 'commons/html.php';
                 $part_list = explode(',', $airship['parts']);
                 ?>
                 <tr class="<?= $rowclass ?>">
-                    <td>
-                        <a href="/myhouse/addon/airship_mooring_edit.php?idnum=<?= $airship['idnum'] ?>"><img src="/gfx/wrench.png" width="16" height="16" alt="modify parts" title="(modify parts)" /></a>
-                        <a href="/myhouse/addon/airship_mooring_crew.php?idnum=<?= $airship['idnum'] ?>"><img src="/gfx/pilot.png" width="16" height="16" alt="change crew" title="(change crew)" /></a>
-                    </td>
                     <td class="centered"><?= item_display($part_chassis, '') ?></td>
-                    <td><?= $part_chassis['chassis'] ?></td>
-                    <td></td>
-                    <td></td>
-                    <td class="failure">May not be used; please disassemble</td>'
+                    <td><a href="/myhouse/addon/airship_mooring_recycle.php?idnum=<?= $airship['idnum'] ?>">recover parts</a></td>
                 </tr>
                 <?php $rowclass = alt_row_class($rowclass); ?>
             <?php endforeach; ?>

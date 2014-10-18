@@ -10,6 +10,7 @@ require_once 'commons/houselib.php';
 require_once 'commons/inventory.php';
 
 $house = get_house_byuser($user['idnum']);
+$house_object = House::Load($house, $user_object);
 
 if($house === false)
 {
@@ -109,5 +110,5 @@ if($num_items > 2000)
 <p style="padding-top:1em;">(Remember: you can select a range of items by checking one item, then holding shift while checking another.)</p>
 
 <?php if(($house['view'] == 'details' && count($inventory) > 20) || ($house['view'] == 'icons' && count($inventory) / 10 > 15)): ?>
-    <?php room_display($house); ?>
+    <?= $house_object->RoomTabsHTML($THIS_ROOM) ?>
 <?php endif; ?>

@@ -15,43 +15,22 @@ require_once 'commons/questlib.php';
 $hoursToRun = (int)$_POST['hours'];
 
 $houseChecker = new HouseChecker($user_object);
+$house = $houseChecker->House();
+$house->CapHours();
+$house->RecalculateInventorySize();
 
-$max_pets = $user_object->MaxActivePets();
-$house_hours = $houseChecker->House()->Hours();
-$can_spend_hours = (count($userpets) <= $max_pets && $house['curbulk'] <= min(max_house_size(), $house['maxbulk']) && $user['no_hours_fool'] == 'no');
-
-if($hoursToRun > $house_hours)
-    $hoursToRun = $house_hours;
+if($hoursToRun > $house->Hours())
+    $hoursToRun = $house->Hours();
 if($hoursToRun > 12)
     $hoursToRun = 12;
 
-if($_POST['action'] == 'Go!' && $hoursToRun > 0 && $can_spend_hours)
+if($_POST['action'] == 'Go!' && $hoursToRun > 0 && $houseChecker->CanRun())
 {
-    if($house_hours > 72)
+    while($hoursToRun > 0 && $houseChecker->CanRun())
     {
-        fetch_none('
-            UPDATE monster_houses
-            SET lasthour=' . ($now - (72 * 60 * 60)) . '
-            WHERE idnum=' . $house['idnum'] . '
-            LIMIT 1
-        ');
-    }
-
-    while($house_hours > 0 && $can_spend_hours && $hoursToRun > 0)
-    {
-        $houseChecker->House()->PassHours(1);
-
-        $houseChecker->Step();
+        $houseChecker->Run();
 
         $hoursToRun--;
-
-        $house = get_house_byuser($user['idnum']);
-
-        if($hoursToRun > 0)
-        {
-            $house_hours = floor(($now - $house['lasthour']) / (60 * 60));
-            $can_spend_hours = (count($userpets) <= $max_pets && $house['curbulk'] <= min(max_house_size(), $house['maxbulk']) && $user['no_hours_fool'] == 'no');
-        }
     }
 }
 

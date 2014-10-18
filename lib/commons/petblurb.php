@@ -101,7 +101,7 @@ function pet_blurb(&$user, &$house, $petnum, $maxpets, &$mypet, $loveoptions, $l
   else
     $note = '';
   
-  echo pet_graphic($mypet, true, "onmouseover=\"Tip('<table class=\\'tip\\'><tr><th>Age</th><td>" . PetAge($mypet['birthday'], $now) . '</td></tr><tr><th>Size</th><td>' . (pet_size($mypet) / 10) . '</td></tr><tr><th>Gender</th><td>' . ucfirst($mypet['gender']) . "</td></tr><tr><th>Fixed?</th><td>" . ($mypet['prolific'] == 'yes' ? 'No' : 'Yes') . '</td></tr>' . $note . "</table>');\"");
+  echo pet_graphic($mypet, true, "onmouseover=\"Tip('<table class=\\'tip\\'><tr><th>Age</th><td>" . PetAge($mypet['birthday'], $now) . '</td></tr><tr><th>Gender</th><td>' . ucfirst($mypet['gender']) . "</td></tr><tr><th>Fixed?</th><td>" . ($mypet['prolific'] == 'yes' ? 'No' : 'Yes') . '</td></tr>' . $note . "</table>');\"");
 
   echo '</div><div class="centered"><a href="/petlevelhistory.php?petid=' . $mypet['idnum'] . '">Level ' . pet_level($mypet) . '</a><br />';
 

@@ -107,12 +107,12 @@ if($have_basement)
 else
   echo '     <p>You currently have a size ' . ($house['maxbulk'] / 10) . ' estate.</p>';
 
-if($house['maxbulk'] > max_house_size())
-  echo "     <p>City ordinances restrict estate sizes to " . (max_house_size() / 10) . ".  You are " . (($house['maxbulk'] - max_house_size()) / 10) . " over this limit.  We can't let you use this space, however you are able to sell it to other players.  If you're interested, I can give you a deed to some of your space for you to sell or give away as you see fit.</p>";
+if($house['maxbulk'] > House::$MAX_SIZE)
+  echo "     <p>City ordinances restrict estate sizes to " . (House::$MAX_SIZE / 10) . ".  You are " . (($house['maxbulk'] - House::$MAX_SIZE) / 10) . " over this limit.  We can't let you use this space, however you are able to sell it to other players.  If you're interested, I can give you a deed to some of your space for you to sell or give away as you see fit.</p>";
 else if($house['maxbulk'] > 4000)
   echo '
     <p>City ordinances prevent us from selling land above 500 units to Residents.</p>
-    <p>If you\'d like to continue expanding your house, however, you\'re free to do so on your own!  With <a href="encyclopedia.php?submit=Search&itemtype=construction/wall&standard=on">walls</a>, and other materials, you can expand your house up to a maximum size of ' . (max_house_size() / 10) . '!</p>
+    <p>If you\'d like to continue expanding your house, however, you\'re free to do so on your own!  With <a href="encyclopedia.php?submit=Search&itemtype=construction/wall&standard=on">walls</a>, and other materials, you can expand your house up to a maximum size of ' . (House::$MAX_SIZE / 10) . '!</p>
   ';
 else if($house['maxbulk'] < 2000)
   echo '<p>We have a special offer for Residents with under 200 units of space: you may buy 25 units for only ' . $special_price . '<span class="money">m</span>.</p>';
