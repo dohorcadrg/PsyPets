@@ -1,3 +1,6 @@
 .idea/
 web/static/gfx/
 lib/commons/settings_light.php
+lib/commons/standalone/HTMLPurifier/DefinitionCache/Serializer/CSS/*.ser
+lib/commons/standalone/HTMLPurifier/DefinitionCache/Serializer/HTML/*.ser
+lib/commons/standalone/HTMLPurifier/DefinitionCache/Serializer/URI/*.ser
