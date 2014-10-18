@@ -61,7 +61,7 @@ if($needs_roof)
     else
       $errored = true;
   }
-  $bonus_space += 20;
+  $bonus_space += 10;
 }
 
 if($needs_wiring)
@@ -128,10 +128,10 @@ if($needs_window)
     else
       $errored = true;
   }
-  $bonus_space += 10;
+  $bonus_space += 5;
 }
 
-$space_gained = 200 + $bonus_space;
+$space_gained = 100 + $bonus_space;
 
 if($_POST['action'] == 'Build!')
 {

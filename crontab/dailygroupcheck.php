@@ -12,8 +12,6 @@ require_once 'commons/dbconnect.php';
 require_once 'commons/grouplib.php';
 require_once 'commons/userlib.php';
 
-$now = time();
-
 $command = 'SELECT idnum,name,leaderid,members,forumid FROM psypets_groups WHERE systemgroup=\'no\' AND member_count>1';
 $groups = $database->FetchMultiple($command, 'fetching non-system groups with more than one member');
 

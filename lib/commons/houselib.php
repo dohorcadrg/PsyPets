@@ -43,22 +43,6 @@ function save_house_status(&$house)
   fetch_none($command, 'save_house_status');
 }
 
-// 2 pets at 50; 100 pets at 20,000.  plus bonuses.
-function max_active_pets(&$user, &$house)
-{
-  $bulk = min(100000, $house['maxbulk']);
-
-  $max = floor($bulk * 0.00098) + 2;
-
-  if($user['license'] == 'yes')
-    $max += 2;
-
-  if($user['breeder'] == 'yes')
-    $max += 10;
-
-  return $max;
-}
-
 function room_display(&$house)
 {
   global $SETTINGS, $THIS_ROOM;

@@ -11,8 +11,6 @@ require_once 'commons/userlib.php';
 require_once 'commons/itemlib.php';
 require_once 'commons/newslib.php';
 
-$now = time();
-
 	$gods = $database->FetchMultipleBy('SELECT * FROM monster_gods', 'id');
 
   // ============================

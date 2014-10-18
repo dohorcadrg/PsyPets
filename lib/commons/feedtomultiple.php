@@ -91,7 +91,7 @@ if($effective_max_bulk < $house['maxbulk'])
 else
   $house_note = '';
 
-$max_pets = max_active_pets($user, $house);
+$max_pets = $user_object->MaxActivePets();
 
 include 'commons/html.php';
 ?>

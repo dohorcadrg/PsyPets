@@ -28,7 +28,7 @@ $AWARD_BADGE = array();
 
 function check_pets($userid, $hour_limit = false)
 {
-    global $TIME_IS_FUCKED, $LAST_NEW_PET_NAME;
+    global $TIME_IS_FUCKED, $LAST_NEW_PET_NAME, $user_object;
 
     if($TIME_IS_FUCKED === true)
         return '<i>(Hourly pet actions have been disabled.  Refer to the City Hall for more information.)</i>';
@@ -78,7 +78,7 @@ function check_pets($userid, $hour_limit = false)
     if($hour_limit !== false && $hours > $hour_limit)
         $hours = $hour_limit;
 
-    $max_pets = max_active_pets($myuser, $house);
+    $max_pets = $user_object->MaxActivePets();
 
     // load pets and projects
     $mypets = get_user_pets_for_simulation($myuser['user'], $max_pets);

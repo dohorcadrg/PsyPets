@@ -76,7 +76,7 @@ if($user['show_park'] == 'no' && ($now - $user['signupdate']) >= 60 * 60 * 24)
 
 load_user_pets($user, $userpets);
 
-$max_pets = max_active_pets($user, $house);
+$max_pets = $user_object->MaxActivePets();
 
 $initial_room = 'Common';
 
@@ -95,9 +95,9 @@ if(strlen($_GET['room']) > 0)
 
 $house_hours = floor(($now - $house['lasthour']) / (60 * 60));
 
-if($house_hours > 50)
+if($house_hours >= 72)
 {
-    $house_hours = 50;
+    $house_hours = 72;
     $too_many_hours = true;
 }
 
@@ -340,20 +340,20 @@ include 'commons/html.php';
                     <a href="/help/house_space.php" class="help">?</a> You must free up space before you can run hours.
                 </p>
             <?php else: ?>
-                <p>Your <?= count($userpets) != 1 ? 'pets are' : 'pet is' ?> waiting to perform <?= $house_hours ?> hour<?= $house_hours != 1 ? 's' : '' ?> of actions.<a href="/help/hours.php" class="help">?</a><?php if($too_many_hours): ?>(You cannot accumulate more than 50 hours!  Now's the time to use 'em!)<?php endif; ?></p>
+                <p>Your <?= count($userpets) != 1 ? 'pets are' : 'pet is' ?> waiting to perform <?= $house_hours ?> hour<?= $house_hours != 1 ? 's' : '' ?> of actions.<a href="/help/hours.php" class="help">?</a><?php if($too_many_hours): ?> (You cannot accumulate more than 72 hours!  Now's the time to use 'em!)<?php endif; ?></p>
             <?php endif; ?>
 
             <div style="padding: 0 0 1em 1em;"><form action="/myhouse/run_hours.php" method="post" onsubmit="return disable_hours_form();" id="run_hours_form"><p>
                 <?php if($can_spend_hours): ?>
-                    <select name="hours" class="select">
-                        <?php for($x = $house_hours; $x > 0; $x--): ?>
-                            <option value="<?= $x ?>"><?= $x ?> hours</option>
+                    <select name="hours">
+                        <?php for($x = min(12, $house_hours); $x > 0; $x--): ?>
+                            <option value="<?= $x ?>"<?php if($x == 6): ?> selected="selected"<?php endif; ?>><?= $x ?> hours</option>
                         <?php endfor; ?>
                     </select>
                     <input type="submit" name="action" value="Go!" style="width:90px;" />
                 <?php else: ?>
-                    <select name="hours" class="select" disabled="disabled">
-                        <?php for($x = $house_hours; $x > 0; $x--): ?>
+                    <select name="hours" disabled="disabled">
+                        <?php for($x = min(12, $house_hours); $x > 0; $x--): ?>
                             <option value="<?= $x ?>"><?= $x ?> hours</option>
                         <?php endfor; ?>
                     </select>
@@ -380,7 +380,7 @@ include 'commons/html.php';
                             var
                                 minutes = Math.floor(count_down / 60),
                                 seconds = count_down % 60
-                                ;
+                            ;
 
                             $('#house-hour-timer').html(' in ' + minutes + ' minute' + (minutes != 1 ? 's' : '') + ', ' + seconds + ' second' + (seconds != 1 ? 's' : '') + '.');
                         },

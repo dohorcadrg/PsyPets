@@ -35,6 +35,18 @@ class Pet
             return null;
     }
 
+    public static function SelectForUser($owner)
+    {
+        $pets = array();
+
+        $petData = fetch_multiple('SELECT * FROM monster_pets WHERE user=' . quote_smart($owner->Username()));
+
+        foreach($petData as $data)
+            $pets[] = new Pet($data, $owner);
+
+        return $pets;
+    }
+
     public function Name() { return $this->_data['petname']; }
 
     public function ReadyAction() { $this->mayAct = true; }

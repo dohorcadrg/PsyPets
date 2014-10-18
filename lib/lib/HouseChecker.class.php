@@ -2,21 +2,26 @@
 class HouseChecker
 {
     protected $user;
+    protected $house;
     protected $pets;
     protected $quests;
 
     /**
      * @param User $user
+     * @param House $house
      * @param array $pets
      */
-    public function __construct($user, $pets)
+    public function __construct($user)
     {
         $this->user = $user;
-        $this->pets = $pets;
+        $this->pets = Pet::SelectForUser($user);
+        $this->house = House::SelectForUser($user);
         $this->quests = PetQuest::SelectForUser($this->user, $this->pets);
 
         // @TODO: load up the house inventory
     }
+
+    /** @return House|null */ public function House() { return $this->house; }
 
     // performs one hour of activities
     public function Step()

@@ -1,6 +1,8 @@
 <?php
 class User extends psyDBObject
 {
+    private $badges = null;
+
     // read
     public function ID() { return $this->_data['idnum']; }
     public function Username() { return $this->_data['user']; }
@@ -33,17 +35,34 @@ class User extends psyDBObject
     public function IsDisabled() { return($this->_data['disabled'] != 'no'); }
     public function IsActivated() { return($this->_data['activated'] == 'yes'); }
 
-    public function BonusMaxPets()
+    public function HasBadge($badge)
     {
-        $bonus = 0;
+        if($this->badges == null)
+            $this->badges = fetch_single('SELECT * FROM psypets_badges WHERE userid=' . $this->ID() . ' LIMIT 1');
 
-        if($this->_data['license'] == 'yes')
-            $bonus += 2;
+        return($this->badges[$badge] == 'yes');
+    }
 
-        if($this->_data['breeder'] == 'yes')
-            $bonus += 10;
+    public static $MAX_PET_BADGES = array(
+        'ltc', 'ltb', // licenses
+        'castle', 'island', 'islandplus', // house size
+        'sixmonthaccount', 'oneyearaccount', // account age
+        '10badges', '30badges', '60badges', '100badges', // badges
+        'trained_20', 'level50', 'level100', 'reincarnate50', // pet progress
+        'pantheon_ii', 'museum_wing', 'museum_plus', 'yaynature', 'giverplus' // economy stuff
+    );
 
-        return $bonus;
+    public function MaxActivePets()
+    {
+        $max = 2;
+
+        foreach(self::$MAX_PET_BADGES as $badge)
+        {
+            if($this->HasBadge($badge))
+                $max++;
+        }
+
+        return floor($max / 2);
     }
 
     // write
@@ -60,6 +79,8 @@ class User extends psyDBObject
 
     public function LogIn()
     {
+        global $now;
+
         if($this->_data['multi_login'] == 'yes' && $this->_data['lastactivity'] >= $now - 15 * 60 && $this->_data['sessionid'] != 0)
             $sessionid = $this->_data['sessionid'];
         else

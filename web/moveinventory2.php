@@ -61,7 +61,7 @@ if($here == 'groupbox')
   $group_user = 'group:' . $groupid;
 }
 
-$max_pets = max_active_pets($user, $house);
+$max_pets = $user_object->MaxActivePets();
 
 if(strlen($_POST['submit']) > 0)
 {

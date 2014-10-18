@@ -55,21 +55,21 @@ if($badges['mansion'] == 'no' && $house['maxbulk'] >= 5000)
   set_badge($user['idnum'], 'mansion');
 }
 
-if($badges['castle'] == 'no' && $house['maxbulk'] >= 20000)
+if($badges['castle'] == 'no' && $house['maxbulk'] >= 10000)
 {
   $badge_dialog .= '<p>Oh, a size-' . ($house['maxbulk'] / 10) . ' house?  It\'s a veritable castle!</p>' .
                   '<p><i>(You have been awarded the Castle Badge.)</i></p>';
   set_badge($user['idnum'], 'castle');
 }
 
-if($badges['island'] == 'no' && $house['maxbulk'] >= 100000)
+if($badges['island'] == 'no' && $house['maxbulk'] >= 20000)
 {
   $badge_dialog .= '<p>Oh, a size-' . ($house['maxbulk'] / 10) . ' house?  You must own your own island!</p>' .
                   '<p><i>(You have been awarded the Island Badge.)</i></p>';
   set_badge($user['idnum'], 'island');
 }
 
-if($badges['islandplus'] == 'no' && $house['maxbulk'] >= 200000)
+if($badges['islandplus'] == 'no' && $house['maxbulk'] >= 50000)
 {
   $badge_dialog .= '<p>Oh, a size-' . ($house['maxbulk'] / 10) . ' house?  You must own your own island!  A... really big island!</p>' .
                   '<p><i>(You have been awarded the Big Island Badge.)</i></p>';
