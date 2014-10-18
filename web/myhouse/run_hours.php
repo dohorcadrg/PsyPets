@@ -17,7 +17,7 @@ $hoursToRun = (int)$_POST['hours'];
 $houseChecker = new HouseChecker($user_object);
 
 $max_pets = $user_object->MaxActivePets();
-$house_hours = floor(($now - $house['lasthour']) / (60 * 60));
+$house_hours = $houseChecker->House()->Hours();
 $can_spend_hours = (count($userpets) <= $max_pets && $house['curbulk'] <= min(max_house_size(), $house['maxbulk']) && $user['no_hours_fool'] == 'no');
 
 if($hoursToRun > $house_hours)
@@ -39,14 +39,7 @@ if($_POST['action'] == 'Go!' && $hoursToRun > 0 && $can_spend_hours)
 
     while($house_hours > 0 && $can_spend_hours && $hoursToRun > 0)
     {
-        fetch_none('
-            UPDATE monster_houses
-            SET lasthour=lasthour+3600
-            WHERE idnum=' . $house['idnum'] . '
-            LIMIT 1
-        ');
-
-        $house['lasthour'] += 3600;
+        $houseChecker->House()->PassHours(1);
 
         $houseChecker->Step();
 

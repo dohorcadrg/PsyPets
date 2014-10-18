@@ -13,7 +13,7 @@ require_once 'commons/houselib.php';
 
 $THIS_ROOM = 'Nuclear Power Plant';
 
-$house_object = House::GetByOwnerID($user['idnum']);
+$house_object = House::SelectForUser($user_object);
 
 if(!$house_object->HasAddOn('Nuclear Power Plant'))
 {
@@ -49,7 +49,7 @@ include 'commons/html.php';
  <body>
 <?php include 'commons/header_2.php'; ?>
   <h4><a href="/myhouse.php"><?= $user['display'] ?>'s House</a> &gt; Nuclear Power Plant</h4>
-  <?php room_display($house_object->RawData()); ?>
+  <?= $house_object->RoomTabsHTML($THIS_ROOM); ?>
   <div id="powerbar">Power: <?= $power_percent ?>%</div>
 <?php include 'commons/footer_2.php'; ?>
  </body>

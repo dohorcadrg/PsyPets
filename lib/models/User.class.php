@@ -115,7 +115,7 @@ class User extends psyDBObject
 
         if($this->_data['logins'] == 1)
         {
-            $house = House::GetByOwnerID($this->_data['idnum']);
+            $house = House::SelectForUser($this);
             $house->FirstLogIn();
 
             header('Location: /myhouse.php');

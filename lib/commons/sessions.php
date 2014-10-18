@@ -60,7 +60,6 @@ else
   require_once 'models/User.class.php';
   require_once 'models/FailedLogins.class.php';
   require_once 'models/LoginHistory.class.php';
-  require_once 'models/House.class.php';
 
   $user_object = User::GetBySession();
   
