@@ -7,7 +7,8 @@ class House
     private $_data;
     /** @var User */ private $user;
     private $addons, $rooms;
-    private $inventory = false;
+
+    private $materials = false;
 
     private function __construct(&$data, $owner)
     {
@@ -60,7 +61,12 @@ class House
         $q_location = quote_smart($location);
 
         if(substr($location, 0, 4) == 'home')
+        {
             $this->_data['bulk'] += $item['bulk'] * $quantity;
+
+            if($this->materials !== false && substr($location, 0, 6) != 'home/$')
+                $this->AddMaterials($itemName, $quantity);
+        }
 
         $item_data = "($q_user, $q_maker, $q_itemName, " . $item['durability'] . ", $q_message, $q_location, $now)";
 
@@ -197,5 +203,60 @@ class House
         $html .= '</ul>';
 
         return $html;
+    }
+
+    private function AddMaterials($itemName, $quantity)
+    {
+        if(array_key_exists($itemName, $this->materials))
+            $this->materials[$itemName]['qty'] += $quantity;
+        else
+        {
+            $this->materials[$itemName] = array(
+                'qty' => $quantity,
+                'itemname' => $itemName,
+            );
+        }
+    }
+
+    public function LoadMaterials()
+    {
+        $this->materials = fetch_multiple_by('
+            SELECT COUNT(idnum) AS qty,itemname
+            FROM monster_inventory
+            WHERE
+                user=' . quote_smart($this->user->Username()) . '
+                AND location LIKE \'home%\'
+                AND location NOT LIKE \'home/$\'
+            GROUP BY itemname
+        ', 'itemname');
+    }
+
+    public function FindComfortItems($stat, $maxQuantity = 3)
+    {
+        if($this->materials === false)
+        {
+            throw new Exception('House::FindComfortItems was called before the house\'s materials were not loaded.');
+        }
+
+        $itemsFound = array();
+
+        if(count($this->materials) > 0)
+        {
+            $itemList = ashuffle($this->materials);
+
+            foreach($itemList as $itemName=>$quantity)
+            {
+                $itemDetails = get_item_byname($itemName);
+
+                if($itemDetails['hourly' . $stat] > 0)
+                {
+                    $itemsFound[] = $itemDetails;
+                    if(count($itemsFound) >= $maxQuantity)
+                        break;
+                }
+            }
+        }
+
+        return $itemsFound;
     }
 }

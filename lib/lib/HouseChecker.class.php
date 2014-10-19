@@ -7,8 +7,6 @@ class HouseChecker
     protected $quests;
     protected $fireplace;
 
-    protected $materials;
-
     /**
      * @param User $user
      * @param House $house
@@ -22,7 +20,7 @@ class HouseChecker
         $this->fireplace = FireplaceAddOn::SelectForUser($user);
         $this->quests = PetQuest::SelectForUser($this->user, $this->pets);
 
-        $this->LoadMaterials();
+        $this->house->LoadMaterials();
     }
 
     /** @return House|null */ public function House() { return $this->house; }
@@ -47,14 +45,14 @@ class HouseChecker
             $pet->ProcessNeeds();
 
             if($pet->IsSleeping() && !$pet->IsSleepWalking())
-                $pet->DoSleep();
+                $pet->DoSleep($this->house);
             else
-                $pet->DoAttendNeeds();
+                $pet->DoAttendNeeds($this->house);
         }
 
         // try to perform all quests
         foreach($this->quests as &$quest)
-            $quest->Work();
+            $quest->Work($this->house);
 
         // are there any pets that STILL didn't do anything?  if so, find something for them now:
         foreach($this->pets as $pet)
@@ -75,18 +73,6 @@ class HouseChecker
         }
 
         $this->house->RecalculateInventorySize();
-    }
-
-    private function LoadMaterials()
-    {
-        $this->materials = fetch_multiple_by('
-            SELECT COUNT(idnum) AS qty,itemname
-            FROM monster_inventory
-            WHERE
-                user=' . quote_smart($this->user->Username()) . '
-                AND location LIKE \'home%\'
-                AND location NOT LIKE \'home/$\'
-            GROUP BY itemname
-        ', 'itemname');
+        process_pet_log_cache();
     }
 }
