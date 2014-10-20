@@ -70,7 +70,7 @@ if($_POST['action'] == 'search')
                   'p.skype=' . quote_smart($_POST['screenname']) . ' OR ' .
                   'p.msn=' . quote_smart($_POST['screenname']) . ')';
   }
-
+/*
   if($_POST['gender'] == 'male' || $_POST['gender'] == 'female')
   {
     $url_get_params .= '&amp;gender=' . $_POST['gender'];
@@ -108,7 +108,7 @@ if($_POST['action'] == 'search')
 
   if($_POST['maxage'] < $_POST['minage'] && $_POST['maxage'] > 0)
     $errors[] = 'The maximum age can\'t be less than the minimum age...';
-
+*/
   if($distance_search && ($_POST['nearby'] == 'yes' || $_POST['nearby'] == 'on'))
   {
     $radius = $search_distance;
@@ -214,6 +214,7 @@ else
        <td bgcolor="#f0f0f0">&nbsp;</td>
        <td colspan="2">&nbsp;</td>
       </tr>
+         <!--
       <tr>
        <td bgcolor="#f0f0f0">Age:</td>
        <td><input name="minage" maxlength=3 value="<?= $_POST["minage"] ?>" size="3" /> to <input name="maxage" maxlength=3 value="<?= $_POST["maxage"] ?>" size="3" /></td>
@@ -236,6 +237,7 @@ else
        <td bgcolor="#f0f0f0">&nbsp;</td>
        <td colspan="2">&nbsp;</td>
       </tr>
+      -->
       <tr>
        <td bgcolor="#f0f0f0" valign="top">Online:</td>
        <td valign="top"><input type="checkbox" name="online"<?= ($_POST['online'] == 'yes' || $_POST['online'] == 'on') ? " checked" : "" ?> /></td>

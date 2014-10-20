@@ -12,193 +12,176 @@ require_once 'commons/formatting.php';
 require_once 'commons/userlib.php';
 
 if($_GET['page'] < 1)
-  $page = 1;
+    $page = 1;
 else
-  $page = (int)$_GET['page'];
+    $page = (int)$_GET['page'];
 
 if(strlen($_GET['letter']) != 1)
-  $letter = 'a';
+    $letter = 'a';
 else if(preg_match('/[^a-zA-Z]/', $_GET['letter']))
-  $letter = 'a';
+    $letter = 'a';
 else
-  $letter = $_GET['letter'];
+    $letter = $_GET['letter'];
 
 if($user['idnum'] > 0)
 {
-  $userprofile = get_user_profile($user['idnum']);
+    $userprofile = get_user_profile($user['idnum']);
 
-  if($userprofile == false)
-    $distance_search = false;
-  else
-    $distance_search = ($userprofile['locationsearch'] != 'no');
+    if($userprofile == false)
+        $distance_search = false;
+    else
+        $distance_search = ($userprofile['locationsearch'] != 'no');
 }
 else
-  $distance_search = false;
+    $distance_search = false;
 
 include 'commons/html.php';
 ?>
- <head>
-  <title><?= $SETTINGS['site_name'] ?> &gt; Directory &gt; <?= strtoupper($letter) ?></title>
-<?php include "commons/head.php"; ?>
- </head>
- <body>
-<?php include 'commons/header_2.php'; ?>
-     <h4>Directory &gt; <?= strtoupper($letter) ?></h4>
-<img src="gfx/npcs/receptionist.png" align="right" width="350" height="275" alt="(Claire the City Hall receptionist)" />
-<?php
-include 'commons/dialog_open.php';
+<head>
+    <title><?= $SETTINGS['site_name'] ?> &gt; Directory &gt; <?= strtoupper($letter) ?></title>
+    <?php include "commons/head.php"; ?>
+</head>
+<body>
+    <?php include 'commons/header_2.php'; ?>
+    <h4>Directory &gt; <?= strtoupper($letter) ?></h4>
+    <img src="gfx/npcs/receptionist.png" align="right" width="350" height="275" alt="(Claire the City Hall receptionist)" />
+    <?php include 'commons/dialog_open.php'; ?>
+    <?php if($_GET['dialog'] == 2): ?>
+        <p><img src="gfx/admintag.gif" width="16" height="16" alt="(administrator)" class="inlineimage" /> indicates that the Resident is an Administrator.</p>
+        <p><img src="gfx/donator.gif" width="16" height="16" alt="(paid)" class="inlineimage" /> indicates that the Resident has purchased <a href="buyfavors.php">Favor</a>.</p>
+        <p><img src="gfx/forsale.png" width="16" height="16" alt="(store)" class="inlineimage" /> indicates the the Resident has an open store in the <a href="/fleamarket/">Flea Market</a>.  Click on this symbol to immediately visit it.</p>
+    <?php else: ?>
+        <p>This is the public resident directory.  It is an "opt-in" directory, meaning that residents are not listed here until they tell us that they'd like to be.</p>
+    <?php endif; ?>
 
-if($_GET['dialog'] == 2)
-{
-?>
-     <p><img src="gfx/admintag.gif" width="16" height="16" alt="(administrator)" class="inlineimage" /> indicates that the Resident is an Administrator.</p>
-     <p><img src="gfx/donator.gif" width="16" height="16" alt="(paid)" class="inlineimage" /> indicates that the Resident has purchased <a href="buyfavors.php">Favor</a>.</p>
-     <p><img src="gfx/forsale.png" width="16" height="16" alt="(store)" class="inlineimage" /> indicates the the Resident has an open store in the <a href="/fleamarket/">Flea Market</a>.  Click on this symbol to immediately visit it.</p>
-<?php
-}
-else
-  echo'     <p>This is the public resident directory.  It is an "opt-in" directory, meaning that residents are not listed here until they tell us that they\'d like to be.</p>';
+    <?php include 'commons/dialog_close.php'; ?>
+    <?php
+    if($user['idnum'] > 0)
+    {
+        echo '
+            <ul>
+             <li><a href="/directorysearch.php">Search this directory</a></li>
+             <li><a href="/directorysearch.php?action=search&online=yes">Search for on-line Residents</a></li>
+          ';
 
-include 'commons/dialog_close.php';
+        if($distance_search)
+            echo '      <li><a href="/directorysearch.php?action=search&nearby=yes">Search for nearby Residents</a></li>';
 
-if($user['idnum'] > 0)
-{
-  echo '
-    <ul>
-     <li><a href="/directorysearch.php">Search this directory</a></li>
-     <li><a href="/directorysearch.php?action=search&online=yes">Search for on-line Residents</a></li>
-  ';
+        echo '</ul>';
+    }
 
-  if($distance_search)
-    echo '      <li><a href="/directorysearch.php?action=search&nearby=yes">Search for nearby Residents</a></li>';
+    echo '<ul>';
 
-  echo '</ul>';
-}
+    if($_GET['dialog'] != 2)
+        echo '<li><a href="/directory.php?letter=' . $letter . '&page=' . $page . '&dialog=2">Explain the icons used</a></li>';
 
-echo '<ul>';
+    if($user['idnum'] > 0)
+       echo '<li><a href="/myaccount/searchable.php">Edit my listing</a></li>';
 
-if($_GET['dialog'] != 2)
-  echo '<li><a href="/directory.php?letter=' . $letter . '&page=' . $page . '&dialog=2">Explain the icons used</a></li>';
+    echo '</ul>';
 
-if($user['idnum'] > 0)
-  echo '<li><a href="/myaccount/searchable.php">Edit my listing</a></li>';
+    if($message) echo '<p class="failure">' . $message . '</p>';
 
-echo '</ul>';
+    echo '<ul class="tabbed">';
 
-if($message) echo '<p class="failure">' . $message . '</p>';
+    $lval = strtoupper($letter);
 
-echo '<ul class="tabbed">';
+    $letters = explode(' ', 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z');
 
-$lval = strtoupper($letter);
+    foreach($letters as $i=>$a)
+    {
+        if($lval != $a)
+            echo '<li><a href="directory.php?letter=' . strtolower($a) . '">' . $a . '</a></li> ';
+        else
+            echo '<li class="activetab"><a>' . $a . '</a></li> ';
+    }
 
-$letters = explode(' ', 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z');
+    echo '</ul>';
 
-foreach($letters as $i=>$a)
-{
-  if($lval != $a)
-    echo '<li><a href="directory.php?letter=' . strtolower($a) . '">' . $a . '</a></li> ';
-  else
-    echo '<li class="activetab"><a>' . $a . '</a></li> ';
-}
+    $sortby = 'display';
+    $sortorder = 'ASC';
 
-echo '</ul>';
+    $command  = 'SELECT REPLACE_ME ' .
+        'FROM `monster_profiles` AS a LEFT JOIN monster_users AS b ON a.idnum=b.idnum ' .
+        "WHERE a.enabled='yes' AND b.display LIKE '$letter%'";
 
-$sortby = 'display';
-$sortorder = 'ASC';
+    $count_command = str_replace('REPLACE_ME', 'COUNT(a.idnum) AS qty', $command);
 
-$command  = 'SELECT REPLACE_ME ' .
-            'FROM `monster_profiles` AS a LEFT JOIN monster_users AS b ON a.idnum=b.idnum ' .
-            "WHERE a.enabled='yes' AND b.display LIKE '$letter%'";
+    $data = $database->FetchSingle($count_command);
+    $count = $data['qty'];
 
-$count_command = str_replace('REPLACE_ME', 'COUNT(a.idnum) AS qty', $command);
+    $num_pages = ceil($count / 20);
+    if($page > $num_pages)
+        $page = $num_pages;
 
-$data = $database->FetchSingle($count_command);
-$count = $data['qty'];
+    $first = ($page - 1) * 20;
 
-$num_pages = ceil($count / 20);
-if($page > $num_pages)
-  $page = $num_pages;
+    $command .= ' ORDER BY b.display ASC LIMIT ' . $first . ',20';
 
-$first = ($page - 1) * 20;
+    $command = str_replace('REPLACE_ME', 'a.*,b.birthday,b.display,b.user,b.openstore,b.donated', $command);
 
-$command .= ' ORDER BY b.display ASC LIMIT ' . $first . ',20';
+    $people = $database->FetchMultiple($command, 'fetching residents');
 
-$command = str_replace('REPLACE_ME', 'a.*,b.birthday,b.display,b.user,b.openstore,b.donated', $command);
+    $pages = paginate($num_pages, $page, "directory.php?letter=$letter&amp;page=%s");
+    ?>
+    <?= $pages ?>
+    <table>
+        <tr class="titlerow">
+            <th></th>
+            <th></th>
+            <th>Resident</th>
+            <?php if($user['idnum'] > 0): ?>
+                <th></th><th></th><th>Location</th>
+            <?php endif; ?>
+        </tr>
+        <?php
+        $count = 0;
 
-$people = $database->FetchMultiple($command, 'fetching residents');
+        $rowclass = begin_row_class();
 
-$pages = paginate($num_pages, $page, "directory.php?letter=$letter&amp;page=%s");
-?>
-     <?= $pages ?>
-     <table>
-      <tr class="titlerow">
-       <th></th>
-       <th></th>
-       <th>Resident</th>
-<?php
-if($user['idnum'] > 0)
-  echo '<th></th><th></th><th>Location</th>';
+        if($user['idnum'] > 0)
+            $profile_url = '/residentprofile.php';
+        else
+            $profile_url = '/publicprofile.php';
+        ?>
+        <?php foreach($people as $person): ?>
+            <?php
+            $theadmin = $database->FetchSingle(
+                "SELECT * " .
+                "FROM monster_admins " .
+                "WHERE `user`=" . quote_smart($person["user"]) . " LIMIT 1"
+            );
 
-echo '</tr>';
+            $donator = $person['donated'];
+            ?>
+            <tr class="<?= $rowclass ?>">
+                <td><?php
+                    if($theadmin['admintag'] == 'yes')
+                        echo '<a href="/admincontact.php"><img src="/gfx/admintag.gif" width="16" height="16" alt="(administrator)" /></a>';
+                    else if($donator == 'yes')
+                        echo '<img src="/gfx/donator.gif" width="16" height="16" alt="(paid account)" />';
+                    ?></td>
+                <td><?php
+                    if($person["openstore"] == "yes")
+                        echo '<a href="/userstore.php?user=' . link_safe($person["display"]) . '"><img src="/gfx/forsale.png" width="16" height="16" alt="(store)" /></a>'
+                    ?></td>
+                <td><a href="<?= $profile_url ?>?resident=<?= link_safe($person['display']) ?>"><?= $person['display'] ?></a></td>
+                <?php if($user['idnum'] > 0): ?>
+                    <?php $age = birthdate_to_age($person['birthday']); ?>
+                    <td class="centered"><?= (($age <= 13 || $person['show_age'] == 'no') ? '-' : $age) ?></td>
+                    <td style="vertical-align:bottom;">
+                        <?php if($person['gender'] != ''): ?>
+                            <img src="//<?= $SETTINGS['static_domain'] ?>/gfx/identity/<?= $person['gender'] ?>" />
+                        <?php endif; ?>
+                    </td>
+                    <td><?= $person['location'] ?></td>
+                <?php endif; ?>
 
-$count = 0;
-
-$rowclass = begin_row_class();
-
-if($user['idnum'] > 0)
-  $profile_url = '/residentprofile.php';
-else
-  $profile_url = '/publicprofile.php';
-
-foreach($people as $person)
-{
-/*
-  $count++;
-  if($count == 21)
-    break;*/
-
-	$theadmin = $database->FetchSingle(
-		"SELECT * " .
-    "FROM monster_admins " .
-    "WHERE `user`=" . quote_smart($person["user"]) . " LIMIT 1"
-	);
-
-  $donator = $person['donated'];
-?>
-<tr class="<?= $rowclass ?>">
- <td><?php
-    if($theadmin['admintag'] == 'yes')
-      echo '<a href="/admincontact.php"><img src="/gfx/admintag.gif" width="16" height="16" alt="(administrator)" /></a>';
-    else if($donator == 'yes')
-      echo '<img src="/gfx/donator.gif" width="16" height="16" alt="(paid account)" />';
-?></td>
- <td><?php
-    if($person["openstore"] == "yes")
-      echo '<a href="/userstore.php?user=' . link_safe($person["display"]) . '"><img src="/gfx/forsale.png" width="16" height="16" alt="(store)" /></a>'
-?></td>
- <td><a href="<?= $profile_url ?>?resident=<?= link_safe($person['display']) ?>"><?= $person['display'] ?></a></td>
-<?php
-  if($user['idnum'] > 0)
-  {
-    $age = birthdate_to_age($person['birthday']);
-  
-    echo '<td class="centered">' . (($age <= 13 || $person['show_age'] == 'no') ? '-' : $age) . '</td><td>';
-
-    if($person['gender'] == 'male')
-      echo '<img src="/gfx/boy.gif" height="12" width="12" alt="(male)" />';
-    else if($person['gender'] == 'female')
-      echo '<img src="/gfx/girl.gif" height="12" width="12" alt="(female)" />';
-
-    echo '</td><td>' . $person['location'] . '</td>';
-  }
-  
-  echo '</tr>';
-
-  $rowclass = alt_row_class($rowclass);
-}
-?>
-     </table>
-     <?= $pages ?>
-<?php include 'commons/footer_2.php'; ?>
- </body>
+            </tr>
+            <?php $rowclass = alt_row_class($rowclass); ?>
+        <?php endforeach; ?>
+    </table>
+    <?= $pages ?>
+    <?php include 'commons/footer_2.php'; ?>
+</body>
 </html>
