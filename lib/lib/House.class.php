@@ -9,6 +9,7 @@ class House
     private $addons, $rooms;
 
     private $materials = false;
+    private $simulatedHour = 0;
 
     private function __construct(&$data, $owner)
     {
@@ -101,8 +102,12 @@ class House
         $this->Update(array('lasthour'));
     }
 
+    public function Hour() { return $this->simulatedHour; }
+
     public function PassHours($hours = 1)
     {
+        $this->simulatedHour++;
+
         $seconds = $hours * 3600;
 
         fetch_none('

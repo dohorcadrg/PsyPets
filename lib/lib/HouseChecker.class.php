@@ -42,7 +42,7 @@ class HouseChecker
             /** @var Pet $pet */
             $pet->ReadyAction();
 
-            $pet->ProcessNeeds();
+            $pet->ProcessNeeds($this->house);
 
             if($pet->IsSleeping() && !$pet->IsSleepWalking())
                 $pet->DoSleep($this->house);
@@ -60,13 +60,13 @@ class HouseChecker
             /** @var Pet $pet */
             if($pet->MayAct())
             {
-
+                $pet->DoStartProject($this->quests);
             }
 
             $pet->Update(array(
                 'sleeping', 'asleep_time',
                 'energy', 'food', 'safety', 'love', 'esteem',
-                'caffeinated', 'inspired',
+                'caffeinated', 'alcohol', 'inspired',
                 'dead',
                 'pregnant_asof',
             ));

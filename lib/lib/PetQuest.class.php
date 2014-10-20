@@ -16,6 +16,15 @@ abstract class PetQuest
         $this->participantIds = fetch_multiple_by('SELECT petid FROM psypets_pet_quest_pets WHERE questid=' . $progress['idnum'], 'petid');
     }
 
+    /**
+     * @param Pet $pet
+     * @return bool
+     */
+    public function HasParticipant($pet)
+    {
+        return array_key_exists($pet->ID(), $this->participantIds);
+    }
+
     abstract public function Work();
 
     /** @param array $args */

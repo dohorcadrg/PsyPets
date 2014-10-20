@@ -5,9 +5,9 @@ class Pet
     /** @var bool $performedAction */ private $performedAction = false;
     /** @var User $user */ private $user;
 
-    protected function __construct(&$petData, $owner)
+    protected function __construct($petData, $owner)
     {
-        $this->_data = &$petData;
+        $this->_data = $petData;
         $this->user = $owner;
     }
 
@@ -16,7 +16,7 @@ class Pet
      * @param User $owner
      * @return Pet
      */
-    public static function Load(&$petData, $owner)
+    public static function Load($petData, $owner)
     {
         return new Pet($petData, $owner);
     }
@@ -44,11 +44,14 @@ class Pet
         $petData = fetch_multiple('SELECT * FROM monster_pets WHERE ' . implode(' AND ', $wheres));
 
         foreach($petData as $data)
+        {
             $pets[] = new Pet($data, $owner);
+        }
 
         return $pets;
     }
 
+    public function ID() { return $this->_data['idnum']; }
     public function Name() { return $this->_data['petname']; }
 
     public function ReadyAction() { $this->performedAction = false; }
@@ -82,7 +85,7 @@ class Pet
             add_logged_event_cached($myuser['idnum'], $mypet['idnum'], $hour, 'hourly', 'sleep', $mypet['petname'] . ' fell asleep by the fire.', array('love' => 2, 'safety' => 2));
         }
         else*/
-            add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', 'sleep', $this->Name() . ' fell asleep.');
+            add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', 'sleep', $this->Name() . ' fell asleep.');
     }
 
     public function IsSleepWalking()
@@ -90,7 +93,11 @@ class Pet
         return($this->_data['merit_sleep_walker'] == 'yes' && $this->_data['energy'] > 0 && mt_rand(1, 20) == 1);
     }
 
-    public function ProcessNeeds()
+    /**
+     * @param House $house
+     * @return bool
+     */
+    public function ProcessNeeds($house)
     {
         if($this->IsSleeping())
         {
@@ -106,6 +113,7 @@ class Pet
         }
 
         $this->DrainNeed('caffeinated', 1);
+        $this->DrainNeed('alcohol', 1);
         $this->DrainNeed('inspired', 1);
         $this->DrainNeed('safety', 1);
         $this->DrainNeed('love', 1);
@@ -114,7 +122,7 @@ class Pet
         if($this->_data['energy'] <= -12)
         {
             $this->_data['sleeping'] = 'yes';
-            add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', 'sleep', $this->Name() . ' passed out! -_-');
+            add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', 'sleep', $this->Name() . ' passed out! -_-');
 
             $this->performedAction = true;
             return true;
@@ -125,7 +133,7 @@ class Pet
             $this->_data['dead'] = 'starved';
             $this->_data['pregnant_asof'] = 0;
 
-            add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', 'sleep', $this->Name() . ' has died of starvation!! T_T');
+            add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', 'sleep', $this->Name() . ' has died of starvation!! T_T');
 
             $this->performedAction = true;
             return true;
@@ -161,16 +169,16 @@ class Pet
         {
             $this->_data['sleeping'] = 'no';
             $this->_data['asleep_time'] = 0;
-            add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', 'sleep', $this->_data['petname'] . ' woke up.');
+            add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', 'sleep', $this->_data['petname'] . ' woke up.');
 
             if(mt_rand(1, $this->_data['dream_rate']) == 1)
             {
-                add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', 'sleep', dream_description($this->_data));
-                record_pet_stat($this->_data['idnum'], 'Remembered a Dream', 1);
+                add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', 'sleep', dream_description($this->_data));
+                record_pet_stat($this->ID(), 'Remembered a Dream', 1);
             }
         }
         else
-            add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', 'sleep');
+            add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', 'sleep');
 
         $this->performedAction = true;
     }
@@ -326,13 +334,13 @@ class Pet
         if(count($items) == 0)
         {
             if($stat == 'food')
-                add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', $stat . '_unable', '<span class="obstacle">' . $this->Name() . ' is hungry, but couldn\'t find anything in the house to be fed by.</span>');
+                add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', $stat . '_unable', '<span class="obstacle">' . $this->Name() . ' is hungry, but couldn\'t find anything in the house to be fed by.</span>');
             else if($stat == 'safety')
-                add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', $stat . '_unable', '<span class="obstacle">' . $this->Name() . ' doesn\'t feel safe, but couldn\'t find anything in the house to be calmed by.</span>');
+                add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', $stat . '_unable', '<span class="obstacle">' . $this->Name() . ' doesn\'t feel safe, but couldn\'t find anything in the house to be calmed by.</span>');
             else if($stat == 'love')
-                add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', $stat . '_unable', '<span class="obstacle">' . $this->Name() . ' is lonely, but couldn\'t find anything in the house to be comforted by.</span>');
+                add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', $stat . '_unable', '<span class="obstacle">' . $this->Name() . ' is lonely, but couldn\'t find anything in the house to be comforted by.</span>');
             else if($stat == 'esteem')
-                add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', $stat . '_unable', '<span class="obstacle">' . $this->Name() . ' is depressed, but couldn\'t find anything in the house to be comforted by.</span>');
+                add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', $stat . '_unable', '<span class="obstacle">' . $this->Name() . ' is depressed, but couldn\'t find anything in the house to be comforted by.</span>');
 
             return false;
         }
@@ -353,7 +361,7 @@ class Pet
 
                 if($item['hourlystat'] != '')
                 {
-                    $this->Train($item['hourystat'], 2, $hour);
+                    $this->Train($item['hourystat'], 2, $house->Hour());
                 }
 
                 $itemNamesUsed[] = $item['itemname'];
@@ -362,9 +370,20 @@ class Pet
                     break;
             }
 
-            add_logged_event_cached($this->user->ID(), $this->_data['idnum'], $hour, 'hourly', $stat, '<span class="eating">' . $this->Name() . ' was comforted by ' . implode(', ', $itemNamesUsed) . '.</span>', array('food' => $food_gain, 'safety' => $safety_gain, 'love' => $love_gain, 'esteem' => $esteem_gain));
+            add_logged_event_cached($this->user->ID(), $this->ID(), $house->Hour(), 'hourly', $stat, '<span class="eating">' . $this->Name() . ' was comforted by ' . implode(', ', $itemNamesUsed) . '.</span>', array('food' => $food_gain, 'safety' => $safety_gain, 'love' => $love_gain, 'esteem' => $esteem_gain));
 
             return true;
+        }
+    }
+
+    public function DoStartProject($currentProjects)
+    {
+        $hasPersonalProject = false;
+        $hasGroupProject = false;
+
+        foreach($currentProjects as $project)
+        {
+            /** @var PetQuest $project */
         }
     }
 
@@ -417,9 +436,6 @@ class Pet
 
     public function DrainNeed($stat, $amount)
     {
-        if($amount <= 0)
-            return 0;
-
         $this->_data[$stat] -= $amount;
 
         return $amount;
@@ -537,6 +553,6 @@ class Pet
             $updates[] = '`' . $field . '`=' . quote_smart($this->_data[$field]);
 
         if(count($updates) > 0)
-            fetch_none('UPDATE monster_pets SET ' . implode(', ', $updates) . ' WHERE idnum=' . (int)$this->_data['idnum'] . ' LIMIT 1');
+            fetch_none('UPDATE monster_pets SET ' . implode(', ', $updates) . ' WHERE idnum=' . (int)$this->ID() . ' LIMIT 1');
     }
 }
