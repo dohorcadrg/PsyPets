@@ -35,7 +35,7 @@ function get_ad_text()
                 $files = array('twitter.png');
                 $day_since_1970 = floor($now / (24 * 60 * 60));
 
-                return '<a href="http://twitter.com/#!/psypetsideas"><img src="http://' . $SETTINGS['static_domain'] . '/gfx/ads/' . $files[$day_since_1970 % count($files)] . '" width="234" height="60" alt="PsyPets ideas @ twitter" id="iamsooooimportant" /></a>';
+                return '<a href="http://twitter.com/#!/psypetsideas"><img src="//' . $SETTINGS['static_domain'] . '/gfx/ads/' . $files[$day_since_1970 % count($files)] . '" width="234" height="60" alt="PsyPets ideas @ twitter" id="iamsooooimportant" /></a>';
             /*
             case 3:
                 $PAGE['checkad'] = true;

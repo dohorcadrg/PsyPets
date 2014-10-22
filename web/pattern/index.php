@@ -250,10 +250,10 @@ foreach($maze as $index=>$tile)
   {
     $background = $tile['tile'];
 
-    echo '<td style="background: url(/gfx/maze/' . $background . '.png);" align="center" valign="center">';
+    echo '<td style="background: url(//' . $SETTINGS['static_domain'] . '/gfx/maze/' . $background . '.png);" align="center" valign="center">';
 
     if($user['mazeloc'] == $tile['idnum'])
-      echo '<img class="maze-object" src="/gfx/emote/hee.gif" width="16" height="16" title="You are here" />';
+      echo '<img class="maze-object" src="//' . $SETTINGS['static_domain'] . '/gfx/emote/hee.gif" width="16" height="16" title="You are here" />';
     else if($tile['obstacle'] != 'none')
     {
       $obstacle_item = get_item_byname($tile['obstacle']);
@@ -261,12 +261,12 @@ foreach($maze as $index=>$tile)
       echo item_display($obstacle_item, 'class="maze-object" title="' . htmlentities($tile['obstacle']) . '"');
     }
     else if($tile['players'] > 0)
-      echo '<img class="maze-object" src="/gfx/maze/others.png" width="16" height="16" title="' . $tile['players'] . ' ' . ($tile['players'] == 1 ? 'person is' : 'people are') . ' here" />';
+      echo '<img class="maze-object" src="//' . $SETTINGS['static_domain'] . '/gfx/maze/others.png" width="16" height="16" title="' . $tile['players'] . ' ' . ($tile['players'] == 1 ? 'person is' : 'people are') . ' here" />';
     
     if($tile['feature'] != 'none')
     {
       $title = ucwords(str_replace('_', ' ', $tile['feature']));
-      echo '<img class="maze-object" src="/gfx/maze/' . $tile['feature'] . '.png" alt="' . $title . '" title="' . $title . '" />';
+      echo '<img class="maze-object" src="//' . $SETTINGS['static_domain'] . '/gfx/maze/' . $tile['feature'] . '.png" alt="' . $title . '" title="' . $title . '" />';
     }
 
     echo '</td>';
