@@ -5,7 +5,7 @@ if($okay_to_be_here !== true)
 list($gifterid, $opentime, $itemlist) = explode(';', $this_inventory['data']);
 
 $items = explode('|', $itemlist);
-$gifter = get_user_byid($gifterid, 'display');
+$gifter = get_user_byid((int)$gifterid, 'display');
 
 $gifter_name = ($gifter === false ? '<i class="dim">[departed #' . $gifterid . ']</i>' : resident_link($gifter['display'])); 
 

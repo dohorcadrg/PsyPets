@@ -178,6 +178,8 @@ require 'commons/html.php';
         {
             if(navigator.geolocation)
             {
+                $('#geolocation_desc').html('<span class="failure">Checking... (If you\'re seeing this message, your browser may be asking you to confirm that PsyPets can look up your location. Most browsers do this with a pop-up bar on the top of the window...)</span>');
+
                 navigator.geolocation.getCurrentPosition(function(position) {
                     $('#geo_lat').val(position.coords.latitude);
                     $('#geo_long').val(position.coords.longitude);
@@ -208,7 +210,7 @@ require 'commons/html.php';
         <?= $error_message ?>
     <?php endif; ?>
     <ul>
-        <li><a href="directorysearch.php">Find other searchable Residents</a></li>
+        <li><a href="/directorysearch.php">Find other searchable Residents</a></li>
     </ul>
     <form method="post" id="account" name="account">
         <table>
