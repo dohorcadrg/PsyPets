@@ -2,6 +2,8 @@
 $wiki = 'Real_Estate';
 $require_petload = 'no';
 
+require_once 'commons/init.php';
+
 // confirm the session...
 require_once 'commons/dbconnect.php';
 require_once 'commons/rpgfunctions.php';
@@ -15,15 +17,22 @@ require_once 'commons/economylib.php';
 $locid = $user['locid'];
 $house = get_house_byuser($user['idnum'], $locid);
 
+if($house['maxbulk'] > 4000)
+{
+    header('Location: /realestate_deeds.php');
+    exit();
+}
+
 $addons = take_apart(',', $house['addons']);
 $have_basement = (array_search('Basement', $addons) !== false);
+$have_lake = (array_search('Lake', $addons) !== false);
 
 $max_amount = min(1000, 5000 - $house['maxbulk']);
 
 $special_price = value_with_inflation(400);
 $regular_price = value_with_inflation($max_amount * 2);
 
-if($_POST['action'] == 'buy' && $house['maxbulk'] < 5000)
+if($_POST['action'] == 'buy' && $house['maxbulk'] < 4000)
 {
   if($user['money'] >= $regular_price)
   {
@@ -76,6 +85,23 @@ if($badges['islandplus'] == 'no' && $house['maxbulk'] >= 50000)
   set_badge($user['idnum'], 'islandplus');
 }
 
+// check to see if we're already working on the lake
+load_user_projects($user, $userprojects);
+
+$working_on_lake = false;
+
+if(count($userprojects) > 0)
+{
+    foreach($userprojects as $project)
+    {
+        if($project['itemid'] == 22)
+        {
+            $working_on_lake = true;
+            break;
+        }
+    }
+}
+
 include 'commons/html.php';
 ?>
  <head>
@@ -87,13 +113,11 @@ include 'commons/html.php';
      <h5>Real Estate</h5>
      <ul class="tabbed">
       <li class="activetab"><a href="realestate.php">Buy Land</a></li>
-      <li><a href="realestate_lake.php">Build Lake</a></li>
       <li><a href="realestate_deeds.php">Acquire Deeds</a></li>
+         <?php if(!$working_on_lake && !$have_lake): ?><li><a href="realestate_lake.php">Build Lake</a></li><?php endif; ?>
      </ul>
+<a href="npcprofile.php?npc=Amanda+Branaman"><img src="//<?= $SETTINGS['static_domain'] ?>/gfx/npcs/real-estate-agent.png" align="right" width="350" height="490" alt="(Amanda, the Real Estate agent)" /></a>
 <?php
-// NPC AMANDA BRANAMAN
-echo '<a href="npcprofile.php?npc=Amanda+Branaman"><img src="gfx/npcs/real-estate-agent.png" align="right" width="350" height="490" alt="(Amanda, the Real Estate agent)" /></a>';
-
 include 'commons/dialog_open.php';
 
 if($error_message)
