@@ -38,7 +38,7 @@ include 'commons/html.php';
  <body>
 <?php include 'commons/header_2.php'; ?>
   <h4><a href="/admin/tools.php">Administrative Tools</a> &gt; Dream Samples</h4>
-  <p>Using <a href="/petprofile.php?petid=<?= $pet['idnum'] ?>"><?= $pet['petname'] ?></a> to generate the dreams...</p>
+  <p>Using <a href="/pet/profile.php?petid=<?= $pet['idnum'] ?>"><?= $pet['petname'] ?></a> to generate the dreams...</p>
   <ul>
 <?php
 for($i = 0; $i <= 20; ++$i)

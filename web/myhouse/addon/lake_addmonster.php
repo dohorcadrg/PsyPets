@@ -79,7 +79,7 @@ foreach($userpets as $pet)
 ?>
       <tr class="<?= $rowclass ?>">
        <td><input type="radio" name="petid" value="<?= $pet['idnum'] ?>" /></td>
-       <td><a href="/petprofile.php?petid=<?= $pet['idnum'] ?>"><img src="/gfx/pets/<?= $pet['graphic'] ?>" width="48" height="48" alt="" border="0" /></a></td>
+       <td><a href="/pet/profile.php?petid=<?= $pet['idnum'] ?>"><img src="/gfx/pets/<?= $pet['graphic'] ?>" width="48" height="48" alt="" border="0" /></a></td>
        <td><?= $pet['petname'] ?></td>
        <td><?= ucfirst(monster_description($pet)) ?></td>
       </tr>

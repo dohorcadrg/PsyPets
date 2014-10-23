@@ -346,11 +346,11 @@ function pet_graphic($mypet, $link = true, $extra = '')
     $xhtml = '<img src="//' . $SETTINGS['static_domain'] . '/gfx/pets/were/form_' . ($mypet['idnum'] % 2 + 1) . '.png" class="' . implode(' ', $classes) . '" width="' . $mypet['graphic_size'] . '" height="' . $mypet['graphic_size'] . '" alt="" ' . $extra . ' />';
   else if($mypet['zombie'] == 'yes')
     $xhtml = '<img src="//' . $SETTINGS['static_domain'] . '/gfx/pets/zombie/form_' . ($mypet['idnum'] % 3 + 1) . '.png" class="' . implode(' ', $classes) . '" width="' . $mypet['graphic_size'] . '" height="' . $mypet['graphic_size'] . '" alt="" ' . $extra . ' />';
-  else
+  else // can't be at static_domain, because custom graphics aren't stored there (currently); we use an .htaccess redirect to catch standard graphics
     $xhtml = '<img src="/gfx/pets/' . $mypet['graphic'] . '" class="' . implode(' ', $classes) . '" width="' . $mypet['graphic_size'] . '" height="' . $mypet['graphic_size'] . '" alt="" ' . $extra . ' /></a>';
 
   if($link)
-    $xhtml = '<a href="/petprofile.php?petid=' . $mypet['idnum'] . '">' . $xhtml . '</a>';
+    $xhtml = '<a href="/pet/profile.php?petid=' . $mypet['idnum'] . '">' . $xhtml . '</a>';
 
   if($mypet['special_lightning'] == 'yes')
     $xhtml = '<div style="background-image: url(\'//' . $SETTINGS['static_domain'] . '/gfx/pets/lightning.gif\'); width:48px; height:48px;">' . $xhtml . '</div>';
@@ -876,4 +876,3 @@ function render_choose_pet_xhtml($pets, $filter = array(), $choose_multiple = fa
   
   return $xhtml;
 }
-?>

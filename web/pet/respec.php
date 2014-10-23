@@ -19,7 +19,7 @@ $this_pet = $database->FetchSingle('SELECT * FROM `monster_pets` WHERE idnum=' .
 
 if($this_pet === false)
 {
-  header('Location: ./directory.php');
+  header('Location: /directory.php');
   exit();
 }
 
@@ -37,7 +37,7 @@ if($owner === false)
 
 if($this_pet['user'] != $user['user'] || $this_pet['free_respec'] != 'yes')
 {
-  header('Location: /petprofile.php?petid=' . $petid);
+  header('Location: /pet/profile.php?petid=' . $petid);
   exit();
 }
 
@@ -391,7 +391,7 @@ if($_POST['action'] == 'Respec')
 
     add_db_message($user['idnum'], FLASH_MESSAGE_PET_PROGRESS, $this_pet['petname'] . '\'s skills have been reset!');
     
-    header('Location: /petprofile.php?petid=' . $petid);
+    header('Location: /pet/profile.php?petid=' . $petid);
     exit();
   }
 }
@@ -411,21 +411,21 @@ include 'commons/header_2.php';
 include 'commons/petprofile/pets.php';
 ?>
      <ul class="tabbed">
-      <li><a href="/petprofile.php?petid=<?= $petid ?>">Summary</a></li>
-      <li><a href="/petfamilytree.php?petid=<?= $petid ?>">Family Tree</a></li>
+      <li><a href="/pet/profile.php?petid=<?= $petid ?>">Summary</a></li>
+      <li><a href="/pet/familytree.php?petid=<?= $petid ?>">Family Tree</a></li>
 <?php
   echo '
-    <li><a href="/petlogs.php?petid=' . $petid . '">Activity Logs</a></li>
-    <li><a href="/petevents.php?petid=' . $petid . '">Park Event Logs</a></li>
-    <li><a href="/petlevelhistory.php?petid=' . $petid . '">Training History</a></li>
+    <li><a href="/pet/logs.php?petid=' . $petid . '">Activity Logs</a></li>
+    <li><a href="/pet/events.php?petid=' . $petid . '">Park Event Logs</a></li>
+    <li><a href="/pet/levelhistory.php?petid=' . $petid . '">Training History</a></li>
   ';
 
   if($this_pet['love_exp'] >= $exp_required && $this_pet['zombie'] != 'yes')
-    echo '<li><a href="/affectionup.php?petid=' . $petid . '" class="success">Affection Reward!</a></li>';
+    echo '<li><a href="/pet/affectionup.php?petid=' . $petid . '" class="success">Affection Reward!</a></li>';
   if($this_pet['ascend'] == 'yes')
-    echo '<li><a href="/petascend.php?petid=' . $petid . '">Reincarnate</a></li>';
+    echo '<li><a href="/pet/ascend.php?petid=' . $petid . '">Reincarnate</a></li>';
   if($this_pet['free_respec'] == 'yes')
-    echo '<li class="activetab"><a href="/petrespec.php?petid=' . $petid . '" class="success">Retrain!</a></li>';
+    echo '<li class="activetab"><a href="/pet/respec.php?petid=' . $petid . '" class="success">Retrain!</a></li>';
 ?>
      </ul>
      <h5>What is Pet Retraining?</h5>

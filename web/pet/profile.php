@@ -20,7 +20,7 @@ $this_pet = $database->FetchSingle('SELECT * FROM `monster_pets` WHERE idnum=' .
 
 if($this_pet === false)
 {
-  header('Location: ./directory.php');
+  header('Location: /directory.php');
   exit();
 }
 
@@ -206,24 +206,24 @@ include 'commons/header_2.php';
 include 'commons/petprofile/pets.php';
 ?>
      <ul class="tabbed">
-      <li class="activetab"><a href="/petprofile.php?petid=<?= $petid ?>">Summary</a></li>
-      <li><a href="/petfamilytree.php?petid=<?= $petid ?>">Family Tree</a></li>
+      <li class="activetab"><a href="/pet/profile.php?petid=<?= $petid ?>">Summary</a></li>
+      <li><a href="/pet/familytree.php?petid=<?= $petid ?>">Family Tree</a></li>
 <?php
 if($user['user'] == $this_pet['user'] || $user['admin']['clairvoyant'] == 'yes')
-  echo '<li><a href="/petlogs.php?petid=' . $petid . '">Activity&nbsp;Logs</a></li> ';
+  echo '<li><a href="/pet/logs.php?petid=' . $petid . '">Activity&nbsp;Logs</a></li> ';
 
-echo '<li><a href="/petevents.php?petid=' . $petid . '">Park&nbsp;Event&nbsp;Logs</a></li> ';
+echo '<li><a href="/pet/events.php?petid=' . $petid . '">Park&nbsp;Event&nbsp;Logs</a></li> ';
 
 if($user['user'] == $this_pet['user'] || $user['admin']['clairvoyant'] == 'yes')
 {
-  echo '<li><a href="/petlevelhistory.php?petid=' . $petid . '">Training&nbsp;History</a></li> ';
+  echo '<li><a href="/pet/levelhistory.php?petid=' . $petid . '">Training&nbsp;History</a></li> ';
 
   if($this_pet['love_exp'] >= $exp_required && $this_pet['zombie'] != 'yes')
-    echo '<li><a href="/affectionup.php?petid=' . $petid . '" class="success">Affection&nbsp;Reward!</a></li> ';
+    echo '<li><a href="/pet/affectionup.php?petid=' . $petid . '" class="success">Affection&nbsp;Reward!</a></li> ';
   if($this_pet['ascend'] == 'yes')
-    echo '<li><a href="/petascend.php?petid=' . $petid . '" class="success">Reincarnate!</a></li> ';
+    echo '<li><a href="/pet/ascend.php?petid=' . $petid . '" class="success">Reincarnate!</a></li> ';
   if($this_pet['free_respec'] == 'yes')
-    echo '<li><a href="/petrespec.php?petid=' . $petid . '" class="success">Retrain!</a></li> ';
+    echo '<li><a href="/pet/respec.php?petid=' . $petid . '" class="success">Retrain!</a></li> ';
 }
 
 echo '</ul>';
@@ -367,7 +367,7 @@ if($num_friends > 0)
     $friend_pet = get_pet_byid($friend['friendid']);
     $friend_feelings = get_pet_relationship($friend_pet, $this_pet);
 
-    echo '<li><a href="/petprofile.php?petid=' . $friend['friendid'] . '">' . $friend_pet['petname'] . '</a> is ' . describe_relationship($this_pet, $friend) . '.  <i class="dim">(Met ' . duration($now - $friend['firstmet'], 2) . ' ago.)</i>';
+    echo '<li><a href="/pet/profile.php?petid=' . $friend['friendid'] . '">' . $friend_pet['petname'] . '</a> is ' . describe_relationship($this_pet, $friend) . '.  <i class="dim">(Met ' . duration($now - $friend['firstmet'], 2) . ' ago.)</i>';
 
     if($user['admin']['clairvoyant'] == 'yes')
     {
@@ -393,11 +393,8 @@ if($user['admin']['manageaccounts'] == 'yes')
   require_once 'commons/sqldumpfunc.php';
 ?>
 <h5>Admin</h5>
-<form action="admin_resetpetgraphic.php?id=<?= $this_pet['idnum'] ?>" method="post" onsubmit="return confirm('Really reset this pet graphic to that of a Desikh?');" >
+<form action="/admin/resetpetgraphic.php?id=<?= $this_pet['idnum'] ?>" method="post" onsubmit="return confirm('Really reset this pet graphic to that of a Desikh?');" >
 <p><input type="submit" name="action" value="Reset to Desikh" class="bigbutton" /></p>
-</form>
-<form action="../~OLD/admin_protectpet.php?id=<?= $this_pet['idnum'] ?>" method="post" onsubmit="return confirm('Really change this pet\'s protection state?');" >
-<p><input type="submit" name="action" value="<?php echo ($this_pet['protected'] == 'yes' ? 'Unprotect Pet' : 'Protect Pet'); ?>" class="bigbutton" /></p>
 </form>
 <?php
   dump_sql_results($this_pet);

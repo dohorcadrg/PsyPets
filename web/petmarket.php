@@ -226,7 +226,7 @@ else
         $action = '<input type="button" value="' . $sale['price'] . 'm" disabled /><br /><a href="petmarket_unlist.php?id=' . $sale['idnum'] . '">remove listing</a>';
 ?>
       <tr class="<?= $rowclass ?>">
-       <td><a href="/petprofile.php?petid=<?= $pet['idnum'] ?>"><?= pet_graphic($pet) ?></a></td>
+       <td><a href="/pet/profile.php?petid=<?= $pet['idnum'] ?>"><?= pet_graphic($pet) ?></a></td>
        <td><?= $pet['petname'] ?></td>
        <td><a href="salepetlogs.php?id=<?= $sale['idnum'] ?>"><img src="gfx/petlog_new.png" width="18" height="16" alt="(view pet logs)" border="0" /></a></td>
        <td><ul class="plainlist"><li><?= implode('</li><li>', $details) ?></li></ul></td>

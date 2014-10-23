@@ -51,7 +51,7 @@ else
     $database->FetchNone($command, 'granting pet ' . $power_description);
 
     echo '<p>The ' . $this_inventory['itemname'] . ' has become a ' . $used_item_name . '!</p>',
-         '<p><a href="/petprofile.php?petid=' . $petid . '">' . $target_pet['petname'] . '</a> has lost the power of ' . $power_description . '.</p>';
+         '<p><a href="/pet/profile.php?petid=' . $petid . '">' . $target_pet['petname'] . '</a> has lost the power of ' . $power_description . '.</p>';
 
     $command = 'UPDATE monster_inventory SET itemname=' . quote_smart($used_item_name) . ',changed=' . $now . ' WHERE idnum=' . $this_inventory['idnum'] . ' LIMIT 1';
     $database->FetchNone($command, 'changin item');
@@ -59,4 +59,3 @@ else
     $AGAIN_WITH_ANOTHER = true;
   }
 }
-?>

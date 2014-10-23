@@ -18,5 +18,4 @@ if($pet['toolid'] > 0 && $pet['user'] == $user['user'] && $pet['location'] == 'h
   $database->FetchNone($command, 'marking pet as unequipped');
 }
 
-header('Location: ./myhouse.php');
-?>
+header('Location: /myhouse.php');

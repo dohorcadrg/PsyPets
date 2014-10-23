@@ -102,7 +102,7 @@ include 'commons/html.php';
      <p><em>Reincarnation resets the stats of the pet completely!</em>  If it is a were-creature, it will become normal; if it is pregnant, it will lose its pregnancy; a dead pet that is reincarnated is even restored healthily to life!</p>
      <p>Additionally, reincarnated pets have access to equipment and special abilities that non-reincarnated pets do not have.</p>
      <ul>
-      <li><a href="/petascend2.php?petid=<?= $pet['idnum'] ?>">Lovely!  Reincarnate <?= $pet['petname'] ?>!</a></li>
+      <li><a href="/pet/ascend2.php?petid=<?= $pet['idnum'] ?>">Lovely!  Reincarnate <?= $pet['petname'] ?>!</a></li>
      </ul>
 <?php include 'commons/footer_2.php'; ?>
  </body>

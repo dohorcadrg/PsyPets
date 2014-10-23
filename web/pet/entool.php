@@ -20,7 +20,7 @@ $pet = get_pet_byid($petid);
 
 if($pet['user'] != $user['user'] || $pet['location'] != 'home' || $pet['zombie'] != 'no')
 {
-  header('Location: ./myhouse.php');
+  header('Location: /myhouse.php');
   exit();
 }
 
@@ -105,7 +105,7 @@ if($_GET['action'] == 'equip')
     
     if($user['equip_and_home'] == 'yes')
     {
-      header('Location: ./myhouse.php');
+      header('Location: /myhouse.php');
       exit();
     }
   }
@@ -141,7 +141,7 @@ else if($_GET['action'] == 'usekey')
 
     if($user['equip_and_home'] == 'yes')
     {
-      header('Location: ./myhouse.php');
+      header('Location: /myhouse.php');
       exit();
     }
   }
@@ -213,18 +213,18 @@ if($equipment_tutorial_quest === false)
 echo '<h4><a href="/myhouse.php">My House</a> &gt; Equip ' . $pet['petname'] . '</h4>';
 
 if($user['equip_and_home'] == 'yes')
-  echo '<p><i>When I equip a pet, return me to My House (<a href="/pet_entool.php?id=' . $petid . '&returnhome=no">change this</a>).</i></p>';
+  echo '<p><i>When I equip a pet, return me to My House (<a href="/pet/entool.php?id=' . $petid . '&returnhome=no">change this</a>).</i></p>';
 else
-  echo '<p><i>When I equip a pet, do not return me to My House (<a href="/pet_entool.php?id=' . $petid . '&returnhome=yes">change this</a>).</i></p>';
+  echo '<p><i>When I equip a pet, do not return me to My House (<a href="/pet/entool.php?id=' . $petid . '&returnhome=yes">change this</a>).</i></p>';
 
 echo '<ul class="tabbed">';
 
 foreach($userpets as $tabpet)
 {
   if($tabpet['idnum'] == $petid)
-    echo ' <li class="activetab"><a href="/pet_entool.php?id=' . $tabpet['idnum'] . '">' . $tabpet['petname'] . '</a></li>';
+    echo ' <li class="activetab"><a href="/pet/entool.php?id=' . $tabpet['idnum'] . '">' . $tabpet['petname'] . '</a></li>';
   else
-    echo ' <li><a href="/pet_entool.php?id=' . $tabpet['idnum'] . '">' . $tabpet['petname'] . '</a></li>';
+    echo ' <li><a href="/pet/entool.php?id=' . $tabpet['idnum'] . '">' . $tabpet['petname'] . '</a></li>';
 }
 
 echo '</ul>';
@@ -240,14 +240,14 @@ if($pet['eggplant'] == 'yes')
 if(count($items['equipment']) > 0)
 {
   if($show_all)
-    echo '<p>Only one of each item is shown here.  However if two or more of the same items have different durability conditions, they will all be shown.  (<a href="pet_entool.php?id=' . $petid . '">Only show me the items this pet can equip</a>.)</p>';
+    echo '<p>Only one of each item is shown here.  However if two or more of the same items have different durability conditions, they will all be shown.  (<a href="/pet/entool.php?id=' . $petid . '">Only show me the items this pet can equip</a>.)</p>';
   else
-    echo '<p>Only one of each item this pet can equip is shown here.  However if two or more of the same items have different durability conditions, they will all be shown.  (<a href="pet_entool.php?id=' . $petid . '&showall=1">Show me the items this pet cannot equip as well</a>.)</p>';
+    echo '<p>Only one of each item this pet can equip is shown here.  However if two or more of the same items have different durability conditions, they will all be shown.  (<a href="/pet/entool.php?id=' . $petid . '&showall=1">Show me the items this pet cannot equip as well</a>.)</p>';
 
   $rowclass = begin_row_class();
 
   if($pet['toolid'] > 0)
-    echo '<ul><li><a href="/pet_detool.php?id=' . $pet['idnum'] . '">Unequip ' . $tool_item['itemname'] . '</a></li></ul>';
+    echo '<ul><li><a href="/pet/detool.php?id=' . $pet['idnum'] . '">Unequip ' . $tool_item['itemname'] . '</a></li></ul>';
 ?>
 <table id="equiptable">
  <thead>
@@ -275,7 +275,7 @@ if(count($items['equipment']) > 0)
     $equip_level = EquipLevel($item);
 ?>
   <tr class="<?= $rowclass ?>">
-   <td><?= $reason == '' ? '<a href="/pet_entool.php?id=' . $petid . '&tool=' . $inventory['idnum'] . '&action=equip">Equip</a>' : '' ?></td>
+   <td><?= $reason == '' ? '<a href="/pet/entool.php?id=' . $petid . '&tool=' . $inventory['idnum'] . '&action=equip">Equip</a>' : '' ?></td>
    <td class="centered"><?= item_display($item, '') ?></td>
    <td><?= $item['itemname'] ?></td>
    <td class="centered"><?= ucfirst(EquipBonusDesc($equip_level)) ?></td>
@@ -290,14 +290,14 @@ if(count($items['equipment']) > 0)
 </table>
 <?php
   if($pet['toolid'] > 0)
-    echo '<ul><li><a href="/pet_detool.php?id=' . $pet['idnum'] . '">Unequip ' . $tool_item['itemname'] . '</a></li></ul>';
+    echo '<ul><li><a href="/pet/detool.php?id=' . $pet['idnum'] . '">Unequip ' . $tool_item['itemname'] . '</a></li></ul>';
 }
 else
 {
   echo '<p>You do not own any equipment.  (If you have any in Storage, move them to your house first.  Items in Storage are not accessible to your pets.)</p>';
 
   if($pet['toolid'] > 0)
-    echo '<ul><li><a href="/pet_detool.php?id=' . $pet['idnum'] . '">Unequip ' . $tool_item['itemname'] . '</a></li></ul>';
+    echo '<ul><li><a href="/pet/detool.php?id=' . $pet['idnum'] . '">Unequip ' . $tool_item['itemname'] . '</a></li></ul>';
 }
 ?>
 </div>
@@ -309,7 +309,7 @@ if(count($items['keys']) > 0)
   echo '<p>Only one of each item is shown here.</p>';
 
   if($pet['keyid'] > 0)
-    echo '<ul><li><a href="/pet_dekey.php?id=' . $pet['idnum'] . '">Unequip ' . $key_item['itemname'] . '</a></li></ul>';
+    echo '<ul><li><a href="/pet/dekey.php?id=' . $pet['idnum'] . '">Unequip ' . $key_item['itemname'] . '</a></li></ul>';
 
   $rowclass = begin_row_class();
 ?>
@@ -329,7 +329,7 @@ if(count($items['keys']) > 0)
     $inventory = $i['inventory'];
 ?>
   <tr class="<?= $rowclass ?>">
-   <td><a href="/pet_entool.php?id=<?= $petid ?>&key=<?= $inventory['idnum'] ?>&action=usekey">Equip</a></td>
+   <td><a href="/pet/entool.php?id=<?= $petid ?>&key=<?= $inventory['idnum'] ?>&action=usekey">Equip</a></td>
    <td class="centered"><?= item_display($item) ?></td>
    <td><?= $item['itemname'] ?></td>
   </tr>
@@ -341,14 +341,14 @@ if(count($items['keys']) > 0)
 </table>
 <?php
   if($pet['keyid'] > 0)
-    echo '<ul><li><a href="/pet_dekey.php?id=' . $pet['idnum'] . '">Unequip ' . $key_item['itemname'] . '</a></li></ul>';
+    echo '<ul><li><a href="/pet/dekey.php?id=' . $pet['idnum'] . '">Unequip ' . $key_item['itemname'] . '</a></li></ul>';
 }
 else
 {
   echo '<p>You do not own any keys.  (If you have any in Storage, move them to your house first.  Items in Storage are not accessible to your pets.)</p>';
 
   if($pet['keyid'] > 0)
-    echo '<ul><li><a href="/pet_dekey.php?id=' . $pet['idnum'] . '">Unequip ' . $key_item['itemname'] . '</a></li></ul>';
+    echo '<ul><li><a href="/pet/dekey.php?id=' . $pet['idnum'] . '">Unequip ' . $key_item['itemname'] . '</a></li></ul>';
 }
 ?>
 </div>

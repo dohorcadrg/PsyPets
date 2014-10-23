@@ -1,7 +1,7 @@
      </div>
 <?php
 if($user['idnum'] > 0)
-  echo '<div id="quicklinks"><a href="#mainbox">&#9650;</a> | <a href="/myhouse.php">My House</a> | <a href="/petlogs.php">Pet Logs</a> | <a href="/storage.php">Storage</a> | <a href="/incoming.php">Incoming</a> | <a href="/bank.php">Bank</a> | <a href="/fleamarket/">Flea Market</a> | <a href="/plaza.php">Plaza</a> | <a href="/sitemap.php">Site Map</a></div>';
+  echo '<div id="quicklinks"><a href="#mainbox">&#9650;</a> | <a href="/myhouse.php">My House</a> | <a href="/pet/logs.php">Pet Logs</a> | <a href="/storage.php">Storage</a> | <a href="/incoming.php">Incoming</a> | <a href="/bank.php">Bank</a> | <a href="/fleamarket/">Flea Market</a> | <a href="/plaza.php">Plaza</a> | <a href="/sitemap.php">Site Map</a></div>';
 ?>
     </div>
     <div id="bottom"></div>

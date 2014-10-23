@@ -159,7 +159,7 @@ if($lake['monster'] != 'no')
  </tr>
  <tr>
   <td><?php if(strstr($monster['graphic'], '/') !== false) echo '<a href="/myhouse/addon/lake_reclaimmonster.php">Call back</a>'; ?></td>
-  <td><a href="/petprofile.php?petid=<?= $lake['monster'] ?>"><img src="/gfx/pets/<?= $monster['graphic'] ?>" width="48" height="48" alt="" border="0" /></a></td>
+  <td><a href="/pet/profile.php?petid=<?= $lake['monster'] ?>"><img src="/gfx/pets/<?= $monster['graphic'] ?>" width="48" height="48" alt="" border="0" /></a></td>
   <td><?= $monster['petname'] ?></td>
   <td><?= ucfirst(monster_description($monster)) ?></td>
  </tr>

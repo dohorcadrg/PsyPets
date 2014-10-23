@@ -208,7 +208,7 @@ function DoEvent($idnum)
 
   foreach($competition_users as $idnum=>$place)
   {
-    $message = '<a href="/petevents.php?petid=' . $idnum . '">' . $competition_pets[$idnum]['petname'] . '</a>';
+    $message = '<a href="/pet/events.php?petid=' . $idnum . '">' . $competition_pets[$idnum]['petname'] . '</a>';
 
     if(!$no_placement)
     {
@@ -434,7 +434,7 @@ function DoDDR($event, $pets, $users)
 
   foreach($score as $idnum=>$points)
   {
-    $event_report .= "<li><p><a href=\"/petprofile.php?petid=$idnum\"><b>" . $pets[$idnum]['petname'] . "</b></a><br />\n" .
+    $event_report .= "<li><p><a href=\"/pet/profile.php?petid=$idnum\"><b>" . $pets[$idnum]['petname'] . "</b></a><br />\n" .
                      ' Perfect: ' . $ddr_perfect[$idnum] . "<br />\n" .
                      ' Great: ' . $ddr_great[$idnum] . "<br />\n" .
                      ' Good: ' . $ddr_good[$idnum] . "<br />\n" .
@@ -1204,7 +1204,7 @@ function DoLongJump($event, $pets, $users)
 
     $user_places[$idnum] = $place;
 
-    $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> leaped ' . round($score, 2) . ' meters, placing ' . numeric_place($place) . "</li>\n";
+    $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> leaped ' . round($score, 2) . ' meters, placing ' . numeric_place($place) . "</li>\n";
 
     if($place <= count($prizes))
     {
@@ -1260,7 +1260,7 @@ function DoFishing($event, $pets, $users)
 
     $user_places[$idnum] = $place;
 
-    $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> caught a ' . round($score, 1) . 'cm fish, placing ' . numeric_place($place) . "</li>\n";
+    $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> caught a ' . round($score, 1) . 'cm fish, placing ' . numeric_place($place) . "</li>\n";
 
     if($place <= count($prizes))
     {
@@ -1321,7 +1321,7 @@ function DoFashion($event, $pets, $users)
 
     $user_places[$idnum] = $place;
 
-    $event_report .= '<li><a href="/petprofile.php?petid=' . $idnum . '">' . $pets[$idnum]['petname'] . '</a> takes ' . numeric_place($place);
+    $event_report .= '<li><a href="/pet/profile.php?petid=' . $idnum . '">' . $pets[$idnum]['petname'] . '</a> takes ' . numeric_place($place);
 
     if($place <= 3)
     {
@@ -1388,7 +1388,7 @@ function DoStrategyGame($event, $pets, $users)
 
     $user_places[$idnum] = $place;
 
-    $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
+    $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
 
     if($place <= count($prizes))
     {
@@ -1442,7 +1442,7 @@ function DoDigcraft($event, $pets, $users)
 
     $user_places[$idnum] = $place;
 
-    $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
+    $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
 
     if($place <= count($prizes))
     {
@@ -1500,7 +1500,7 @@ function DoGenericCrafts($event, $pets, $users)
 
     $user_places[$idnum] = $place;
 
-    $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
+    $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
 
     if($place <= count($prizes))
     {
@@ -1576,7 +1576,7 @@ function DoHunt($event, $pets, $users)
       $prize_item = fetch_single($command, 'fetching prize');
 
       $this_pet = $pets[$idnum];
-      $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> found ' . $prize_item['itemname'] . "</li>\n";
+      $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> found ' . $prize_item['itemname'] . "</li>\n";
     }
   }
 
@@ -1629,7 +1629,7 @@ function DoRace($event, $pets, $users)
 
     $user_places[$idnum] = $place;
 
-    $event_report .= '<li><a href="/petprofile.php?petid=' . $idnum . '">' . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
+    $event_report .= '<li><a href="/pet/profile.php?petid=' . $idnum . '">' . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
 
     if($place <= count($prizes))
     {
@@ -1700,7 +1700,7 @@ function DoArchery($event, $pets, $users)
 
     $user_places[$idnum] = $place;
 
-    $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
+    $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> placed ' . numeric_place($place) . "</li>\n";
 
     if($place <= count($prizes))
     {
@@ -1822,7 +1822,7 @@ function DoBrawl($event, $pets, $users)
   
   foreach($user_places as $idnum=>$place)
   {
-    $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> got ' . numeric_place($place) . " place</li>\n";
+    $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> got ' . numeric_place($place) . " place</li>\n";
 
     if($place <= count($prizes))
     {
@@ -1946,7 +1946,7 @@ function DoRoborena($event, $pets, $users)
 
   foreach($user_places as $idnum=>$place)
   {
-    $event_report .= "<li><a href=\"/petprofile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> got ' . numeric_place($place) . " place</li>\n";
+    $event_report .= "<li><a href=\"/pet/profile.php?petid=$idnum\">" . $pets[$idnum]['petname'] . '</a> got ' . numeric_place($place) . " place</li>\n";
 
     if($place <= count($prizes))
     {
@@ -2323,7 +2323,7 @@ function DoCookOff($event, $pets, $users)
       $dish = sprintf2($dish_s, $foods);
     }
     
-    $report .= '<li><a href="/petprofile.php?petid=' . $pets[$idnum]['idnum'] . '">' . $pets[$idnum]['petname'] . '</a>: ' . $dish . '</li>';
+    $report .= '<li><a href="/pet/profile.php?petid=' . $pets[$idnum]['idnum'] . '">' . $pets[$idnum]['petname'] . '</a>: ' . $dish . '</li>';
 
     $user_places[$idnum] = $place;
 

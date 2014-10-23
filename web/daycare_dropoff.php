@@ -166,7 +166,7 @@ else
   <td><input type="checkbox" name="petid[]" value="<?= $pet['idnum'] ?>" /></td>
   <td><?= pet_graphic($pet) ?></td>
   <td class="centered"><?= gender_graphic($pet['gender'], $pet['prolific']) ?></td>
-  <td><a href="/petprofile.php?petid=<?= $pet['idnum'] ?>"><?= $pet['petname'] ?></a></td>
+  <td><a href="/pet/profile.php?petid=<?= $pet['idnum'] ?>"><?= $pet['petname'] ?></a></td>
   <td class="centered"><?= pet_level($pet) ?></td>
  </tr>
 <?php

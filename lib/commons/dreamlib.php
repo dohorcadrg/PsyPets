@@ -88,7 +88,7 @@ function dream_description_hourly_activities(&$pet)
                 $friend = get_random_pet_friend($pet);
 
                 if($friend !== false)
-                    $actions[] = 'was going to go hang out with <a href="/petprofile.php?petid=' . $friend['idnum'] . '">' . $friend['petname'] . '</a>, when ' . he_she($pet['gender']) . ' saw';
+                    $actions[] = 'was going to go hang out with <a href="/pet/profile.php?petid=' . $friend['idnum'] . '">' . $friend['petname'] . '</a>, when ' . he_she($pet['gender']) . ' saw';
             }
 
             $activities = array(
@@ -142,7 +142,7 @@ function dream_description_hourly_activities(&$pet)
                 $friend = get_random_pet_friend($pet);
 
                 if($friend !== false)
-                    $actions[] = 'with <a href="/petprofile.php?petid=' . $friend['idnum'] . '">' . $friend['petname'] . '</a>,';
+                    $actions[] = 'with <a href="/pet/profile.php?petid=' . $friend['idnum'] . '">' . $friend['petname'] . '</a>,';
             }
 
             return $pet['petname'] . ' ' . $dreamed . ' ' . he_she($pet['gender']) . ' was ' . $transportation[array_rand($transportation)] . ' looking for ' . $target . '.';
@@ -191,7 +191,7 @@ function dream_description_random_story(&$pet)
         $friend = get_random_pet_friend($pet);
 
         if($friend !== false)
-            $friend_link = '<a href="/petprofile.php?petid=' . $friend['idnum'] . '">' . $friend['petname'] . '</a>';
+            $friend_link = '<a href="/pet/profile.php?petid=' . $friend['idnum'] . '">' . $friend['petname'] . '</a>';
     }
     else
         $friend = false;

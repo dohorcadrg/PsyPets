@@ -80,13 +80,13 @@ function pet_blurb(&$user, &$house, $petnum, $maxpets, &$mypet, $loveoptions, $l
   ';
 
   if($mypet['zombie'] == 'no')
-    echo '<a href="/pet_entool.php?id=' . $mypet['idnum'] . '"><img src="/gfx/the_hand.png" width="16" height="16" alt="Equip" /></a>';
+    echo '<a href="/pet/entool.php?id=' . $mypet['idnum'] . '"><img src="/gfx/the_hand.png" width="16" height="16" alt="Equip" /></a>';
 
   if($mypet['original'] == 'no')
     echo '<img src="/gfx/exchange_pet.png" width="12" height="16" title="You have NOT had this pet since it was level 1." />';
 
   if($mypet['ascend'] == 'yes')
-    echo '<br /><a href="/petascend.php?petid=' . $mypet['idnum'] . '"><img src="/gfx/ascend.png" width="16" height="16" alt="this pet may be reincarnated..." /></a>';
+    echo '<br /><a href="/pet/ascend.php?petid=' . $mypet['idnum'] . '"><img src="/gfx/ascend.png" width="16" height="16" alt="this pet may be reincarnated..." /></a>';
 
   echo '
      </div>
@@ -103,7 +103,7 @@ function pet_blurb(&$user, &$house, $petnum, $maxpets, &$mypet, $loveoptions, $l
   
   echo pet_graphic($mypet, true, "onmouseover=\"Tip('<table class=\\'tip\\'><tr><th>Age</th><td>" . PetAge($mypet['birthday'], $now) . '</td></tr><tr><th>Gender</th><td>' . ucfirst($mypet['gender']) . "</td></tr><tr><th>Fixed?</th><td>" . ($mypet['prolific'] == 'yes' ? 'No' : 'Yes') . '</td></tr>' . $note . "</table>');\"");
 
-  echo '</div><div class="centered"><a href="/petlevelhistory.php?petid=' . $mypet['idnum'] . '">Level ' . pet_level($mypet) . '</a><br />';
+  echo '</div><div class="centered"><a href="/pet/levelhistory.php?petid=' . $mypet['idnum'] . '">Level ' . pet_level($mypet) . '</a><br />';
 
   $love_exp = level_exp($mypet['love_level']);
 
@@ -123,7 +123,7 @@ function pet_blurb(&$user, &$house, $petnum, $maxpets, &$mypet, $loveoptions, $l
         ;
       else
         echo
-          '<a href="/affectionup.php?petid=' . $mypet['idnum'] . '"><div style="margin-left:3px;border-radius:4px;-moz-border-radius:4px;width:51px; background-color:#db0;text-align:left;" alt="Affection: 100%" title="Affection: 100%">',
+          '<a href="/pet/affectionup.php?petid=' . $mypet['idnum'] . '"><div style="margin-left:3px;border-radius:4px;-moz-border-radius:4px;width:51px; background-color:#db0;text-align:left;" alt="Affection: 100%" title="Affection: 100%">',
           '<img src="//' . $SETTINGS['static_domain'] . '/gfx/ui/love.png" width="9" height="9" style="display:block;padding:1px;margin:0;" />',
           '</div></a>'
         ;
@@ -148,7 +148,7 @@ function pet_blurb(&$user, &$house, $petnum, $maxpets, &$mypet, $loveoptions, $l
   
 
   if($mypet['dead'] != 'no')
-    echo '<a href="/petmoveon.php?petid=' . $mypet['idnum'] . '"><img src="//' . $SETTINGS['static_domain'] . '/gfx/badges/pet/died.png" width="20" height="20" alt="Move on?" title="Move on?" /></a>';
+    echo '<a href="/pet/moveon.php?petid=' . $mypet['idnum'] . '"><img src="//' . $SETTINGS['static_domain'] . '/gfx/badges/pet/died.png" width="20" height="20" alt="Move on?" title="Move on?" /></a>';
 ?>
  </div>
 </div>

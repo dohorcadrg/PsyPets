@@ -49,7 +49,7 @@ else
       $command = 'UPDATE monster_pets SET ' . $pet_field . '=\'yes\' WHERE idnum=' . $target_pet['idnum'] . ' LIMIT 1';
       $database->FetchNone($command, 'granting pet ' . $power_description);
       
-      echo '<a href="/petprofile.php?petid=' . $petid . '">' . $target_pet['petname'] . '</a> has acquired a strange aura!</p>';
+      echo '<a href="/pet/profile.php?petid=' . $petid . '">' . $target_pet['petname'] . '</a> has acquired a strange aura!</p>';
     }
     else
     {

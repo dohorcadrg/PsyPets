@@ -37,5 +37,4 @@ fetch_none('
   LIMIT 1
 ');
 
-header('Location: /petprofile.php?petid=' . $petid);
-?>
+header('Location: /pet/profile.php?petid=' . $petid);

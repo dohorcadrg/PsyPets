@@ -87,8 +87,8 @@ function do_friendly_hang_out($hour, &$this_pet, &$other_pet)
       return;
   }
 
-	$other_pet_link = '<a href="/petprofile.php?petid=' . $other_pet['idnum'] . '">' . $other_pet['petname'] . '</a>';
-	$this_pet_link = '<a href="/petprofile.php?petid=' . $this_pet['idnum'] . '">' . $this_pet['petname'] . '</a>';
+	$other_pet_link = '<a href="/pet/profile.php?petid=' . $other_pet['idnum'] . '">' . $other_pet['petname'] . '</a>';
+	$this_pet_link = '<a href="/pet/profile.php?petid=' . $this_pet['idnum'] . '">' . $this_pet['petname'] . '</a>';
 
 	$effects = array(
 		'esteem' => gain_esteem($this_pet, mt_rand(1, 3)),
@@ -134,8 +134,8 @@ function suggest_sexy_hang_out($hour, &$this_pet, &$other_pet, &$this_relationsh
 
 function do_fighting_hang_out($hour, &$this_pet, &$other_pet, &$this_relationship, &$other_relationship)
 {
-	$other_pet_link = '<a href="/petprofile.php?petid=' . $other_pet['idnum'] . '">' . $other_pet['petname'] . '</a>';
-	$this_pet_link = '<a href="/petprofile.php?petid=' . $this_pet['idnum'] . '">' . $this_pet['petname'] . '</a>';
+	$other_pet_link = '<a href="/pet/profile.php?petid=' . $other_pet['idnum'] . '">' . $other_pet['petname'] . '</a>';
+	$this_pet_link = '<a href="/pet/profile.php?petid=' . $this_pet['idnum'] . '">' . $this_pet['petname'] . '</a>';
 
 	$effects = array(
 		'esteem' => -lose_stat($this_pet, 'esteem', mt_rand(1, 3)),
@@ -214,8 +214,8 @@ function do_sexy_hang_out($hour, &$this_pet, &$other_pet, &$this_relationship, &
     }
   } // if both pets are fertile
 
-	$other_pet_link = '<a href="/petprofile.php?petid=' . $other_pet['idnum'] . '">' . $other_pet['petname'] . '</a>';
-	$this_pet_link = '<a href="/petprofile.php?petid=' . $this_pet['idnum'] . '">' . $this_pet['petname'] . '</a>';
+	$other_pet_link = '<a href="/pet/profile.php?petid=' . $other_pet['idnum'] . '">' . $other_pet['petname'] . '</a>';
+	$this_pet_link = '<a href="/pet/profile.php?petid=' . $this_pet['idnum'] . '">' . $this_pet['petname'] . '</a>';
 
 	$effects = array(
 		'esteem' => gain_esteem($this_pet, mt_rand(2, 4)),

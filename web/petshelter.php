@@ -411,7 +411,7 @@ else
 ?>
       <tr class="<?= $rowclass ?>">
        <td><input type="radio" name="petid" value="<?= $this_pet["idnum"] ?>" /></td>
-       <td><a href="/petprofile.php?petid=<?= $this_pet['idnum'] ?>"><img src="gfx/pets/<?= $this_pet["graphic"] ?>" alt="" border="0" /></a></td>
+       <td><a href="/pet/profile.php?petid=<?= $this_pet['idnum'] ?>"><img src="gfx/pets/<?= $this_pet["graphic"] ?>" alt="" border="0" /></a></td>
        <td>
         <?= gender_graphic($this_pet['gender'], $this_pet['prolific']) ?> <?= $this_pet['petname'] ?>
        </td>
@@ -424,7 +424,7 @@ else
 ?>
       <tr class="<?= $rowclass ?>">
        <td><input type="radio" name="petid" disabled /></td>
-       <td><a href="/petprofile.php?petid=<?= $this_pet['idnum'] ?>"><img src="gfx/pets/<?= $this_pet['graphic'] ?>" alt="" border="0" /></a></td>
+       <td><a href="/pet/profile.php?petid=<?= $this_pet['idnum'] ?>"><img src="gfx/pets/<?= $this_pet['graphic'] ?>" alt="" border="0" /></a></td>
        <td class="dim">
         <?= gender_graphic($this_pet['gender'], $this_pet['prolific']) ?> <?= $this_pet['petname'] ?><br />
         <?= ($this_pet['prolific'] == 'no' ? ' (' . ($this_pet['gender'] == 'male' ? 'neutered' : 'spayed') . ')' : '') ?>

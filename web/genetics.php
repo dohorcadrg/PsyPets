@@ -132,7 +132,7 @@ foreach($userpets as $pet)
            '<table><tr class="titlerow"><th></th><th>Pet</th><th>Options</th></tr>';
 ?>
 <tr class="<?= $row_class ?>">
- <td><a href="/petprofile.php?petid=<?= $pet['idnum'] ?>"><?= pet_graphic($pet) ?></a></td>
+ <td><a href="/pet/profile.php?petid=<?= $pet['idnum'] ?>"><?= pet_graphic($pet) ?></a></td>
  <td><?= $pet['petname'] ?></td>
  <td><select name="p_<?= $pet['idnum'] ?>">
   <option value=""></option>

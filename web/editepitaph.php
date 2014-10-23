@@ -40,11 +40,11 @@ include 'commons/html.php';
 <?= ($message ? $message : "") ?>
 <?php
   if($tombstone['petid'] == 0)
-    echo '<h4><a href="graveyard.php">The Graveyard</a> &gt; ' . $tombstone['petname'] . ' &gt; Change Epitaph</h4>';
+    echo '<h4><a href="/graveyard.php">The Graveyard</a> &gt; ' . $tombstone['petname'] . ' &gt; Change Epitaph</h4>';
   else
-    echo '<h4><a href="graveyard.php">The Graveyard</a> &gt; <a href="/petprofile.php?petid=' . $tombstone['petid'] . '">' . $tombstone['petname'] . '</a> &gt; Change Epitaph</h4>';
+    echo '<h4><a href="/graveyard.php">The Graveyard</a> &gt; <a href="/pet/profile.php?petid=' . $tombstone['petid'] . '">' . $tombstone['petname'] . '</a> &gt; Change Epitaph</h4>';
 ?>
-     <form action="editepitaph.php?id=<?= $tombid ?>" method="post">
+     <form action="/editepitaph.php?id=<?= $tombid ?>" method="post">
      <table>
       <tr>
        <td><img src="gfx/pets/dead/tombstone_<?= $tombstone['tombstone'] < 10 ? (0 . $tombstone['tombstone']) : $tombstone['tombstone'] ?>.png" width="48" height="48" /></td>

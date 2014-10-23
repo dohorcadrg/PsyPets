@@ -160,7 +160,7 @@ if($its_your_birthday)
   <td><img src="gfx/pets/<?= $tot['graphic'] ?>" /></td>
  </tr>
 </table>
-     <p><a href="/petprofile.php?petid=<?= $user['tot'] ?>"><?= $tot['petname'] ?></a> is trick-or-treating at your door, wearing a <a href="encyclopedia2.php?i=<?= $tool_details['idnum'] ?>"><?= $tool['itemname'] ?></a>...</p>
+     <p><a href="/pet/profile.php?petid=<?= $user['tot'] ?>"><?= $tot['petname'] ?></a> is trick-or-treating at your door, wearing a <a href="encyclopedia2.php?i=<?= $tool_details['idnum'] ?>"><?= $tool['itemname'] ?></a>...</p>
 <?php
 echo $tot_message;
 

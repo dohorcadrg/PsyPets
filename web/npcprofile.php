@@ -229,7 +229,7 @@ if(count($profile_pets) > 0)
         <table>
          <tr>
           <td align="center" width="32"><?= $toolgraphic ?></td>
-          <td valign="top"><a href="/petprofile.php?petid=<?= $profile_pet['idnum'] ?>"><?php
+          <td valign="top"><a href="/pet/profile.php?petid=<?= $profile_pet['idnum'] ?>"><?php
     if($profile_pet['dead'] == 'no')
     {
       $live_pets = true;

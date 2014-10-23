@@ -49,7 +49,7 @@ else
     $command = 'UPDATE monster_pets SET ' . $pet_field . '=\'yes\' WHERE idnum=' . $target_pet['idnum'] . ' LIMIT 1';
     $database->FetchNone($command, 'granting pet ' . $power_description);
 
-    echo '<p><a href="/petprofile.php?petid=' . $petid . '">' . $target_pet['petname'] . '</a> has gained the power of ' . $power_description . '!</p>';
+    echo '<p><a href="/pet/profile.php?petid=' . $petid . '">' . $target_pet['petname'] . '</a> has gained the power of ' . $power_description . '!</p>';
 
     delete_inventory_byid($this_inventory['idnum']);
 

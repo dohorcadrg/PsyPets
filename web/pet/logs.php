@@ -123,24 +123,24 @@ $owner = $user;
 include 'commons/petprofile/pets.php';
 ?>
      <ul class="tabbed">
-      <li><a href="/petprofile.php?petid=<?= $petid ?>">Summary</a></li>
-      <li><a href="/petfamilytree.php?petid=<?= $petid ?>">Family Tree</a></li>
+      <li><a href="/pet/profile.php?petid=<?= $petid ?>">Summary</a></li>
+      <li><a href="/pet/familytree.php?petid=<?= $petid ?>">Family Tree</a></li>
 <?php
 if($user['user'] == $this_pet['user'] || $user['admin']['clairvoyant'] == 'yes')
-  echo '<li class="activetab"><a href="/petlogs.php?petid=' . $petid . '">Activity Logs</a></li>';
+  echo '<li class="activetab"><a href="/pet/logs.php?petid=' . $petid . '">Activity Logs</a></li>';
 
-echo '<li><a href="/petevents.php?petid=' . $petid . '">Park Event Logs</a></li>';
+echo '<li><a href="/pet/events.php?petid=' . $petid . '">Park Event Logs</a></li>';
 
 if($user['user'] == $this_pet['user'] || $user['admin']['clairvoyant'] == 'yes')
 {
-  echo '<li><a href="/petlevelhistory.php?petid=' . $petid . '">Training History</a></li>';
+  echo '<li><a href="/pet/levelhistory.php?petid=' . $petid . '">Training History</a></li>';
 
   if($this_pet['love_exp'] >= $exp_required && $this_pet['zombie'] != 'yes')
-    echo '<li><a href="/affectionup.php?petid=' . $petid . '" class="success">Affection Reward!</a></li>';
+    echo '<li><a href="/pet/affectionup.php?petid=' . $petid . '" class="success">Affection Reward!</a></li>';
   if($this_pet['ascend'] == 'yes')
-    echo '<li><a href="/petascend.php?petid=' . $petid . '" class="success">Reincarnate!</a></li>';
+    echo '<li><a href="/pet/ascend.php?petid=' . $petid . '" class="success">Reincarnate!</a></li>';
   if($this_pet['free_respec'] == 'yes')
-    echo '<li><a href="/petrespec.php?petid=' . $petid . '" class="success">Retrain!</a></li>';
+    echo '<li><a href="/pet/respec.php?petid=' . $petid . '" class="success">Retrain!</a></li>';
 }
 
 echo '</ul>';
@@ -182,7 +182,7 @@ echo $extra_xhtml . RenderPetActivityStatsXHTML($petid) . $extra_xhtml;
      <p>Logged activities older than 1 week are automatically deleted. <i>(<a href="clearallpetlogs.php">Clear all pet logs now</a>.)</i></p>
 <?php
 if($newer_log)
-  echo '<p>These activites are new since the last time you checked ' . $this_pet['petname'] . '\'s logged activities.  <i>(<a href="petlogs.php?petid=' . $this_pet['idnum'] . '&page=1">See complete list</a>.)</i></p>';
+  echo '<p>These activites are new since the last time you checked ' . $this_pet['petname'] . '\'s logged activities.  <i>(<a href="/pet/logs.php?petid=' . $this_pet['idnum'] . '&page=1">See complete list</a>.)</i></p>';
 else if(count($logs) > 0)
 {
   $page_list = paginate($maxpages, $page, '?petid=' . $petid . '&amp;page=%s');
@@ -300,7 +300,7 @@ else
   echo '<p>There are ' . $num_logs . ' logged activities for this pet.</p>';
 
 if($num_logs > 0)
-  echo '     <form action="/petlogs.php?petid=' . $this_pet['idnum'] . '" method="post"><p><input type="hidden" name="action" value="clearlogs" /><input type="submit" value="Clear Pet\'s Logs" class="bigbutton" /></p></form>';
+  echo '     <form action="/pet/logs.php?petid=' . $this_pet['idnum'] . '" method="post"><p><input type="hidden" name="action" value="clearlogs" /><input type="submit" value="Clear Pet\'s Logs" class="bigbutton" /></p></form>';
 ?>
      </div>
      <div id="extra_stats"<?= $stats_style ?>>

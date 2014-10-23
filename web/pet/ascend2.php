@@ -502,7 +502,7 @@ include 'commons/html.php';
 if(count($errors) > 0)
   echo '<ul><li class="failure">' . implode('</li><li class="failure">', $errors) . '</li></ul>';
 ?>
-     <form action="petascend2.php?petid=<?= $pet['idnum'] ?>" method="post">
+     <form action="/pet/ascend2.php?petid=<?= $pet['idnum'] ?>" method="post">
      <h5>Appearance</h5>
 <?php
 if($custom_graphic)

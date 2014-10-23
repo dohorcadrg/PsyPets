@@ -165,7 +165,7 @@ if(count($pet_info) > 0)
     if($pet['petname'] == '[departed]')
       echo '<td class="' . $bgcolor . '"></td><td class="dim ' . $bgcolor . '">[departed]</td>';
     else
-      echo '<td class="' . $bgcolor . '">' . pet_graphic($pet) . '</td><td class="' . $bgcolor . '"><a href="/petprofile.php?petid=' . $pet['idnum'] . '">' . $pet['petname'] . '</a></td>';
+      echo '<td class="' . $bgcolor . '">' . pet_graphic($pet) . '</td><td class="' . $bgcolor . '"><a href="/pet/profile.php?petid=' . $pet['idnum'] . '">' . $pet['petname'] . '</a></td>';
 
     $bgcolor = alt_row_class($bgcolor);
     

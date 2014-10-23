@@ -304,7 +304,7 @@ if($num_pets > 0)
         <table>
          <tr>
           <td align="center" width="32"><?= $toolgraphic ?></td>
-          <td valign="top"><a href="/petprofile.php?petid=<?= $profile_pet['idnum'] ?>"><?php
+          <td valign="top"><a href="/pet/profile.php?petid=<?= $profile_pet['idnum'] ?>"><?php
     if($profile_pet['dead'] == 'no')
     {
       $live_pets = true;
@@ -328,7 +328,7 @@ if($num_pets > 0)
         </table>
        </td>
        <td valign="top" class="<?= $cellclass ?>">
-        <b><a href="/petprofile.php?petid=<?= $profile_pet['idnum'] ?>"><?= $profile_pet['petname'] ?></a></b><br />
+        <b><a href="/pet/profile.php?petid=<?= $profile_pet['idnum'] ?>"><?= $profile_pet['petname'] ?></a></b><br />
         is <?= $pet_age ?>.<br />
 <?php
     echo pregnancy_blurb($profile_pet);

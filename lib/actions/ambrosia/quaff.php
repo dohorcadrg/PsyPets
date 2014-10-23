@@ -75,7 +75,7 @@ else
       {
         echo '
           <p>Bubbles form under ' . $target_pet['petname'] . '\'s skin and begin to move around, generally meandering toward the head.</p><p>They do this for a few seconds, gaining in frequency and violence, before suddenly dying down and stopping entirely.</p>
-          <p><i>(<a href="petrespec.php?idnum=' . $target_pet['idnum'] . '">' . $target_pet['petname'] . ' may be respec\'d!</a>)</i></p>
+          <p><i>(<a href="/pet/respec.php?idnum=' . $target_pet['idnum'] . '">' . $target_pet['petname'] . ' may be respec\'d!</a>)</i></p>
         ';
 
         $command = 'UPDATE monster_pets SET free_respec=\'yes\' WHERE idnum=' . $target_pet['idnum'] . ' LIMIT 1';

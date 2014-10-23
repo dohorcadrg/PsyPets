@@ -375,24 +375,24 @@ $owner = $user;
 include 'commons/petprofile/pets.php';
 ?>
      <ul class="tabbed">
-      <li><a href="/petprofile.php?petid=<?= $petid ?>">Summary</a></li>
-      <li><a href="/petfamilytree.php?petid=<?= $petid ?>">Family Tree</a></li>
+      <li><a href="/pet/profile.php?petid=<?= $petid ?>">Summary</a></li>
+      <li><a href="/pet/familytree.php?petid=<?= $petid ?>">Family Tree</a></li>
 <?php
 if($user['user'] == $this_pet['user'] || $user['admin']['clairvoyant'] == 'yes')
-  echo '<li><a href="/petlogs.php?petid=' . $petid . '">Activity Logs</a></li>';
+  echo '<li><a href="/pet/logs.php?petid=' . $petid . '">Activity Logs</a></li>';
 
-echo '<li><a href="/petevents.php?petid=' . $petid . '">Park Event Logs</a></li>';
+echo '<li><a href="/pet/events.php?petid=' . $petid . '">Park Event Logs</a></li>';
 
 if($user['user'] == $this_pet['user'] || $user['admin']['clairvoyant'] == 'yes')
 {
-  echo '<li><a href="/petlevelhistory.php?petid=' . $petid . '">Training History</a></li>';
+  echo '<li><a href="/pet/levelhistory.php?petid=' . $petid . '">Training History</a></li>';
 
-  echo '<li class="activetab"><a href="/affectionup.php?petid=' . $petid . '" class="success">Affection Reward!</a></li>';
+  echo '<li class="activetab"><a href="/pet/affectionup.php?petid=' . $petid . '" class="success">Affection Reward!</a></li>';
 
   if($this_pet['ascend'] == 'yes')
-    echo '<li><a href="/petascend.php?petid=' . $petid . '" class="success">Reincarnate!</a></li>';
+    echo '<li><a href="/pet/ascend.php?petid=' . $petid . '" class="success">Reincarnate!</a></li>';
   if($this_pet['free_respec'] == 'yes')
-    echo '<li><a href="/petrespec.php?petid=' . $petid . '" class="success">Retrain!</a></li>';
+    echo '<li><a href="/pet/respec.php?petid=' . $petid . '" class="success">Retrain!</a></li>';
 }
 
 echo '</ul>';

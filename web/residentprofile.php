@@ -883,7 +883,7 @@ if($num_pets > 0)
         </table>
        </td>
        <td valign="top" class="<?= $cellclass ?>">
-        <b><a href="/petprofile.php?petid=<?= $profile_pet['idnum'] ?>"><?= $profile_pet['petname'] ?></a></b><br />
+        <b><a href="/pet/profile.php?petid=<?= $profile_pet['idnum'] ?>"><?= $profile_pet['petname'] ?></a></b><br />
         is <?= $pet_age ?>.<br />
 <?php
     echo pregnancy_blurb($profile_pet);

@@ -374,7 +374,7 @@ function item_maker_display($creator, $link = false)
     if($maker_pet === false)
       return '<i class="dim">[departed]</i>';
     else if($link)
-      return '<a href="/petprofile.php?petid=' . $petid . '">' . $maker_pet['petname'] . '</a>';
+      return '<a href="/pet/profile.php?petid=' . $petid . '">' . $maker_pet['petname'] . '</a>';
     else
       return $maker_pet['petname'];
   }

@@ -120,7 +120,7 @@ if($_POST['submit'] == 'Move On')
   require_once 'commons/statlib.php';
   record_stat($user['idnum'], '"Move On"\'d a Pet', 1);
 
-  header('Location: ./editepitaph.php?id=' . $id);
+  header('Location: /editepitaph.php?id=' . $id);
   exit();
 }
 else if($_POST['submit'] == 'Reincarnate')

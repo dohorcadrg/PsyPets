@@ -79,7 +79,7 @@ include 'commons/html.php';
      <h4><a href="petmarket.php">Pet Market</a> &gt; Pet Logs &gt; <?= $owner['display'] ?>'s <?= $pet['petname'] ?></h4>
      <ul>
       <li><a href="/residentprofile.php?resident=<?= link_safe($owner['display']) ?>">View <?= $owner['display'] ?>'s profile</a></li>
-      <li><a href="/petprofile.php?petid=<?= $petid ?>">View <?= $pet['petname'] ?>'s profile</a></li>
+      <li><a href="/pet/profile.php?petid=<?= $petid ?>">View <?= $pet['petname'] ?>'s profile</a></li>
      </ul>
      <div id="activity_stats"<?= $stats_style ?>>
      <ul class="tabbed">

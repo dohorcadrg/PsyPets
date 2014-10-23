@@ -18,7 +18,7 @@ $this_pet = $database->FetchSingle('SELECT * FROM `monster_pets` WHERE idnum=' .
 
 if($this_pet === false)
 {
-  header('Location: ./directory.php');
+  header('Location: /directory.php');
   exit();
 }
 
@@ -31,7 +31,7 @@ $owner = $database->FetchSingle('SELECT * FROM `monster_users` WHERE `user`=' . 
 
 if($owner === false)
 {
-  header('Location: ./directory.php');
+  header('Location: /directory.php');
   exit();
 }
 
@@ -108,24 +108,24 @@ include 'commons/header_2.php';
 include 'commons/petprofile/pets.php';
 ?>
      <ul class="tabbed">
-      <li><a href="/petprofile.php?petid=<?= $petid ?>">Summary</a></li>
-      <li class="activetab"><a href="/petfamilytree.php?petid=<?= $petid ?>">Family Tree</a></li>
+      <li><a href="/pet/profile.php?petid=<?= $petid ?>">Summary</a></li>
+      <li class="activetab"><a href="/pet/familytree.php?petid=<?= $petid ?>">Family Tree</a></li>
 <?php
 if($user['user'] == $this_pet['user'] || $user['admin']['clairvoyant'] == 'yes')
-  echo '<li><a href="/petlogs.php?petid=' . $petid . '">Activity Logs</a></li>';
+  echo '<li><a href="/pet/logs.php?petid=' . $petid . '">Activity Logs</a></li>';
 
-echo '<li><a href="/petevents.php?petid=' . $petid . '">Park Event Logs</a></li>';
+echo '<li><a href="/pet/events.php?petid=' . $petid . '">Park Event Logs</a></li>';
 
 if($user['user'] == $this_pet['user'] || $user['admin']['clairvoyant'] == 'yes')
 {
-  echo '<li><a href="/petlevelhistory.php?petid=' . $petid . '">Training History</a></li>';
+  echo '<li><a href="/pet/levelhistory.php?petid=' . $petid . '">Training History</a></li>';
 
   if($this_pet['love_exp'] >= $exp_required && $this_pet['zombie'] != 'yes')
-    echo '<li><a href="/affectionup.php?petid=' . $petid . '" class="success">Affection Reward!</a></li>';
+    echo '<li><a href="/pet/affectionup.php?petid=' . $petid . '" class="success">Affection Reward!</a></li>';
   if($this_pet['ascend'] == 'yes')
-    echo '<li><a href="/petascend.php?petid=' . $petid . '" class="success">Reincarnate</a></li>';
+    echo '<li><a href="/pet/ascend.php?petid=' . $petid . '" class="success">Reincarnate</a></li>';
   if($this_pet['free_respec'] == 'yes')
-    echo '<li><a href="/petrespec.php?petid=' . $petid . '" class="success">Retrain!</a></li>';
+    echo '<li><a href="/pet/respec.php?petid=' . $petid . '" class="success">Retrain!</a></li>';
 }
 ?>
      </ul>
@@ -141,14 +141,14 @@ if($mother == 'none')
 else if($mother == 'departed')
   echo '<p>' . ucfirst(p_pronoun($this_pet['gender'])) . ' mother is <i class="dim">[departed #' . $this_pet['motherid'] . ']</i>; ';
 else
-  echo '<p>' . ucfirst(p_pronoun($this_pet['gender'])) . ' mother is <a href="/petfamilytree.php?petid=' . $this_pet['motherid'] . '">' . $mother['petname'] . '</a>; ';
+  echo '<p>' . ucfirst(p_pronoun($this_pet['gender'])) . ' mother is <a href="/pet/familytree.php?petid=' . $this_pet['motherid'] . '">' . $mother['petname'] . '</a>; ';
 
 if($father == 'none')
   echo ' ' . p_pronoun($this_pet['gender']) . ' father is unknown.</p>';
 else if($father == 'departed')
   echo ' ' . p_pronoun($this_pet['gender']) . ' father is <i class="dim">[departed #' . $this_pet['fatherid'] . ']</i>.</p>';
 else
-  echo ' ' . p_pronoun($this_pet['gender']) . ' father is <a href="/petfamilytree.php?petid=' . $this_pet['fatherid'] . '">' . $father['petname'] . '</a>.</p>';
+  echo ' ' . p_pronoun($this_pet['gender']) . ' father is <a href="/pet/familytree.php?petid=' . $this_pet['fatherid'] . '">' . $father['petname'] . '</a>.</p>';
 ?>
        </td>
       </tr>
@@ -165,7 +165,7 @@ if($num_siblings > 0)
   echo '<ul>';
 
   foreach($siblings as $sibling)
-    echo '<li><a href="/petfamilytree.php?petid=' . $sibling['idnum'] . '">' . $sibling['petname'] . '</a></li>';
+    echo '<li><a href="/pet/familytree.php?petid=' . $sibling['idnum'] . '">' . $sibling['petname'] . '</a></li>';
 
   echo '</ul>';
 }
@@ -185,7 +185,7 @@ if($num_children)
   echo '<ul>';
 
   foreach($children as $child)
-    echo '<li><a href="/petfamilytree.php?petid=' . $child['idnum'] . '">' . $child['petname'] . '</a></li>';
+    echo '<li><a href="/pet/familytree.php?petid=' . $child['idnum'] . '">' . $child['petname'] . '</a></li>';
 
   echo '</ul>';
 }

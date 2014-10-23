@@ -89,7 +89,7 @@ foreach($petlist as $pet)
   echo '><a href="/myaccount/petprofile.php?petid=' . $pet['idnum'] . '">' . $pet['petname'] . '</a></li> ';
 }
 ?></ul>
-  <ul><li><a href="/petprofile.php?petid=<?= $petid ?>">View <?= $this_pet['petname'] ?>'s profile</a></li></ul>
+  <ul><li><a href="/pet/profile.php?petid=<?= $petid ?>">View <?= $this_pet['petname'] ?>'s profile</a></li></ul>
 <?php
  if($general_message)
    echo '     <p style="color:blue;">' . $general_message . '</p>';

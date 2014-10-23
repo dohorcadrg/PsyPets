@@ -70,7 +70,7 @@ if(count($pets) > 0)
 <tr class="<?= $rowstyle ?>">
 <td><input type="checkbox" name="pet_<?= $pet['idnum'] ?>" /></td>
 <td><?= $pet['idnum'] ?></td>
-<td><a href="/petprofile.php?petid=<?= $pet['idnum'] ?>"><?= $pet['petname'] ?></a></td>
+<td><a href="/pet/profile.php?petid=<?= $pet['idnum'] ?>"><?= $pet['petname'] ?></a></td>
 <td><?= resident_link($owner['display']) ?></td>
 <td><?= $pet['toolid'] ?></td>
 </tr>
