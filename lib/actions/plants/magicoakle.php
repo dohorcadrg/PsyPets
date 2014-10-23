@@ -48,8 +48,18 @@ if($_GET['shake'] == 1)
   {
     if($quantity > 0)
     {
-      add_inventory_quantity($user['user'], '', $itemname, 'Harvested from a Potted Magic Oakle', $this_inventory['location'], $quantity);
-      echo '<li>' . $quantity . '&times; ' . $itemname . '</li>';
+        if($itemname == 'Amber' && mt_rand(1, 10) == 1)
+        {
+            add_inventory_quantity($user['user'], '', 'Bug in Amber', 'Harvested from a Potted Magic Oakle', $this_inventory['location'], 1);
+            echo '<li>1&times; Bug in Amber</li>';
+            $quantity--;
+        }
+
+        if($quantity > 0)
+        {
+            add_inventory_quantity($user['user'], '', $itemname, 'Harvested from a Potted Magic Oakle', $this_inventory['location'], $quantity);
+            echo '<li>' . $quantity . '&times; ' . $itemname . '</li>';
+        }
     }
   }
   
