@@ -39,25 +39,26 @@ if($now_day >= 31 - 14)
 
   if($_GET['dialog'] == 'whattodo')
   {
-    $dialog = '<p>Die...!</p>';
-    $options[] = '<a href="myhouse.php">Run away!</a>';
+    $dialog = '<p>Die!!</p>';
+    $options[] = '<a href="/myhouse.php">Run away!</a>';
   }
   else if($_GET['dialog'] == 'peace')
   {
-    $dialog = '<p>Peace?  No peace.</p>';
-    $options[] = '<a href="cropcircles.php?dialog=whattodo">Ask what it wants you to do</a>';
+    $dialog = '<p>Ha! Peace? No peace.</p>';
+    $options[] = '<a href="/cropcircles.php?dialog=whattodo">Ask what it wants you to do</a>';
   }
   else if($_GET['dialog'] == 'talk' && $num_my_pets > 0 && $now_day < 29)
   {
-    $dialog = '<p>Oh!  You enslaved that human, right?  Good, good... you had me scared for a moment there.  Heh.</p>';
-    $options[] = '<a href="cropcircles.php?dialog=talk2">(dot, dot, dot)</a>';
+    $dialog = '<p>Oh, sorry! I didn\'t see you there at first.</p><p>That must be your human slave, right? Getting a head start, eh? Haha - good!</p><p>No restraining band, though? You must be very confident, or-- eew, don\'t tell me it\'s your...</p><p><i>(The alien shudders.)</i></p><p>Well, what you do with your slaves is your business, I suppose...</p>';
+    $options[] = '<a href="/cropcircles.php?dialog=talk2">(dot, dot, dot)</a>';
   }
   else if($_GET['dialog'] == 'talk2' && $num_my_pets > 0 && $now_day < 29)
   {
-    $dialog = '<p>Too scared to talk, eh?  Heh, yeah, I\'m a little nervous myself, since the humans beat us last year by disguising their pets in Alien Costumes and ambushing us...</p>' .
-              '<p>Ah, but don\'t worry about it.  Just keep an eye out, and if you see anyone suspicious, let your commanding officer know about it.  But for Ki Ri Kashu\'s sake, do <strong>not</strong> zap them with your <a href="encyclopedia2.php?i=2502">Alien Taser</a>!  If you\'re wrong, and zap one of our own, you\'ll be court-martialed for sure!</p>' .
-              '<p>Sorry, I don\'t mean to scare you.  It\'ll be fine, you\'ll see.  When the shipment of <a href="encyclopedia2.php?i=2495">Serum</a> comes in on the 29th, we\'ll finally go on the offensive.  You\'ll have so much fun zaaping humans, you won\'t have time to worry!  Ha, ha!</p>' .
-              '<p>Anyway, I better get back to my patrol.  See you around.</p>';
+    $dialog = '<p>Am I wrong?</p><p>Sorry, I say stupid things when I\'m nervous. You know those humans beat us last year by disguising their pets in Alien Costumes and ambushing us... I guess I keep thinking about it...</p><p>Well, I guess I feel a little better, seeing you\'ve already captured one! Haha!</p>' .
+              '<p>Ah, I\'m sure it\'ll be fine this year. But just in case, keep an eye out, and if you see anyone suspicious, let your commanding officer know about it. But for Ki Ri Kashu\'s sake, do <strong>not</strong> zap them with your <a href="encyclopedia2.php?i=2502">Alien Taser</a>! If you\'re wrong, and zap one of our own, you\'ll be court-martialed for sure!</p>' .
+              '<p>Sorry, sorry, you already know this stuff. I guess I\'m still a little nervous.</p>' .
+              '<p>I wish that shipment of <a href="encyclopedia2.php?i=2495">Serum</a> would just hurry up and get here so we could go on the offensive! I\'d feel a lot better! That\'s supposed to arrive on the 29th, right?</p><p><i>(It checks an electronic device on its wrist.)</i></p><p>Well when it does, I\'ll be having so much fun zaaping humans, I won\'t have time to worry!  Hahaha!</p>' .
+              '<p>Anyway, I better get back to my patrol. See you around.</p>';
   }
   else if($_POST['action'] == 'Infiltrate' && $now_day == 29)
   {
@@ -128,7 +129,7 @@ if($now_day >= 31 - 14)
         }
       }
       else
-        $options[] = '<a href="cropcircles.php?dialog=zaap">Zaap the Crop Circle Alien with an Alien Taser!</a>';
+        $options[] = '<a href="/cropcircles.php?dialog=zaap">Zaap the Crop Circle Alien with an Alien Taser!</a>';
     }
   }
 
@@ -136,19 +137,19 @@ if($now_day >= 31 - 14)
   {
     if($now_day < 29)
     {
-      $dialog = '<p>Tsk!  A human!  It won\'t go as well for you this year as it did last!  Oh no!  We\'re much more prepared, this time!</p>';
+      $dialog = '<p>Tsk! You humans, again!</p><p>Well, it won\'t go as well for you this year as it did last! Oh no! We\'re much more prepared, this time!</p><p>Hahahahahaha!</p>';
       $extra = '<p><i>The Alien cocks its gun.</i></p>';
-      $options[] = '<a href="cropcircles.php?dialog=peace">Ask if there can be a peace between you</a>';
+      $options[] = '<a href="/cropcircles.php?dialog=peace">Ask if there can be a peace between you</a>';
 
       if($num_my_pets > 0)
       {
         foreach($my_pets as $this_pet)
-          $options[] = '<a href="cropcircles.php?dialog=talk&petid=' . $this_pet['idnum'] . '">Have ' . $this_pet['petname'] . ' talk to the Alien</a>';
+          $options[] = '<a href="/cropcircles.php?dialog=talk&petid=' . $this_pet['idnum'] . '">Have ' . $this_pet['petname'] . ' talk to the Alien</a>';
       }
     }
     else
     {
-      $dialog = '<p>Get out of here, human!</p>';
+      $dialog = '<p>A human!? Disgusting! I just can\'t get used to seeing you creatures as anything but our slaves!</p><p>If I had time, I\'d take you in myself, but seeing as I\'m busy, perhaps I\'ll just shoot you, instead...</p>';
       $extra = '<p><i>The Alien cocks its gun.</i></p>';
     }
   }
