@@ -174,7 +174,7 @@ if(strlen($dialog) > 0)
   if($saw_aliens === false)
     add_quest_value($user['idnum'], 'close encounter', 1);
 ?>
-<img src="gfx/npcs/<?= $npc_graphic ?>.png" align="right" width="120" height="80" alt="(An alien!)" />
+<img src="//<?= $SETTINGS['static_domain'] ?>/gfx/npcs/<?= $npc_graphic ?>.png" align="right" width="120" height="80" alt="(An alien!)" />
 <?php
   include 'commons/dialog_open.php';
 
