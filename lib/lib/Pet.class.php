@@ -62,6 +62,24 @@ class Pet
     public function IsSleeping() { return($this->_data['sleeping'] == 'yes'); }
     public function WakeUp() { $this->_data['sleeping'] = 'no'; }
 
+    /** @return int */ public function GoRank() { return $this->_data['go_rank']; }
+
+    public function GoRankDescription()
+    {
+        $rank = $this->_data['go_rank'];
+
+        if($rank <= 30)
+            return (31 - $rank) . ' kyu';
+        else if($rank >= 31 && $rank <= 37)
+            return ($rank - 30) . ' dan (amateur)';
+        else // $rank >= 38
+            return ($rank - 37) . ' dan (professional)';
+    }
+
+    public function IncrementGoRank() { $this->_data['go_rank']++; }
+    public function IsInGoAcademy() { return($this->_data['in_go_academy'] == 'yes'); }
+    public function JoinGoAcademy() { $this->_data['in_go_academy'] = 'yes'; }
+
     /*
     public function Size()
     {
