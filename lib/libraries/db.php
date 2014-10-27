@@ -55,3 +55,8 @@ function fetch_multiple_by($command, $by)
 {
 	return $GLOBALS['database']->FetchMultipleBy($command, $by);
 }
+
+function insert_id()
+{
+    return $GLOBALS['database']->InsertID();
+}

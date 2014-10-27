@@ -1,16 +1,16 @@
 <?php
 abstract class PetQuest
 {
-    private $questProgress;
+    private $_data;
 
-    protected $questProgressData;
+    protected $questProgress;
     protected $participantIds;
     protected $pets;
 
     protected function __construct(&$progress, $pets)
     {
-        $this->questProgress = $progress;
-        $this->questProgressData = json_decode($progress['data']);
+        $this->_data = $progress;
+        $this->questProgress = json_decode($progress['data']);
         $this->pets = $pets;
 
         $this->participantIds = fetch_multiple_by('SELECT petid FROM psypets_pet_quest_pets WHERE questid=' . $progress['idnum'], 'petid');
@@ -35,25 +35,34 @@ abstract class PetQuest
     {
         $progress = $questClass::Init($args);
 
-        // @TODO: create new record:
-        /*
+        $progress['quest'] = $questClass;
+
+        // insert new quest progress record
         fetch_none('
-            INSERT INTO psypets_pet_quest_progress (data) VALUES
+            INSERT INTO psypets_pet_quest_progress (quest, data) VALUES (' . quote_smart($questClass) . ', ' . quote_smart(json_encode($progress)) . ')
         ');
-        */
-        // @TODO: create records for participating pets
+
+        $progress['idnum'] = insert_id();
+
+        // insert records for participating pets
+
+        $inserts = array();
+        foreach($pets as $pet)
+            $inserts[] = '(' . $pet->ID() . ', ' . $progress['idnum'] . ')';
+
+        fetch_none('INSERT INTO psypets_pet_quest_pets (petid, questid) VALUES ' . implode(',', $inserts));
 
         return new $questClass($progress, $pets);
     }
 
     protected function Update()
     {
-        $this->questProgress['data'] = json_encode($this->questProgressData);
+        $this->_data['data'] = json_encode($this->questProgress);
 
         fetch_none('
             UPDATE psypets_pet_quest_progress
-            SET data=' . quote_smart($this->questProgress['data']) . '
-            WHERE idnum=' . (int)$this->questProgress['idnum'] . '
+            SET data=' . quote_smart($this->_data['data']) . '
+            WHERE idnum=' . (int)$this->_data['idnum'] . '
             LIMIT 1
         ');
     }
