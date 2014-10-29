@@ -18,13 +18,16 @@ class PetQuestGo extends PetQuest
     {
         $possibilities = array();
 
+        /** @var Pet $thisPet */
+        $thisPet = $this->pets[0];
+
+        $petRank = $thisPet->GoRank();
+
         // @TODO: get goBook, goBoard, and computer in house, if any
-        // @TODO: get a higherRankedPet from the game, if any
         // @TODO: get a goPlayingFriend, if any
-        // @TODO: get similarlyRankedPet; any pet that is close in rank to this pet
-        //        for 1-30, up to 3 levels difference
-        //        for 31-37, up to 2 levels difference
-        //        for 38+, up to 1 level difference
+
+        $similarlyRankedPet = $this->findSimilarlyRankedPet($thisPet);
+        $higherRankedPet = $this->findHigherRankedPet($thisPet);
 
         // study go book
         if($goBook && $petRank <= 30)
@@ -72,8 +75,8 @@ class PetQuestGo extends PetQuest
             $possibilities[] = 13; // teach at Go Academy
         }
 
-        if($training > 5 && mt_rand(1, 100) <= $training && $similarlyRankedPet)
-            $possibilties[] = 0; // play a game to improve rank
+        if($training > 4 + $petRank && mt_rand(1, 97 + $petRank * 3) <= $training && $similarlyRankedPet)
+            $possibilties = array(0); // DEFINITELY play a ranked game, attempting to improve rank
 
         switch($possibilities[array_rand($possibilities)])
         {
@@ -81,18 +84,28 @@ class PetQuestGo extends PetQuest
                 // elo ratings and things would be fun, but we want ALL pets to be able to succeed
                 // wins will grant advances in rank; losses will never set you back
 
-                $won = mt_rand(1, 2) == 1;
-                $description = $this->pets[0]->Name() . ' played a ranked game against ' . $similarlyRankedPet . ', and ' . ($won ? 'won' : 'lost') . '!';
+                $petScore = success_roll($thisPet->SkillAtGo(), 10, 7);
+                $otherPetScore = success_roll($similarlyRankedPet->SkillAtGo(), 10, 7);
 
-                if($won && $this->pets[0]->GoRank() < 47)
+                // apply handicap based on difference in skill
+                if($petRank < $similarlyRankedPet->GoRank())
+                    $petScore++;
+                else if($petRank > $similarlyRankedPet->GoRank())
+                    $otherPetScore++;
+
+                $won = ($petScore > $otherPetScore || ($petScore == $otherPetScore && mt_rand(1, 2) == 1));
+
+                $description = $thisPet->Name() . ' played a ranked game against ' . $similarlyRankedPet->Name() . ', and ' . ($won ? 'won' : 'lost') . '!';
+
+                if($won && $petRank < 47)
                 {
-                    $this->pets[0]->IncrementGoRank();
-                    $description .= ' ' . $this->pets[0]->Name() . ' is now a ' . $this->pets[0]->GoRankDescription() . ' Go player!';
+                    $thisPet->IncrementGoRank();
+                    $description .= ' ' . $thisPet->Name() . ' is now a ' . $thisPet->GoRankDescription() . ' Go player!';
                 }
 
                 // @TODO: mark quest as being done
 
-                if($this->pets[0]->GoRank() >= 38) // pro player
+                if($petRank >= 38) // pro player
                 {
                     // @TODO: get base money; get more money if($won)
                 }
@@ -105,20 +118,24 @@ class PetQuestGo extends PetQuest
 
                 break;
             case 1:
-                $description = $this->pets[0]->Name() . ' studied ' . $goBook->Name() . '.';
+                $description = $thisPet->Name() . ' studied ' . $goBook->Name() . '.';
                 $this->questProgress['training']++;
+                $this->TrainGo($thisPet, 3, 1, 1);
                 break;
             case 2:
                 $description = $this->pets[0]->Name() . ' studied Go on-line.';
                 $this->questProgress['training']++;
+                $this->TrainGo($thisPet, 3, 1, 1);
                 break;
             case 3:
                 $description = $this->pets[0]->Name() . ' got on-line and watched some videos of ' . $higherRankedPet->Name() . '\'s games.';
                 $this->questProgress['training']++;
+                $this->TrainGo($thisPet, 3, 1, 1);
                 break;
             case 4:
                 $description = $this->pets[0]->Name() . ' got out a Go board, and studied some Go problems from ' . $goBook->Name() . '.';
                 $this->questProgress['training']++;
+                $this->TrainGo($thisPet, 3, 1, 1);
                 break;
             case 5:
                 // @TODO: adjust relationship of pets
@@ -127,6 +144,7 @@ class PetQuestGo extends PetQuest
                 {
                     $description = $this->pets[0]->Name() . ' invited ' . $goPlayingFriend->Name() . ' over. They played Go together.';
                     $this->questProgress['training']++;
+                    $this->TrainGo($thisPet, 1, 1, 1);
                 }
                 break;
             case 6:
@@ -136,28 +154,33 @@ class PetQuestGo extends PetQuest
                 {
                     $description = $this->pets[0]->Name() . ' invited ' . $goPlayingFriend->Name() . ' over. They studied Go problems together.';
                     $this->questProgress['training']++;
+                    $this->TrainGo($thisPet, 3, 1, 1);
                 }
                 break;
             case 7:
                 $description = $this->pets[0]->Name() . ' watched a Go game on-line.';
                 $this->questProgress['training']++;
+                $this->TrainGo($thisPet, 2, 1, 1);
                 break;
             case 8:
                 $description = $this->pets[0]->Name() . ' played a Go game on-line, and ' . (mt_rand(1, 2) == 1 ? 'won' : 'lost') . '.';
                 $this->questProgress['training'] += mt_rand(1, 3) == 1 ? 2 : 1;
+                $this->TrainGo($thisPet, 1, 1, 1);
                 break;
             case 9:
                 $description = $this->pets[0]->Name() . ' went to The Park to watch people play Go.';
                 $this->questProgress['training']++;
+                $this->TrainGo($thisPet, 2, 1, 1);
                 break;
             case 10:
-                // @TODO: find an amateur go-playing stranger
-                $goPlayingStranger = $this->findGoPlayingStrangerAtPark();
+                $goPlayingStranger = $this->findGoPlayingStrangerAtPark($this->pets[0]);
 
                 if($goPlayingStranger && mt_rand(1, 2) == 1)
                 {
-                    $thisPetWinsChance = 50 + ($this->pets[0]->GoRank() - $goPlayingStranger->GoRank()) * 3; // possible to get <0% or >100% chance of victory
-                    $thisPetWon = mt_rand(1, 100) <= $thisPetWinsChance;
+                    $petScore = success_roll($this->pets[0]->SkillAtGo(), 10, 7);
+                    $otherPetScore = success_roll($goPlayingStranger->SkillAtGo(), 10, 7);
+
+                    $thisPetWon = ($petScore > $otherPetScore || ($petScore == $otherPetScore && mt_rand(1, 2) == 1));
 
                     $description = $this->pets[0]->Name() . ' went to The Park to play Go, and met ' . $goPlayingStranger->Name() . '.';
                     $description .= ' They played a game; ' .  ($thisPetWon ? $this->pets[0]->Name() : $goPlayingStranger->Name()) . ' won.';
@@ -175,6 +198,7 @@ class PetQuestGo extends PetQuest
                 }
 
                 $this->questProgress['training'] += mt_rand(1, 3) == 1 ? 2 : 1;
+                $this->TrainGo($thisPet, 1, 1, 1);
                 break;
             case 11:
                 // @TODO: find an academy go-playing stranger
@@ -191,13 +215,128 @@ class PetQuestGo extends PetQuest
                     $description = $this->pets[0]->Name() . ' went to study at the Go Academy.';
 
                 $this->questProgress['training']++;
+                $this->TrainGo($thisPet, 2, 1, 1);
                 break;
             case 12:
                 $description = $this->pets[0]->Name() . ' received an invitation to join the Go Academy, and accepted!';
-                $this->pets[0]->JoinGoAcademy();
+                $thisPet->JoinGoAcademy();
                 break;
         }
 
         // @TODO: add log for journal and pet
+    }
+
+    /**
+     * @param Pet $pet
+     * @param int $goChance
+     * @param int $intChance
+     * @param int $witChance
+     *
+     * Train a random stat by 1 experience point
+     * ex: goChance = 3, intChance = 1, witChance = 1
+     *     chance to train 'go' is 3:5, chance to train 'int' is 1:5, chance to train 'wit' is 1:5
+     */
+    private function TrainGo($pet, $goChance, $intChance, $witChance)
+    {
+        $r = mt_rand(1, $goChance + $intChance + $witChance);
+
+        if($r <= $goChance)
+            $pet->Train('go', 1, $hour);
+        else if($r <= $goChance + $intChance)
+            $pet->Train('int', 1, $hour);
+        else
+            $pet->Train('wit', 1, $hour);
+    }
+
+    /**
+     * @var Pet $thisPet
+     * @return Pet|null
+     */
+    private function findGoPlayingStrangerAtPark($thisPet)
+    {
+        // @TODO: there's a better way than ORDER BY RAND(), but I forget; look it up
+        $petData = fetch_single('
+            SELECT *
+            FROM monster_pets
+            WHERE
+                idnum!=' . quote_smart($thisPet->ID()) . ' AND
+                go_rank<=30
+            ORDER BY RAND()
+            LIMIT 1
+        ');
+
+        if(!$petData)
+            return null;
+        else
+        {
+            $owner = User::GetByLogin($petData['owner']);
+
+            return Pet::Load($petData, $owner);
+        }
+    }
+
+    /**
+     * @var Pet $thisPet
+     * @return Pet|null
+     */
+    private function findHigherRankedPet($thisPet)
+    {
+        // @TODO: there's a better way than ORDER BY RAND(), but I forget; look it up
+        $petData = fetch_single('
+            SELECT *
+            FROM monster_pets
+            WHERE
+                idnum!=' . quote_smart($thisPet->ID()) . ' AND
+                go_rank>' . $thisPet->GoRank() . '
+            ORDER BY RAND()
+            LIMIT 1
+        ');
+
+        if(!$petData)
+            return null;
+        else
+        {
+            $owner = User::GetByLogin($petData['owner']);
+
+            return Pet::Load($petData, $owner);
+        }
+    }
+
+    /**
+     * @param Pet $thisPet
+     * @return Pet|null
+     */
+    private function findSimilarlyRankedPet($thisPet)
+    {
+        //        for 1-30, up to 3 levels difference
+        //        for 31-37, up to 2 levels difference
+        //        for 38+, up to 1 level difference
+        if($thisPet->GoRank() <= 30)
+            $delta = 3;
+        else if($thisPet->GoRank() <= 37)
+            $delta = 2;
+        else
+            $delta = 1;
+
+        // @TODO: there's a better way than ORDER BY RAND(), but I forget; look it up
+        $petData = fetch_single('
+            SELECT *
+            FROM monster_pets
+            WHERE
+                idnum!=' . quote_smart($thisPet->ID()) . ' AND
+                go_rank>=' . ($thisPet->GoRank() - $delta) . ' AND
+                go_rank<=' . ($thisPet->GoRank() + $delta) . '
+            ORDER BY RAND()
+            LIMIT 1
+        ');
+
+        if(!$petData)
+            return null;
+        else
+        {
+            $owner = User::GetByLogin($petData['owner']);
+
+            return Pet::Load($petData, $owner);
+        }
     }
 }
