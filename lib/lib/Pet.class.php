@@ -62,6 +62,16 @@ class Pet
     public function IsSleeping() { return($this->_data['sleeping'] == 'yes'); }
     public function WakeUp() { $this->_data['sleeping'] = 'no'; }
 
+    public function Intelligence() { return $this->_data['int']; }
+    public function Strength() { return $this->_data['str']; }
+    public function ManualDexterity() { return $this->_data['dex']; }
+    public function Stamina() { return $this->_data['sta']; }
+    public function Perception() { return $this->_data['per']; }
+    public function Improvisation() { return $this->_data['wit']; }
+    public function Go() { return $this->_data['go']; }
+    public function Chess() { return $this->_data['chess']; }
+    public function Astronomy() { return $this->_data['astronomy']; }
+
     /** @return int */ public function GoRank() { return $this->_data['go_rank']; }
 
     public function GoRankDescription()
@@ -74,6 +84,11 @@ class Pet
             return ($rank - 30) . ' dan (amateur)';
         else // $rank >= 38
             return ($rank - 37) . ' dan (professional)';
+    }
+
+    public function SkillAtGo()
+    {
+        return $this->Intelligence() * 0.8 + $this->Improvisation() * 0.4 + $this->Go() * 1.8;
     }
 
     public function IncrementGoRank() { $this->_data['go_rank']++; }
