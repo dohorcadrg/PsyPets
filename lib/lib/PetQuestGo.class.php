@@ -120,22 +120,22 @@ class PetQuestGo extends PetQuest
             case 1:
                 $description = $thisPet->Name() . ' studied ' . $goBook->Name() . '.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 3, 1, 1);
+                $this->TrainGo($thisPet, 80, 15, 5);
                 break;
             case 2:
                 $description = $this->pets[0]->Name() . ' studied Go on-line.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 3, 1, 1);
+                $this->TrainGo($thisPet, 80, 15, 5);
                 break;
             case 3:
                 $description = $this->pets[0]->Name() . ' got on-line and watched some videos of ' . $higherRankedPet->Name() . '\'s games.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 3, 1, 1);
+                $this->TrainGo($thisPet, 70, 20, 10);
                 break;
             case 4:
                 $description = $this->pets[0]->Name() . ' got out a Go board, and studied some Go problems from ' . $goBook->Name() . '.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 3, 1, 1);
+                $this->TrainGo($thisPet, 75, 20, 5);
                 break;
             case 5:
                 // @TODO: adjust relationship of pets
@@ -144,7 +144,7 @@ class PetQuestGo extends PetQuest
                 {
                     $description = $this->pets[0]->Name() . ' invited ' . $goPlayingFriend->Name() . ' over. They played Go together.';
                     $this->questProgress['training']++;
-                    $this->TrainGo($thisPet, 1, 1, 1);
+                    $this->TrainGo($thisPet, 45, 25, 30);
                 }
                 break;
             case 6:
@@ -154,23 +154,23 @@ class PetQuestGo extends PetQuest
                 {
                     $description = $this->pets[0]->Name() . ' invited ' . $goPlayingFriend->Name() . ' over. They studied Go problems together.';
                     $this->questProgress['training']++;
-                    $this->TrainGo($thisPet, 3, 1, 1);
+                    $this->TrainGo($thisPet, 70, 20, 10);
                 }
                 break;
             case 7:
                 $description = $this->pets[0]->Name() . ' watched a Go game on-line.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 2, 1, 1);
+                $this->TrainGo($thisPet, 75, 20, 5);
                 break;
             case 8:
                 $description = $this->pets[0]->Name() . ' played a Go game on-line, and ' . (mt_rand(1, 2) == 1 ? 'won' : 'lost') . '.';
                 $this->questProgress['training'] += mt_rand(1, 3) == 1 ? 2 : 1;
-                $this->TrainGo($thisPet, 1, 1, 1);
+                $this->TrainGo($thisPet, 45, 25, 30);
                 break;
             case 9:
                 $description = $this->pets[0]->Name() . ' went to The Park to watch people play Go.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 2, 1, 1);
+                $this->TrainGo($thisPet, 70, 20, 10);
                 break;
             case 10:
                 $goPlayingStranger = $this->findGoPlayingStrangerAtPark($this->pets[0]);
@@ -198,7 +198,7 @@ class PetQuestGo extends PetQuest
                 }
 
                 $this->questProgress['training'] += mt_rand(1, 3) == 1 ? 2 : 1;
-                $this->TrainGo($thisPet, 1, 1, 1);
+                $this->TrainGo($thisPet, 45, 25, 30);
                 break;
             case 11:
                 // @TODO: find an academy go-playing stranger
@@ -215,7 +215,7 @@ class PetQuestGo extends PetQuest
                     $description = $this->pets[0]->Name() . ' went to study at the Go Academy.';
 
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 2, 1, 1);
+                $this->TrainGo($thisPet, 65, 25, 10);
                 break;
             case 12:
                 $description = $this->pets[0]->Name() . ' received an invitation to join the Go Academy, and accepted!';
