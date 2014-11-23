@@ -29,6 +29,10 @@ class PetQuestGo extends PetQuest
         $similarlyRankedPet = $this->findSimilarlyRankedPet($thisPet);
         $higherRankedPet = $this->findHigherRankedPet($thisPet);
 
+        // visit the library
+        if(!$computer && !$goBook && $petRank <= 30)
+            $possibilities[] = 13;
+
         // study go book
         if($goBook && $petRank <= 30)
             $possibilities[] = 1;
@@ -76,7 +80,7 @@ class PetQuestGo extends PetQuest
         }
 
         if($training > 4 + $petRank && mt_rand(1, 97 + $petRank * 3) <= $training && $similarlyRankedPet)
-            $possibilties = array(0); // DEFINITELY play a ranked game, attempting to improve rank
+            $possibilities = array(0); // DEFINITELY play a ranked game, attempting to improve rank
 
         switch($possibilities[array_rand($possibilities)])
         {
@@ -120,22 +124,22 @@ class PetQuestGo extends PetQuest
             case 1:
                 $description = $thisPet->Name() . ' studied ' . $goBook->Name() . '.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 80, 15, 5);
+                $this->Train(array('go' => 80, 'int' => 15, 'wit' => 5));
                 break;
             case 2:
                 $description = $this->pets[0]->Name() . ' studied Go on-line.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 80, 15, 5);
+                $this->Train(array('go' => 80, 'int' => 15, 'wit' => 5));
                 break;
             case 3:
                 $description = $this->pets[0]->Name() . ' got on-line and watched some videos of ' . $higherRankedPet->Name() . '\'s games.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 70, 20, 10);
+                $this->Train(array('go' => 70, 'int' => 20, 'wit' => 10));
                 break;
             case 4:
                 $description = $this->pets[0]->Name() . ' got out a Go board, and studied some Go problems from ' . $goBook->Name() . '.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 75, 20, 5);
+                $this->Train(array('go' => 75, 'int' => 20, 'wit' => 5));
                 break;
             case 5:
                 // @TODO: adjust relationship of pets
@@ -144,7 +148,7 @@ class PetQuestGo extends PetQuest
                 {
                     $description = $this->pets[0]->Name() . ' invited ' . $goPlayingFriend->Name() . ' over. They played Go together.';
                     $this->questProgress['training']++;
-                    $this->TrainGo($thisPet, 45, 25, 30);
+                    $this->Train(array('go' => 45, 'int' => 25, 'wit' => 30));
                 }
                 break;
             case 6:
@@ -154,23 +158,23 @@ class PetQuestGo extends PetQuest
                 {
                     $description = $this->pets[0]->Name() . ' invited ' . $goPlayingFriend->Name() . ' over. They studied Go problems together.';
                     $this->questProgress['training']++;
-                    $this->TrainGo($thisPet, 70, 20, 10);
+                    $this->Train(array('go' => 70, 'int' => 20, 'wit' => 10));
                 }
                 break;
             case 7:
                 $description = $this->pets[0]->Name() . ' watched a Go game on-line.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 75, 20, 5);
+                $this->Train(array('go' => 75, 'int' => 20, 'wit' => 5));
                 break;
             case 8:
                 $description = $this->pets[0]->Name() . ' played a Go game on-line, and ' . (mt_rand(1, 2) == 1 ? 'won' : 'lost') . '.';
                 $this->questProgress['training'] += mt_rand(1, 3) == 1 ? 2 : 1;
-                $this->TrainGo($thisPet, 45, 25, 30);
+                $this->Train(array('go' => 45, 'int' => 25, 'wit' => 30));
                 break;
             case 9:
                 $description = $this->pets[0]->Name() . ' went to The Park to watch people play Go.';
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 70, 20, 10);
+                $this->Train(array('go' => 70, 'int' => 20, 'wit' => 10));
                 break;
             case 10:
                 $goPlayingStranger = $this->findGoPlayingStrangerAtPark($this->pets[0]);
@@ -198,11 +202,11 @@ class PetQuestGo extends PetQuest
                 }
 
                 $this->questProgress['training'] += mt_rand(1, 3) == 1 ? 2 : 1;
-                $this->TrainGo($thisPet, 45, 25, 30);
+                $this->Train(array('go' => 45, 'int' => 25, 'wit' => 30));
                 break;
             case 11:
                 // @TODO: find an academy go-playing stranger
-                $goPlayingStranger = $this->findGoPlayingStrangerInAcademy();
+                $goPlayingStranger = $this->findGoPlayingStrangerInAcademy($thisPet);
 
                 if($goPlayingStranger && mt_rand(1, 2) == 1)
                 {
@@ -215,37 +219,20 @@ class PetQuestGo extends PetQuest
                     $description = $this->pets[0]->Name() . ' went to study at the Go Academy.';
 
                 $this->questProgress['training']++;
-                $this->TrainGo($thisPet, 65, 25, 10);
+                $this->Train(array('go' => 65, 'int' => 25, 'wit' => 10));
                 break;
             case 12:
                 $description = $this->pets[0]->Name() . ' received an invitation to join the Go Academy, and accepted!';
                 $thisPet->JoinGoAcademy();
                 break;
+            case 13:
+                $description = $thisPet->Name() . ' went to The Library and found a Go book to study.';
+                $this->questProgress['training']++;
+                $this->Train(array('go' => 80, 'int' => 15, 'wit' => 5));
+                break;
         }
 
         // @TODO: add log for journal and pet
-    }
-
-    /**
-     * @param Pet $pet
-     * @param int $goChance
-     * @param int $intChance
-     * @param int $witChance
-     *
-     * Train a random stat by 1 experience point
-     * ex: goChance = 3, intChance = 1, witChance = 1
-     *     chance to train 'go' is 3:5, chance to train 'int' is 1:5, chance to train 'wit' is 1:5
-     */
-    private function TrainGo($pet, $goChance, $intChance, $witChance)
-    {
-        $r = mt_rand(1, $goChance + $intChance + $witChance);
-
-        if($r <= $goChance)
-            $pet->Train('go', 1, $hour);
-        else if($r <= $goChance + $intChance)
-            $pet->Train('int', 1, $hour);
-        else
-            $pet->Train('wit', 1, $hour);
     }
 
     /**
@@ -261,6 +248,33 @@ class PetQuestGo extends PetQuest
             WHERE
                 idnum!=' . quote_smart($thisPet->ID()) . ' AND
                 go_rank<=30
+            ORDER BY RAND()
+            LIMIT 1
+        ');
+
+        if(!$petData)
+            return null;
+        else
+        {
+            $owner = User::GetByLogin($petData['owner']);
+
+            return Pet::Load($petData, $owner);
+        }
+    }
+
+    /**
+     * @var Pet $thisPet
+     * @return Pet|null
+     */
+    private function findGoPlayingStrangerInAcademy($thisPet)
+    {
+        // @TODO: there's a better way than ORDER BY RAND(), but I forget; look it up
+        $petData = fetch_single('
+            SELECT *
+            FROM monster_pets
+            WHERE
+                idnum!=' . quote_smart($thisPet->ID()) . ' AND
+                in_go_academy=\'yes\'
             ORDER BY RAND()
             LIMIT 1
         ');

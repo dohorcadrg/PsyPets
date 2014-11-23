@@ -5,7 +5,7 @@ abstract class PetQuest
 
     protected $questProgress;
     protected $participantIds;
-    protected $pets;
+    /** @var Pet[] */ protected $pets;
 
     protected function __construct(&$progress, $pets)
     {
@@ -31,6 +31,12 @@ abstract class PetQuest
     /** @return array */
     abstract protected function Init($args);
 
+    /**
+     * @param $questClass
+     * @param Pet[] $pets
+     * @param $args
+     * @return mixed
+     */
     public static function Insert($questClass, $pets, $args)
     {
         $progress = $questClass::Init($args);
@@ -114,7 +120,7 @@ abstract class PetQuest
      * @param User $user
      * @return array
      */
-    public static function SelectForUser($user, $pets)
+    public static function SelectForUser($user, $pets, $includeComplete = false)
     {
         $quests = array();
 
@@ -123,11 +129,42 @@ abstract class PetQuest
             LEFT JOIN psypets_pet_quest_pets ON psypets_pet_quest_progress.idnum=psypets_pet_quest_pets.questid
             LEFT JOIN monster_pets ON psypets_pet_quest_pets.petid=monster_pets.idnum
             WHERE monster_pets.user=' . quote_smart($user->UserName()) . '
+            ' . ($includeComplete ? '' : 'AND psypets_pet_quest_progress.complete=\'no\'') . '
         ');
 
         foreach($progresses as $progress)
             $quests[] = self::Load($progress, $pets);
 
         return $quests;
+    }
+
+    /**
+     * Train a random stat by 1 experience point
+     * ex: goChance = 2, intChance = 5, witChance = 3
+     *     chance to train 'go' is 2:10, chance to train 'int' is 5:10, chance to train 'wit' is 3:10
+     */
+    protected function Train($skills)
+    {
+        // go => 2, int => 5, wit => 3 BECOMES go => 2, int => 7, wit => 10
+        $total = 0;
+        foreach($skills as $skill => $chance)
+        {
+            $total += $chance;
+            $skills[$skill] = $chance;
+        }
+
+        foreach($this->pets as $pet)
+        {
+            $r = mt_rand(1, $total);
+
+            foreach($skills as $skill => $chance)
+            {
+                if($r <= $chance)
+                {
+                    $pet->Train($skill, 1, $hour);
+                    break;
+                }
+            }
+        }
     }
 }

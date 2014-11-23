@@ -62,15 +62,17 @@ class Pet
     public function IsSleeping() { return($this->_data['sleeping'] == 'yes'); }
     public function WakeUp() { $this->_data['sleeping'] = 'no'; }
 
-    public function Intelligence() { return $this->_data['int']; }
-    public function Strength() { return $this->_data['str']; }
-    public function ManualDexterity() { return $this->_data['dex']; }
-    public function Stamina() { return $this->_data['sta']; }
-    public function Perception() { return $this->_data['per']; }
-    public function Improvisation() { return $this->_data['wit']; }
-    public function Go() { return $this->_data['go']; }
-    public function Chess() { return $this->_data['chess']; }
-    public function Astronomy() { return $this->_data['astronomy']; }
+    /** @return int */ public function Intelligence() { return $this->_data['int']; }
+    /** @return int */ public function Strength() { return $this->_data['str']; }
+    /** @return int */ public function ManualDexterity() { return $this->_data['dex']; }
+    /** @return int */ public function Stamina() { return $this->_data['sta']; }
+    /** @return int */ public function Perception() { return $this->_data['per']; }
+    /** @return int */ public function Improvisation() { return $this->_data['wit']; }
+    /** @return int */ public function Go() { return $this->_data['go']; }
+    /** @return int */ public function Chess() { return $this->_data['chess']; }
+    /** @return int */ public function Astronomy() { return $this->_data['astronomy']; }
+    /** @return int */ public function Smithing() { return $this->_data['smi']; }
+    /** @return int */ public function Tailoring() { return $this->_data['tai']; }
 
     /** @return int */ public function GoRank() { return $this->_data['go_rank']; }
 
@@ -88,10 +90,33 @@ class Pet
 
     public function SkillAtGo()
     {
-        return $this->Intelligence() * 0.8 + $this->Improvisation() * 0.4 + $this->Go() * 1.8;
+        return $this->Go() * 1.8 + $this->Intelligence() * 0.8 + $this->Improvisation() * 0.4;
     }
 
-    public function IncrementGoRank() { $this->_data['go_rank']++; }
+    /**
+     * @param string $craft
+     * @throws Exception
+     * @return int
+     */
+    public function SkillAtCraft($craft)
+    {
+        switch($craft)
+        {
+            case 'smith': return $this->Smithing() + $this->Strength() * 0.7 + $this->Stamina() * 0.6 + $this->ManualDexterity() * 0.5 + $this->Improvisation() * 0.2;
+            case 'tailor': return $this->Tailoring() * 1.2 + $this->ManualDexterity() + $this->Improvisation() * 0.8;
+            default: throw new Exception('unknown skill craft type: ' . $craft);
+        }
+    }
+
+    public function IncrementGoRank()
+    {
+        $this->_data['go_rank']++;
+
+        // once you're pro, you can no longer be in the Go Academy
+        if($this->_data['go_rank'] >= 38 && $this->_data['in_go_academy'] == 'yes')
+            $this->_data['in_go_academy'] = 'no';
+    }
+
     public function IsInGoAcademy() { return($this->_data['in_go_academy'] == 'yes'); }
     public function JoinGoAcademy() { $this->_data['in_go_academy'] = 'yes'; }
 
