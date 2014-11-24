@@ -80,28 +80,39 @@ class PetQuestCraft extends PetQuest
     {
         $stat = self::$TYPE_TO_SKILL[$this->questProgress['type']];
 
+        $skillBook = $this->FindSkillBook();
+        $computer = $this->FindItemNamed(Item::$COMPUTERS);
+        $paper = $this->FindItemNamed('Paper');
+
         $possibilities = array();
 
         // go to the library
         $possibilities[] = 1;
 
-        if($computer)
+        if($computer !== false)
         {
             $possibilities[] = 2; // look stuff up online
             $possibilities[] = 3; // flesh out ideas on computer
         }
 
         // read book
-        if($skillBook)
+        if($skillBook !== false)
             $possibilities[] = 4;
 
         // sketch stuff out on paper
-        if($paper)
-            $possibilities[] = 5;
+        //if($paper)
+        //    $possibilities[] = 5;
 
         // group discussion
         if(count($this->pets) > 0)
             $possibilities[] = 6;
+
+        if($this->questProgress['type'] == 'tailor')
+        {
+            $mannequin = $this->FindItemNamed('Mannequin');
+            if($mannequin)
+                $possibilities[] = 7;
+        }
 
         switch($possibilities[array_rand($possibilities)])
         {
@@ -111,32 +122,39 @@ class PetQuestCraft extends PetQuest
                 break;
 
             case 2:
-                $description = $this->ListParticipants() . ' looked online for information.';
+                $description = $this->ListParticipants() . ' used ' . $computer . ' to look online for information.';
                 $this->Train(array('int' => 60, $stat => 40));
                 break;
 
             case 3:
-                $description = $this->ListParticipants() . ' got on the computer to flesh out ideas.';
+                $description = $this->ListParticipants() . ' used ' . $computer . ' to flesh out ideas.';
                 $this->Train(array('int' => 40, $stat => 40, 'wit' => 20));
                 break;
 
             case 4:
-                $description = $this->ListParticipants() . ' looked through ' . $skillBook->getName() . ' to look for ideas.';
+                $description = $this->ListParticipants() . ' looked through ' . $skillBook . ' for ideas.';
                 $this->Train(array('int' => 60, $stat => 40));
                 break;
 
+            /*
             case 5:
                 $description = $this->ListParticipants() . ' sketched out some ideas on Paper.';
                 $this->Train(array('int' => 40, $stat => 40, 'wit' => 20));
                 // @TODO: turn paper into notes item, depending on skill (ex: Smithing Notes), which count as "books" that can be studied
                 // greater pet skills = better book (Simple Smithing Notes, Smithing Notes, Advanced Smithing Notes, Masterful Smithing Notes?)
                 break;
+            */
 
             case 6:
                 // @TODO: choose adjective based on pet personalities (ex: serious vs. fun)
                 $description = $this->ListParticipants() . ' talked excitedly about the project.';
                 $this->Train(array('int' => 40, $stat => 40, 'wit' => 20));
-               break;
+                break;
+
+            case 7:
+                $description = $this->ListParticipants() . ' used ' . $mannequin . ' to flesh out ideas.';
+                $this->Train(array($stat => 60, 'int' => 20, 'wit' => 20));
+                break;
         }
 
         $fraction = 1.25;
@@ -200,5 +218,17 @@ class PetQuestCraft extends PetQuest
     protected function Finish()
     {
         // @TODO: hand out yield, and finish project
+    }
+
+    /**
+     * @return bool|string
+     */
+    protected function FindSkillBook()
+    {
+        switch($this->questProgress['type'])
+        {
+            case 'smith': return $this->FindItemNamed(Item::$SMITHING_BOOKS);
+            default: return false;
+        }
     }
 }

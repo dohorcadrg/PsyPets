@@ -53,6 +53,7 @@ class Pet
 
     public function ID() { return $this->_data['idnum']; }
     public function Name() { return $this->_data['petname']; }
+    public function Owner() { return $this->user; }
 
     public function ReadyAction() { $this->performedAction = false; }
     public function MayAct() { return !$this->performedAction && !$this->IsDead(); }

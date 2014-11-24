@@ -23,6 +23,7 @@ class PetQuestGo extends PetQuest
 
         $petRank = $thisPet->GoRank();
 
+        $computer = $this->FindItemNamed(Item::$COMPUTERS);
         // @TODO: get goBook, goBoard, and computer in house, if any
         // @TODO: get a goPlayingFriend, if any
 
@@ -30,7 +31,7 @@ class PetQuestGo extends PetQuest
         $higherRankedPet = $this->findHigherRankedPet($thisPet);
 
         // visit the library
-        if(!$computer && !$goBook && $petRank <= 30)
+        if($computer === false && !$goBook && $petRank <= 30)
             $possibilities[] = 13;
 
         // study go book
@@ -38,11 +39,11 @@ class PetQuestGo extends PetQuest
             $possibilities[] = 1;
 
         // study go online
-        if($computer && $petRank <= 30)
+        if($computer !== false && $petRank <= 30)
             $possibilities[] = 2;
 
         // study games of a higher-ranked pet
-        if($computer && $petRank > 10 && $higherRankedPet)
+        if($computer !== false && $petRank > 10 && $higherRankedPet)
             $possibilities[] = 3;
 
         // practice go problems on own with board and book
@@ -54,7 +55,7 @@ class PetQuestGo extends PetQuest
             $possibilities[] = mt_rand(5, 6); // 5 = play  together; 6 = study together
 
         // play online
-        if($computer)
+        if($computer !== false)
             $possibilities[] = mt_rand(7, 8); // 7 = play; 8 = watch
 
         // watch games at The Park
@@ -132,7 +133,7 @@ class PetQuestGo extends PetQuest
                 $this->Train(array('go' => 80, 'int' => 15, 'wit' => 5));
                 break;
             case 3:
-                $description = $this->pets[0]->Name() . ' got on-line and watched some videos of ' . $higherRankedPet->Name() . '\'s games.';
+                $description = $this->pets[0]->Name() . ' used ' . $computer . ' to watch videos of ' . $higherRankedPet->Name() . '\'s games on-line.';
                 $this->questProgress['training']++;
                 $this->Train(array('go' => 70, 'int' => 20, 'wit' => 10));
                 break;
@@ -162,12 +163,12 @@ class PetQuestGo extends PetQuest
                 }
                 break;
             case 7:
-                $description = $this->pets[0]->Name() . ' watched a Go game on-line.';
+                $description = $this->pets[0]->Name() . ' used ' . $computer . ' to watch a Go game on-line.';
                 $this->questProgress['training']++;
                 $this->Train(array('go' => 75, 'int' => 20, 'wit' => 5));
                 break;
             case 8:
-                $description = $this->pets[0]->Name() . ' played a Go game on-line, and ' . (mt_rand(1, 2) == 1 ? 'won' : 'lost') . '.';
+                $description = $this->pets[0]->Name() . ' used ' . $computer . ' to play a Go game on-line, and ' . (mt_rand(1, 2) == 1 ? 'won' : 'lost') . '.';
                 $this->questProgress['training'] += mt_rand(1, 3) == 1 ? 2 : 1;
                 $this->Train(array('go' => 45, 'int' => 25, 'wit' => 30));
                 break;

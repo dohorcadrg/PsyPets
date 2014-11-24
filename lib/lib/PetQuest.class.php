@@ -167,4 +167,67 @@ abstract class PetQuest
             }
         }
     }
+
+    /**
+     * @param string|string[] $name
+     * @return bool|array
+     */
+    protected function FindItemNamed($name)
+    {
+        $houses = $this->GetPetHouses();
+        shuffle($houses);
+
+        foreach($houses as $house)
+        {
+            $computer = $house->FindItemNamed($name);
+
+            if($computer !== false)
+                return $computer;
+        }
+
+        return false;
+    }
+
+    protected $houses = array();
+
+    /**
+     * @return House[]
+     */
+    protected function GetPetHouses()
+    {
+        if($this->houses === false)
+        {
+            foreach($this->pets as $pet)
+            {
+                $owner = $pet->Owner();
+
+                if(!array_key_exists($owner->ID(), $this->houses))
+                    $this->houses[$owner->ID()] = House::SelectForUser($owner);
+            }
+        }
+
+        return $this->houses;
+    }
+
+    /**
+     * @return string
+     */
+    public function ListParticipants()
+    {
+        $list = $this->pets[0]->Name();
+
+        $petCount = count($this->pets);
+
+        for($i = 1; $i < $petCount; $i++)
+        {
+            if($i == $petCount - 1)
+                $list .= ', and ';
+            else
+                $list .= ', ';
+
+            $list .= $this->pets[$i]->Name();
+        }
+
+        return $list;
+    }
 }

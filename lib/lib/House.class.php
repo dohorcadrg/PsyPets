@@ -120,17 +120,25 @@ class House
         $this->_data['lasthour'] += $seconds;
     }
 
+    /** @var House[] */
+    private static $houses;
+
     /**
      * @param User $owner
      * @return House|null
      */
     public static function SelectForUser($owner)
     {
-        $data = fetch_single('SELECT * FROM monster_houses WHERE userid=' . (int)$owner->ID() . ' LIMIT 1');
-        if($data)
-            return new House($data, $owner);
-        else
-            return null;
+        if(!array_key_exists($owner->ID(), self::$houses))
+        {
+            $data = fetch_single('SELECT * FROM monster_houses WHERE userid=' . (int)$owner->ID() . ' LIMIT 1');
+            if($data)
+                self::$houses[$owner->ID()] = new House($data, $owner);
+            else
+                self::$houses[$owner->ID()] = null;
+        }
+
+        return self::$houses[$owner->ID()];
     }
 
     /**
@@ -210,8 +218,15 @@ class House
         return $html;
     }
 
+    /**
+     * @param string $itemName
+     * @param int $quantity
+     */
     private function AddMaterials($itemName, $quantity)
     {
+        if($this->materials === false)
+            $this->LoadMaterials();
+
         if(array_key_exists($itemName, $this->materials))
             $this->materials[$itemName]['qty'] += $quantity;
         else
@@ -239,9 +254,7 @@ class House
     public function FindComfortItems($stat, $maxQuantity = 3)
     {
         if($this->materials === false)
-        {
-            throw new Exception('House::FindComfortItems was called before the house\'s materials were not loaded.');
-        }
+            $this->LoadMaterials();
 
         $itemsFound = array();
 
@@ -263,5 +276,33 @@ class House
         }
 
         return $itemsFound;
+    }
+
+    /**
+     * @param string|string[] $name
+     * @return string|bool
+     */
+    public function FindItemNamed($name)
+    {
+        if($this->materials === false)
+            $this->LoadMaterials();
+
+        if(is_string($name))
+        {
+            if(array_key_exists($name, $this->materials) && $this->materials[$name]['qty'] > 0)
+                return $name;
+        }
+        else
+        {
+            $names = ashuffle($name);
+
+            foreach($names as $name)
+            {
+                if(array_key_exists($name, $this->materials) && $this->materials[$name]['qty'] > 0)
+                    return $name;
+            }
+        }
+
+        return false;
     }
 }
