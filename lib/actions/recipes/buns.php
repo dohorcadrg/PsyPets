@@ -7,7 +7,7 @@ if($okay_to_be_here !== true)
 <ul>
  <li>Flour</li>
  <li>Sugar</li>
- <li>Shortening</li>
+ <li>Lard</li>
  <li>Baking Powder</li>
  <li>Yeast</li>
 </ul>

@@ -30,4 +30,4 @@ Makes 5 cookies.<br />
 <br />
 Add Redsberries or Blueberries to the Oatmeal Cookie recipe.<br />
 <br />
-Remember that you can substitute Shortening for Butter, or Speckled Eggs for Eggs.  This is true of most recipes in general.
+Remember that you can substitute Lard for Butter, or Speckled Eggs for Eggs.  This is true of most recipes in general.

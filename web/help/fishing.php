@@ -20,11 +20,10 @@ include 'commons/html.php';
      <h4><a href="/help/">Help Desk</a> &gt; <a href="/help/petcare.php">Pet Care</a> &gt; Hourly Activities &gt; Fishing</h4>
      <h5>What it Accomplishes</h5>
      <p>Fishers catch fish, of course, for food and other animal resources.</p>
-     <p>You can expect an fish to bring home:</p>
+     <p>You can expect a fisher to bring home:</p>
      <ul>
       <li>Fish meat</li>
-      <li>Scales</li>
-      <li>Leather</li>
+      <li>Other products of sea-dwelling creatures, such as Black Dye and pearls</li>
      </ul>
      <h5>What it Requires</h5>
      <p>A fisher needs to know about fish and fishing techniques, but should also be fast, perceptive, and a little sneaky.</p>

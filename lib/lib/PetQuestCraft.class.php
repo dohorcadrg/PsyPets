@@ -190,7 +190,7 @@ class PetQuestCraft extends PetQuest
         // ex: say the pets need to get 20 searching points to find the location of some Pyrestone. as part of their search,
         // the pets look around the countryside, scoring a 14 in their search. that's 14 closer, AND the pets should have a
         // chance to find any gathering item which is 14 difficulty or below
-        
+
         switch($this->questProgress['currentlyCollectingType'])
         {
             case 'mine':

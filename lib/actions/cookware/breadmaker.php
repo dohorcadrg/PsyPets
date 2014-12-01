@@ -9,7 +9,7 @@ $ingredients = array(
   2 => array('Butter', 'Sugar', 'Banana', 'Speckled Egg', 'Flour'),
   3 => array('Yeast', 'Flour', 'Sugar', 'Milk'),
   4 => array('Yeast', 'Flour', 'Sugar', 'Milk', 'Butter'),
-  5 => array('Yeast', 'Flour', 'Sugar', 'Milk', 'Shortening'),
+  5 => array('Yeast', 'Flour', 'Sugar', 'Milk', 'Lard'),
   6 => array('Baking Chocolate', 'Egg', 'Flour', 'Sugar', 'Baking Powder', 'Butter'),
   7 => array('Baking Chocolate', 'Speckled Egg', 'Flour', 'Sugar', 'Baking Powder', 'Butter'),
 );

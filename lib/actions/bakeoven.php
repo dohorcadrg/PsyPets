@@ -6,7 +6,7 @@ $inventory = get_inventory_byuser($user['user'], $this_inventory['location']);
 
 $ACCEPTABLE_ITEMS = array(
   'Flour', 'Egg', 'Speckled Egg', 'Yeast', 'Sugar', 'Brown Sugar', 'Baking Chocolate',
-  'Sour Cream', 'Butter', 'Shortening', 'Cream Cheese', 'Cream', 'Milk',
+  'Sour Cream', 'Butter', 'Lard', 'Cream Cheese', 'Cream', 'Milk',
   'Wild Oats', 'Orange', 'Sour Lime'
 );
 

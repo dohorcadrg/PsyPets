@@ -22,7 +22,7 @@ if($okay_to_be_here !== true)
   Yeast is the trickiest of the lot.  Fortunately, it can be grown from fairly common ingredients:  Potato and Sugar.
  </li>
 </ul>
-<p>Once you have the above four ingredients, mix them together and bake!  Optionally, add Butter or Shortening for flavor (and a slightly larger yield).</p>
+<p>Once you have the above four ingredients, mix them together and bake!  Optionally, add Butter or Lard for flavor (and a slightly larger yield).</p>
 <h5>Cornbread</h5>
 <p>Cornbread uses a similar set of ingredients, but instead of Yeast we rely on Baking Powder.  Of course, you also need Cornmeal!  Finally, Egg is added for consistency.</p>
 <ul>

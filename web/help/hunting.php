@@ -22,9 +22,9 @@ include 'commons/html.php';
      <p>A hunting pet hunts prey animals for food and animal resources.</p>
      <p>You can expect a hunter to bring home:</p>
      <ul>
-      <li>Fluff, leather, scales, feathers, bones...</li>
-      <li>Meats such as steak, chicken, and fish</li>
-      <li>Eggs, milk, and other animal products (including pearls)</li>
+      <li>Fluff, leather, feathers, bones...</li>
+      <li>Meats such as steak, chicken, and pork</li>
+      <li>Eggs, milk, and other animal products</li>
      </ul>
      <h5>What it Requires</h5>
      <p>To hunt, a pet must be strong, athletic, perceptive, and/or stealthy, and have wilderness survival training.</p>

@@ -26,16 +26,18 @@ $item_aisles = array(
   'Meat and Dairy' => array(
     8 => 'Egg',
     10 => 'Chicken',
+    20 => 'Fish',
     3 => 'Milk',
     19 => 'Pork',
     11 => 'Raw Milk',
+    21 => 'Tentacle',
   ),
   'Baking Supplies' => array(
     13 => 'Baking Soda',
     16 => 'Brown Sugar',
     14 => 'Cream of Tartar',
     15 => 'Flour',
-    17 => 'Shortening',
+    17 => 'Lard',
     12 => 'Sugar',
   ),
 );
