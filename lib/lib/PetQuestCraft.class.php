@@ -5,15 +5,6 @@ class PetQuestCraft extends PetQuest
     protected $craftIdnum;
     protected $craftRecord;
 
-    /*
-        questProgressData = {
-            table: 'psypets_smiths',
-            idnum: 5,
-            materialsCollected: [ 'Staff' ],
-            workPerformed: 1
-        }
-    */
-
     public static $TYPE_TO_SKILL = array(
         'smith' => 'smi',
         'tailor' => 'tai',
@@ -23,8 +14,8 @@ class PetQuestCraft extends PetQuest
     {
         parent::__construct($progress, $pets);
 
-        $this->craftTable = $this->questProgressData['table'];
-        $this->craftIdnum = $this->questProgressData['idnum'];
+        $this->craftTable = $this->questProgress['table'];
+        $this->craftIdnum = $this->questProgress['idnum'];
         $this->craftRecord = fetch_single('SELECT * FROM `' . $this->craftTable . '` WHERE idnum=' . (int)$this->craftIdnum . ' LIMIT 1');
     }
 
@@ -180,7 +171,34 @@ class PetQuestCraft extends PetQuest
 
     protected function Collect()
     {
+        // @TODO: look in house for any materials needed; clear currentlyCollecting if the material being looked for is no longer needed
 
+        if(count($this->questProgress['materialsNeeded']) == 0) return;
+
+        if(!array_key_exists('currentlyCollecting', $this->questProgress) || $this->questProgress['currentlyCollecting'] == false)
+        {
+            $this->questProgress['currentlyCollecting'] = $this->questProgress['materialsNeeded'][array_rand($this->questProgress['materials_needed'])];
+
+            // @TODO: fill this out depending on material being sought out:
+            $this->questProgress['currentlyCollectingType'] = 'mine';
+            $this->questProgress['currentlyCollectingStep'] = 'Searching';
+            $this->questProgress['currentlyCollectingSearchingRemaining'] = 0;
+            $this->questProgress['currentlyCollectingHarvestingRemaining'] = 0;
+        }
+
+        // @TODO: when searching, and gathering, a chance to gather other items incidentally, depending on level
+        // ex: say the pets need to get 20 searching points to find the location of some Pyrestone. as part of their search,
+        // the pets look around the countryside, scoring a 14 in their search. that's 14 closer, AND the pets should have a
+        // chance to find any gathering item which is 14 difficulty or below
+        
+        switch($this->questProgress['currentlyCollectingType'])
+        {
+            case 'mine':
+            case 'lumberjack':
+            case 'fish':
+            case 'hunt': // @TODO: move most monsters from "adventuring" to "hunting"
+            case 'gather':
+        }
     }
 
     protected function Build()
