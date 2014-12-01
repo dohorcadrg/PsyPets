@@ -3,6 +3,7 @@ class Migration_13
 {
     public function Up()
     {
+        // new gathering table; encompasses all gathering-related activities
         fetch_none("
             CREATE TABLE IF NOT EXISTS `psypets_gathering` (
                 `idnum` int(10) unsigned NOT NULL,
@@ -296,6 +297,10 @@ class Migration_13
 
         // searching + harvesting = 30
         $this->AddGatheringRecord('Radioactive Material', 'mine', 10, 28, 29, 2, 6);
+
+        // drop old gathering-related tables
+        fetch_none('DROP TABLE monster_prey');
+        fetch_none('DROP TABLE psypets_locations');
     }
 
     public function Down()
